@@ -1,1 +1,80 @@
 # DUBii-5-Methodes-Outils
+
+## Responsables du Module
+* Olivier Kirsh - Université Paris-Diderot - olivier.kirsh@univ-paris-diderot.fr
+* Olivier Rué - INRA - olivier.rue@inra.fr
+
+## Intervenants
+* Olivier Kirsh - Université Paris-Diderot - olivier.kirsh@univ-paris-diderot.fr
+* Olivier Rué - INRA - olivier.rue@inra.fr
+* Thierry Grange - Université Paris-Diderot - Thierry.GRANGE@ijm.fr
+* Valentin Loux - INRA - valentin.loux@inra.fr
+* Kevin Cheeseman - Université Paris-Diderot - kevin.cheeseman@univ-paris-diderot.fr
+* Damien Ulveling - Université Paris-Diderot - damien.ulveling@univ-paris-diderot.fr
+* Fabien Jourdan - INRA - fabien.jourdan@inra.fr
+
+## Calendrier 2019
+
+Calendrier du DUBii : https://goo.gl/MVEA4q
+
+## Synopsis
+
+### Séance 1
+
+Date : 29 janvier 2019
+
+Horaires : 14h30 - 17h30
+
+Intervenants : Olivier Kirsh et Olivier Rué
+
+Titre : ?
+
+Supports :
+
+### Séance 2
+
+Date : 31 janvier 2019
+
+Horaires : 13h00 - 16h00
+
+Intervenants : Kevin Cheeseman et Damien Ulveling
+
+Titre : ?
+
+Supports :
+
+### Séance 3
+
+Date : 7 février 2019
+
+Horaires : 13h00 - 16h00
+
+Intervenants : Olivier Rué et Thierry Grange
+
+Titre : Analyse de variants génomiques
+
+Supports :
+
+### Séance 4
+
+Date : 19 février 2019
+
+Horaires : 14h30 - 17h00
+
+Intervenants : Fabien Jourdan et Thibaut Léger
+
+Titre : ?
+
+Supports :
+
+### Séance 5
+
+Date : 21 février 2019
+
+Horaires : 14h30 - 17h30
+
+Intervenants : Olivier Rué et Valentin Loux
+
+Titre : Assemblage et Annotation de génomes
+
+Supports :
