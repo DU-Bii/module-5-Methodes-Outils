@@ -7,11 +7,12 @@
 ## Intervenants
 * Olivier Kirsh - Université Paris-Diderot - olivier.kirsh@univ-paris-diderot.fr
 * Olivier Rué - INRA - olivier.rue@inra.fr
-* Thierry Grange - Université Paris-Diderot - Thierry.GRANGE@ijm.fr
+* Thierry Grange - Institut Jacques Monod - Thierry.GRANGE@ijm.fr
 * Valentin Loux - INRA - valentin.loux@inra.fr
 * Kevin Cheeseman - Université Paris-Diderot - kevin.cheeseman@univ-paris-diderot.fr
 * Damien Ulveling - Université Paris-Diderot - damien.ulveling@univ-paris-diderot.fr
 * Fabien Jourdan - INRA - fabien.jourdan@inra.fr
+* Thibaut Léger - Institut Jacques Monod - thibaut.leger@ijm.fr
 
 ## Calendrier 2019
 
