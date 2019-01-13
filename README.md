@@ -1,4 +1,4 @@
-# DUBii-5-Methodes-Outils
+# [DU-Bii](https://du-bii.github.io/accueil) - module 5 - Méthodes et outils bioinformatiques pour l'analyse des données à haut débit
 
 ## Responsables du Module
 * Olivier Kirsh - Université Paris-Diderot - olivier.kirsh@univ-paris-diderot.fr
@@ -16,7 +16,7 @@
 
 ## Calendrier 2019
 
-Calendrier du DUBii : https://goo.gl/MVEA4q
+Calendrier du DU-Bii : https://goo.gl/MVEA4q
 
 ## Synopsis
 
