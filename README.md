@@ -44,7 +44,7 @@ Titre : ?
 
 Supports :
 
-### Séance 3
+### [Séance 3](https://github.com/DU-Bii/module-5-Methodes-Outils/tree/master/seance3)
 
 Date : 7 février 2019
 
