@@ -22,60 +22,45 @@ Calendrier du DU-Bii : https://goo.gl/MVEA4q
 
 ### Séance 1
 
-Date : 29 janvier 2019
-
-Horaires : 14h30 - 17h30
-
-Intervenants : Olivier Kirsh et Olivier Rué
-
-Titre : ?
+- Date : 29 janvier 2019
+- Horaires : 14h30 - 17h30
+- Intervenants : Olivier Kirsh et Olivier Rué
+- Titre : ?
 
 Supports :
 
 ### Séance 2
 
-Date : 31 janvier 2019
-
-Horaires : 13h00 - 16h00
-
-Intervenants : Kevin Cheeseman et Damien Ulveling
-
-Titre : ?
+- Date : 31 janvier 2019
+- Horaires : 13h00 - 16h00
+- Intervenants : Kevin Cheeseman et Damien Ulveling
+- Titre : ?
 
 Supports :
 
 ### [Séance 3](https://github.com/DU-Bii/module-5-Methodes-Outils/tree/master/seance3)
 
-Date : 7 février 2019
-
-Horaires : 13h00 - 16h00
-
-Intervenants : Olivier Rué et Thierry Grange
-
-Titre : Analyse de variants génomiques
+- Date : 7 février 2019
+- Horaires : 13h00 - 16h00
+- Intervenants : Olivier Rué et Thierry Grange
+- Titre : Analyse de variants génomiques
 
 Supports :
 
 ### Séance 4
 
-Date : 19 février 2019
-
-Horaires : 14h30 - 17h00
-
-Intervenants : Fabien Jourdan et Thibaut Léger
-
-Titre : ?
+- Date : 19 février 2019
+- Horaires : 14h30 - 17h00
+- Intervenants : Fabien Jourdan et Thibaut Léger
+- Titre : ?
 
 Supports :
 
 ### Séance 5
 
-Date : 21 février 2019
-
-Horaires : 14h30 - 17h30
-
-Intervenants : Olivier Rué et Valentin Loux
-
-Titre : Assemblage et Annotation de génomes
+- Date : 21 février 2019
+- Horaires : 14h30 - 17h30
+- Intervenants : Olivier Rué et Valentin Loux
+- Titre : Assemblage et Annotation de génomes
 
 Supports :
