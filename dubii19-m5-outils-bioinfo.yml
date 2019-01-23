@@ -297,5 +297,24 @@ dependencies:
   - r-xtable=1.8_2=r351h6115d3f_0
   - pip:
     - biopython==1.72
+  - bioconda::bwa=0.7.17
+  - bioconda::bedtools=2.27.1
+  - bioconda::samtools=1.9
+  - bioconda::picard=2.18.9
+  - bioconda::gatk4=4.0.10.0
+  - bioconda::snpeff=4.3.1t
+  - bioconda::bcftools=1.9
+  - bioconda::freebayes=1.2.0
+  - bioconda::htslib=1.9
+  - bioconda::multiqc=1.6
+  - bioconda::discosnp=2.3.0
+  - bioconda::varscan=2.4.3
+  - bioconda::qualimap=2.2.2b
+  - bioconda::r-facets=0.5.14
+  - bioconda::gridss=1.9.0
+  - bioconda::minimap2=2.13
+  - bioconda::sniffles=1.0.10
+  - bioconda::delly=0.7.9
+
 prefix: /home/olivier/anaconda3/envs/ngs
 
