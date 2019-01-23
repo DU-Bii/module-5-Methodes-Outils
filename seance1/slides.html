@@ -1,0 +1,438 @@
+<!doctype html>
+<html lang="en">
+
+	<head>
+		<meta charset="utf-8">
+		<title>NGS basics</title>
+		<meta name="description" content="Variant Calling training">
+		<meta name="author" content="Olivier Rué">
+		<meta name="apple-mobile-web-app-capable" content="yes">
+		<meta name="apple-mobile-web-app-status-bar-style" content="black-translucent">
+		<meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no">
+		<link rel="stylesheet" href="css/reveal.css">
+		<link rel="stylesheet" href="css/theme/white.css" id="theme">
+		<!-- Theme used for syntax highlighting of code -->
+		<link rel="stylesheet" href="lib/css/zenburn.css">
+		<!-- Printing and PDF exports -->
+		<script>
+			var link = document.createElement( 'link' );
+			link.rel = 'stylesheet';
+			link.type = 'text/css';
+			link.href = window.location.search.match( /print-pdf/gi ) ? 'css/print/pdf.css' : 'css/print/paper.css';
+			document.getElementsByTagName( 'head' )[0].appendChild( link );
+		</script>
+		<!--[if lt IE 9]>
+		<script src="lib/js/html5shiv.js"></script>
+		<![endif]-->
+	</head>
+
+	<body>
+		<div class="reveal">
+			<!-- Any section element inside of this container is displayed as a slide -->
+			<div class="slides">
+				
+				<!-- TITLE OF TRAINING -->
+				<section>
+					<h2>Les basiques autour des NGS</h2>
+					<h3>Module 5 - DUBii 2018</h3>
+					<p>
+						<small>Olivier Rué & Olivier Kirsh</small>
+					</p>
+					<!--<img style="border:none ; box-shadow:none" src="img/MigaleTransparent.png" width="20%"></img>-->
+					<img style="border:none ; box-shadow:none" src="img/ifb_logo.png" width="20%"></img>
+				</section>
+
+				<!-- OBJECTIVES -->
+				<section>
+					<h1>Objectifs de ce cours</h1>
+					<ul>
+						<li>Connaître les ressources bioinformatiques en ligne pour traiter des données NGS</li>
+						<li>Savoir récupérer en local ce type de ressources</li>
+						<li>Découvrir les principaux formats de fichiers</li>
+					</ul>
+
+				</section>
+
+				<!-- DATA -->
+				<section>
+					<h1>Jeu de données</h1>
+					<p><a href="https://www.ncbi.nlm.nih.gov/pmc/articles/PMC3688515/pdf/pgen.1003565.pdf">Bacterial regulons in Escherichia coli with ChIP-seq and RNA-seq</a></p>
+					<p>Myers KS, Park DM, Beauchene NA, Kiley PJ. Defining bacterial regulons using ChIP-seq. Methods. 2015 Sep 15;86:80-8. doi: 10.1016/j.ymeth.2015.05.022. Epub 2015 May 29. Review.</p>
+					<ul>
+						<li>PubMed PMID: 26032817</li>
+						<li>PubMed Central PMCID: PMC4577457</li>
+					</ul>
+				</section>
+				
+				<!-- CONNECTION ET EMPLACEMENT DES DONNEES -->
+				
+				<section>
+					<h1>Environnement de travail</h1>
+					<p>Pour ce cours, vous travaillerez sur la machine locale qui vous est mise à disposition</p>
+					<p>Vous aurez besoin du terminal et d'un navigateur web</p>
+					
+						<img width="60" height="60" data-src="https://aozoeky4dglp5sh0-zippykid.netdna-ssl.com/wp-content/uploads/2016/09/terminal-icon.png" alt="Down arrow">
+						<img width="60" height="60" data-src="https://upload.wikimedia.org/wikipedia/commons/thumb/6/67/Firefox_Logo%2C_2017.svg/220px-Firefox_Logo%2C_2017.svg.png" alt="Down arrow">
+				</section>
+					
+				
+				
+				<!-- Introduction -->
+				<section>
+					<section>
+						<h1>Introduction</h1>
+						<p>Les essentiels d'un <em>pipeline</em> d'analyse de données NGS</p>
+					</section>
+					<section>
+						<ul>
+							<li>Ressources (données issues du séquençage, génome de référence, annotations, base de données...)
+								<ul>
+									<li>centralisées</li>
+									<li>pas toujours pour les organismes non modèles</li>
+									<li>Une liste exhaustive est disponible entre autres <a href="https://anil.cchmc.org/BioInfoRes.html">ici</a></li>
+								</ul>
+							</li>
+							<li>Outils
+								<ul>
+									<li>certains incontournables</li>
+									<li>dépendants de la thématique et/ou de l'analyse souhaitée</li>
+									<li>Beaucoup sont recensés ici : <a href="https://labworm.com/">labworm.com</a></li>
+								</ul>
+							</li>
+							<li>Puissance de calcul (mémoire/coeurs)
+								<ul>
+									<li>clusters de calculs ouverts à la communauté</li>
+									<li style='color:blue'>[cf cours Unix 2]</li>
+								</ul>
+							</li>
+							
+						</ul>
+					</section>
+				</section>
+
+				<!-- Ressources bioinformatiques -->
+				<section>
+					<section>
+						<h1>Les principales ressources en ligne</h1></br>
+						<p>Vous aurez forcément besoin d'utiliser des ressources produites et expertisées par d'autres. Il existe une multitude de sites recensant des ressources bioinformatiques. Les incontournables et les plus généralistes sont :</p>
+							<ul>
+							
+								<li>Nucleotide Sequence Databases :
+									<ul>
+										<li><a href="https://www.ncbi.nlm.nih.gov/">NCBI</a> (National Center for Biotechnology Information)</li>
+										<li><a href="https://www.ebi.ac.uk/ena">ENA</a> (European Nucleotide Archive)</li>
+									</ul>
+								</li>
+								<li>Genome databases :
+									<ul>
+										<li><a href="http://www.ensembl.org/">Ensembl</a> (vertebrate genomes)</li>
+										<!--<li><a href="https://bacteria.ensembl.org/index.html">Ensembl bacteria</a> (bacterial genomes)</li>-->
+									</ul>
+								</li>
+							</ul>
+						
+						<p>Une classification plus exhaustive (séquences protéiques, domaines protéiques, structures protéiques 3D, voies métaboliques...) est disponible entre autres <a href="https://anil.cchmc.org/BioInfoRes.html">ici</a></p>
+						
+					</section>
+					<section>
+						<h2>NCBI</h2></br>
+						<p>Le NCBI héberge et met en relation de nombreuses bases de données :</p>
+						<ul>
+							<li><a href="https://www.ncbi.nlm.nih.gov/pubmed/">Pubmed</a> : publications et citations</li>
+							<li><a href="https://www.ncbi.nlm.nih.gov/sra/">SRA</a> : Sequence Read Archive (données de sortie de séquençage ou alignées vs référence)</li>
+							<li><a href="https://www.ncbi.nlm.nih.gov/genbank/">Genbank</a> : Collection de séquences ADN annotées publiques</li>
+							<li><a href="https://www.ncbi.nlm.nih.gov/refseq/">RefSeq</a> : Collection de séquences de génomes, de transcripts et de protéines, non redondantes</li>
+							<li><a href="https://www.ncbi.nlm.nih.gov/projects/SNP/">dbSNP</a> : Collection de variants, microsatellites... humains</li>
+							<li><a href="https://www.ncbi.nlm.nih.gov/geo/">GEO</a> : Collection de données liées à l'expression des gènes</li>
+							<li>...</li>
+						</ul>
+						<p>Tout (ou presque) est interconnecté</p>
+					</section>
+					<section>
+						<h2>ENA</h2></br>
+						<p>L'ENA est l'équivalent européen du NCBI, hébergé à l'EMBL-EBI :</p>
+						<ul>
+							<li>Données de séquençage</li>
+							<li>Assemblages de génomes annotés</li>
+							<li>Annotations fonctionnelles de génomes</li>
+							<li>...</li>
+						</ul>
+						
+					</section>
+					<section>
+						<h2>Les Accession Numbers</h2></br>
+						<p>Les ressources sont décrites par un Accession Number. C'est leur numéro unique qui permet de les retrouver.</p>
+						<p>La nomenclature change en fonction des ressources (NCBI, ENA...) mais le préfixe reste fixe :</p>
+						<ul>
+							<li>'DR' pour DDBJ Sequence Read Archive (DRA)</li>
+							<li>'EGA' pour European Genome-phenome Archive (EGA)</li>
+							<li>'ER' pour ENA Read</li>
+							<li>'SR' pour NCBI Sequence Read Archive (SRA)</li>
+						</ul>
+						
+					</section>
+					
+					
+				</section>
+
+
+
+
+				<!-- LES DONNEES DE SEQUENCAGE -->
+				<section>
+					<section>
+						<h1>Les données issues du séquençage</h1>
+					</section>
+					
+					<section>
+						<h2>Les principales ressources publiques</h2>
+						<p>La grande majorité des données brutes sont stockées soit au NCBI (Etats-Unis - NIH), soit à l'EBI (Angleterre - EMBL).</p>
+						<p>Depuis quelques temps, les reviewers exigent que vos données soient déposées et accessibles à la communauté.</p>
+						<p>SRA = 3 X ENA</p>
+						
+						<div style="float:left ; width:50%"><img src="https://www.ebi.ac.uk/ena/statistics/ena_sra_growth.png"></img></div>
+						<div style="float:right ; width:50%"><img src="https://www.ncbi.nlm.nih.gov/Traces/sra/i/g.png"></img></div>
+						
+						
+					</section>
+					
+					<section>
+						<h2>Exercice n°1 : Retrouver où ont été déposées les données de séquençage de la publication</h2></br>
+						<p><em>Une section est souvent dédiée à la mise à disposition des données en fin d'article</em></p>
+						<ul>
+							<li>Dans quelle base de données ont été déposées les données brutes ?</li>
+							<li>Quel est leur numéro d'accession ?</li>
+							<li>Allez sur le site en question et entrez le numéro d'accession dans la barre de recherche. Quelles informations avez-vous à disposition ?</li>
+							<li>Cliquez sur le BioProject ID pour avoir accès aux données brutes, puis suivez le lien vers SRA</li>
+							<li>Combien de fichiers de séquences brutes pouvez-vous récupérer ?</li>
+							<li>Que pouvez-vous dire sur le séquençage du 1er run ?</li>
+							<li>Pouvez-vous le télécharger via l'interface ?</li>
+						</ul>
+						
+					</section>
+					
+					<section>
+						<h2>Correction n°1</h2></br>
+						<ul>
+							<li>Dans quelle base de données ont été déposées les données brutes ? <em style='color:red'>GEO - NCBI</em></li>
+							<li>Quel est leur numéro d'accession ? <em style='color:red'>GSE41195</em></li>
+							<li>Allez sur le site en question et entrez le numéro d'accession dans la barre de recherche. Quelles informations avez-vous à disposition ? <em style='color:red'>auteurs, plateformes, publication, échantillons...</em></li>
+							<li>Cliquez sur le BioProject ID pour avoir accès aux données brutes, puis suivez le lien vers SRA</li>
+							<li>Combien de fichiers de séquences brutes pouvez-vous récupérer ? <em style='color:red'>13</em></li>
+							<li>Que pouvez-vous dire sur le séquençage du 1er run ? <em style='color:red'>RNAseq, Illumina GAIIx, reads pairés, 36 pb...</em></li>
+							<li>Pouvez-vous le télécharger via l'interface ? <em style='color:red'>Non</em></li>
+						</ul>
+						
+					</section>
+					
+					<section>
+						<h2>Exercice n°2 : Télécharger le run SRR5344684 avec la commande fastq-dump</h2></br>
+						
+						<p><em>Sélectionnez les options pour données pairées</em></p>
+						
+						<pre style='width:80%'><code class="bash" data-trim contenteditable>
+						fastq-dump -h # Afficher l'aide
+						fastq-dump -I --split-files SRR5344684
+						</code></pre>
+						
+						<p><em>Affichez les dix premières lignes d'un fichier FASTQ. Comprenez-vous quelque chose ?</em></p>
+						<pre style='width:80%'><code class="bash" data-trim contenteditable>
+						head SRR5344684_1.fastq
+						</code></pre>
+						
+						En bonus le xargs pour automatiser
+						
+					</section>
+					<section>
+						<h1>Le format FASTQ</h1>
+					</section>
+					<section>
+						<p>C'est le format utilisé pour stocker des fragments séquencés (lectures ou reads)</p>
+						<p>Caractéristiques :</p>
+						<ul>
+							<li>Fichier texte (*.fastq)</li>
+							<li>4 lignes par séquence</li>
+							<li>Hautement compressible (*.fastq.gz)</li>
+						</ul>
+						<p><img src="https://www.drive5.com/usearch/manual/fastq_fig.jpg"></img></p>
+						
+					</section>
+					<section>
+						<h2>Encodage de la qualité de la base séquencée</h2>
+						<p>Un score Phred est attribué par le séquenceur à chaque base séquencée, quelle que soit la technologie utilisée. Elle représente la confiance accordée à la base.</p>
+						<p>Elle est encodée en ASCII pour tenir sur un seul caractère.</p>
+						
+						<img src="https://image.slidesharecdn.com/bioinfoformatvisualizationv3-150908135312-lva1-app6891/95/nextgeneration-sequencing-data-format-and-visualization-with-ngsplot-2015-12-638.jpg?cb=1441720516"></img>
+						<img src="http://barcwiki.wi.mit.edu/raw-attachment/wiki/SOPs/qc_shortReads/fastq_phread-base.png"></img>
+					</section>
+					
+					<section>
+						<h2>Exercice n°3 : Extraire informations du FASTQ</h2></br>
+						
+						<p>Combien de séquences y a-t-il dans le fichier SRR5344684_1.fastq ?</p>
+						<pre style='width:80%'><code class="bash" data-trim contenteditable>
+						wc -l SRR5344684_1.fastq # Puis diviser par 4
+						# 89629572 SRR5344684_1.fastq
+						cat SRR5344684_1.fastq | echo $((`wc -l`/4))
+						# 22407393
+						</code></pre>
+						
+						Voir si c'est abordé avant dans le cours Unix
+						
+					</section>
+					
+					<section>
+						<h2>Contrôle qualité des fichiers FASTQ</h2></br>
+						<p>Vous le verrez dans le cours Production de données #2</p>
+					</section>
+				</section>
+				
+				
+				<!-- LE GENOME DE REFERENCE -->
+				<section>
+					<section>
+						<h1>Le génome de référence</h1>
+					</section>
+					
+					<section>
+						<p>La plupart des pipelines bioinformatiques reposent sur la présence d'une référence. Soit elle existe, soit il faut en construire une.</p>
+						<p>Attention, il existe des génomes complètement séquencés et très bien annotés (les organismes modèles), d'autres sont une succession de fragments représentant une sous-partie du génome.</p>
+					</section>
+					
+					<section>
+						<h2>Exercice n°2 : Récupérer le génome utilisé dans la publication : E. coli K-12 MG1655</h2></br>
+						
+						<ol>
+							<li>Recherchez cette référence sur le site du NCBI</li>
+							<li>Combien y a-t-il de versions de cet assemblage ?</li>
+							<li>Téléchargez la dernière version mise à jour</li>
+							<li>Affichez les dix premières lignes du fichier</li>
+						</ol>
+					</section>
+					
+					<section>
+						<h1>Le format FASTA</h1>
+					</section>
+				</section>
+
+				<!-- LES ANNOTATIONS DU GENOME DE REFERENCE -->
+				<section>
+					<section>
+						<h1>Les annotations  du génome de référence</h1>
+					</section>
+					
+					<section>
+						<p>La plupart des pipelines bioinformatiques reposent sur la présence d'une référence. Soit elle existe, soit il faut en construire une.</p>
+					</section>
+					
+					
+					<section>
+						<h1>Le format BED</h1>
+					</section>
+					<section>
+						<h1>Le format GFF</h1>
+					</section>
+				</section>
+				
+				<!-- LE MAPPING -->
+				<section>
+					<section>
+						<h1>Le mapping</h1>
+					</section>
+					
+					<section>
+						<h2>Avant de mapper les reads... on nettoie</h2>
+						<p>Il faut nettoyer les reads pour enlever tout ce qui n'est pas 'biologique' et de 'mauvaise qualité'.</p>
+						<p>En fonction de l'analyse, on peut :</p>
+						<ul>
+							<li>Enlever les adaptateurs de séquençage, les barcodes...</li>
+							<li>Supprimer les lectures trop petites</li>
+							<li>Trimmer les bases de mauvaise qualité</li>
+							<li>Enlever les lectures contenant des bases ambigues (pas toujours supportées par les outils)</li>
+							<li>Supprimer les lectures avec une complexité trop faible</li>
+							<li>...</li>
+						</ul>
+					</section>
+					
+					<section>
+						<h2>Avant de mapper les reads... on nettoie</h2>
+						<p>Il faut nettoyer les reads pour enlever tout ce qui n'est pas 'biologique' et de 'mauvaise qualité'.</p>
+						<p>En fonction de l'analyse, on peut :</p>
+						<ul>
+							<li>Enlever les adaptateurs de séquençage, les barcodes...</li>
+							<li>Supprimer les lectures trop petites</li>
+							<li>Trimmer les bases de mauvaise qualité</li>
+							<li>Enlever les lectures contenant des bases ambigues (pas toujours supportées par les outils)</li>
+							<li>Supprimer les lectures avec une complexité trop faible</li>
+							<li>...</li>
+						</ul>
+						<p>Le contrôle qualité vous permet de faire des choix</p>
+					</section>
+					
+					<section>
+						<h2>Les outils d'alignement</h2>
+					</section>
+					
+					<section>
+						<h1>Le format SAM / BAM</h1>
+					</section>
+					<section>
+						<h1>Le format GFF</h1>
+					</section>
+				</section>
+				
+
+
+			</div>
+
+		</div>
+
+		<script src="lib/js/head.min.js"></script>
+		<script src="js/reveal.js"></script>
+
+		<script>
+
+			// More info https://github.com/hakimel/reveal.js#configuration
+			Reveal.initialize({
+				controls: true,
+				progress: true,
+				history: true,
+				center: true,
+				width: '80%',
+				height: '100%',
+				transition: 'slide', // none/fade/slide/convex/concave/zoom
+				tableofcontents: {
+					// Specifies the slide title of the table of contents slide
+					title: "Programme",
+					// Specifies the position of the table of contents slide in the presentation
+					position: 2,
+					// Specifies which slide tag elements will be used
+					// for generating the table of contents.
+					titleTagSelector: "h1",
+
+					// Specifies if the first slide, mostly the title slide of the presentation, should be ignored.
+					ignoreFirstSlide: true,
+
+					// Specifies if every single element of the table of contents
+					// will be stepped through before moving on to the next slide.
+					fadeInElements: false
+				},
+
+				// More info https://github.com/hakimel/reveal.js#dependencies
+				dependencies: [
+					{ src: 'lib/js/classList.js', condition: function() { return !document.body.classList; } },
+					{ src: 'plugin/markdown/marked.js', condition: function() { return !!document.querySelector( '[data-markdown]' ); } },
+					{ src: 'plugin/markdown/markdown.js', condition: function() { return !!document.querySelector( '[data-markdown]' ); } },
+					{ src: 'plugin/highlight/highlight.js', async: true, callback: function() { hljs.initHighlightingOnLoad(); } },
+					{ src: 'plugin/search/search.js', async: true },
+					{ src: 'plugin/zoom-js/zoom.js', async: true },
+					{ src: 'plugin/notes/notes.js', async: true },
+					{ src: 'plugin/tableofcontents.js' }
+				]
+			});
+			Reveal.configure({ slideNumber: true });
+
+		</script>
+
+	</body>
+</html>
