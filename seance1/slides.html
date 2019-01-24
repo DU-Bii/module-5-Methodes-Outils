@@ -313,6 +313,126 @@
 					<section>
 						<h1>Le format FASTA</h1>
 					</section>
+					
+					<section>
+						<p>C'est un fichier texte contenant des informations sur une séquence (nucléique ou protéique).</p>
+						<p><img src="https://slideplayer.com/slide/4463200/14/images/38/FASTA+Format+simple+format+used+by+almost+all+programs.jpg"></img></p>
+						<p>Des blocs de 60 lettres sont souvent utilisés.</p>
+						<p>L'extension peut être .fa, .fasta, .fna...</p>
+					</section>
+				</section>
+
+				<!-- LE MAPPING -->
+				<section>
+					<section>
+						<h1>Le mapping</h1>
+					</section>
+					
+					<section>
+						<h2>Avant de mapper les reads... on nettoie</h2>
+						<p>Il faut nettoyer les reads pour enlever tout ce qui n'est pas 'biologique' et de 'mauvaise qualité' :</p>
+						<ul>
+							<li>Enlever les adaptateurs de séquençage, les barcodes... (<a href="https://cutadapt.readthedocs.io/en/stable/guide.html">cutadapt</a>...)</li>
+							<li>Trimmer les bases de mauvaise qualité (<a href="https://github.com/najoshi/sickle">sickle</a>, <a href="http://www.usadellab.org/cms/index.php?page=trimmomatic">trimmomatic</a>...)</li>
+						</ul>
+						<p><img src="https://www.gendx.com/images/stories/illumina/NGS%20workflow%20indexing%20illumina.png"></img></p>
+						
+						
+					</section>
+					
+					<section>
+						<h2>Avant de mapper les reads... on nettoie</h2>
+						<p>Puis filtrer/nettoyer/pre-processer selon différents critères :</p>
+						<ul>
+							<li>Enlever les lectures contenant des bases ambigues (pas toujours supportées par les outils)</li>
+							<li>Supprimer les lectures trop petites</li>
+							<li>Supprimer les lectures avec une complexité trop faible</li>
+							<li>Merger les paires chevauchantes (<a href="https://cme.h-its.org/exelixis/web/software/pear/">pear</a>, <a href="https://github.com/torognes/vsearch">vsearch</a>...)</li>
+							<li>...</li>
+						</ul>
+						<p>
+							<img src="img/trimming.png"></img>
+						</p>
+						
+					</section>
+					
+					<section>
+						<h2>Avant de mapper les reads... on nettoie</h2>
+						<p>Chaque jeu de données est différent ! Il faut mesurer les effets de chaque étape (nombre de reads perdus, taille...) en faisant des graphiques, des tableaux...</p>
+						<p>C'est l'expérience qui guidera ensuite vos choix.</p>
+					</section>
+					
+					<section>
+						<h2>Les outils d'alignement</h2>
+						<p>Il existe une multitude d'outils d'alignement :</p>
+						<p><img width="50%" src="https://www.ebi.ac.uk/~nf/hts_mappers/mappers_timeline.jpeg"></p>
+					</section>
+					
+					<section>
+						<p>Le choix de l'outil et le paramétrage est dépendant des données (nature, longueur, quantité)</p>
+						<p>Quelques exemples parmi les plus utilisés :</p>
+						<ul>
+							<li>
+								Génomique :
+								<ul>
+									<li><a href="http://bowtie-bio.sourceforge.net/bowtie2/index.shtml">bowtie2</a> / <a href="http://bio-bwa.sourceforge.net/">bwa</a> : lectures courtes <1 kb</li>
+								</ul>
+							</li>
+							<li>
+								Transcriptomique (alignement splicé):
+								<ul>
+									<li><a href="https://github.com/alexdobin/STAR">STAR</a></li>
+									<li><a href="http://tophat.cbcb.umd.edu/">TopHat</a></li>
+									<li><a href="https://ccb.jhu.edu/software/hisat2/index.shtml">HiSat2</a></li>
+								</ul>
+							</li>
+							<li>
+								Long reads:
+								<ul>
+									<li><a href="https://github.com/alexdobin/STAR">STAR</a></li>
+									<li>Encore une question de recherche !</li>
+								</ul>
+							</li>
+							
+						</ul>
+					</section>
+					
+					<section>
+						<h2>Le format SAM / BAM</h2>
+					</section>
+					
+					<section>
+						<p>Le format <a href="https://samtools.github.io/hts-specs/SAMv1.pdf">SAM</a> a été élaboré lors du projet des 1000 génomes humains.</p>
+						<p>Il permet de stocker toutes les informations utiles des lectures alignées sur une référence.</p>
+						<p>Tous les outils de mapping génèrent du SAM.</p>
+						<p>Hautement compressible, indexable pour un accès rapide à l'information.</p>
+						<p>Le format SAM est un fichier texte. Sa version compressée est un BAM. Sa version ultra compressée est un <a href="https://samtools.github.io/hts-specs/CRAMv3.pdf">CRAM</a>.</p>
+					</section>
+					<section>
+						<h2>Les informations dans le SAM</h2>
+						<img src="https://www.samformat.info/images/sam_format_annotated_example.5108a0cd.jpg"></img>
+						<p>Documentation : <a href="https://broadinstitute.github.io/picard/explain-flags.html">SAM flags</a></p>
+					</section>
+					<section>
+						<h2>Les informations dans le SAM</h2>
+						<img src="img/SAM.png"></img>
+						
+					</section>
+					<section>
+						<h2>Manipuler les formats SAM / BAM</h2>
+						<p>En complément du format, la suite d'outils <a href="">SAMTOOLS</a> a été développée pour manipuler ces formats.</p>
+						<p>Fonctionnalités :</p>
+						<ul>
+							<li>Compression / Décompression</li>
+							<li>Tri / Indexage</li>
+							<li>Merge</li>
+							<li>Statistiques</li>
+							<li>...</li>
+						</ul>
+					</section>
+					<section>
+						<h2>Exercice n°X : Manipuler des fichiers SAM/BAM</h2>
+					</section>
 				</section>
 
 				<!-- LES ANNOTATIONS DU GENOME DE REFERENCE -->
@@ -322,62 +442,32 @@
 					</section>
 					
 					<section>
-						<p>La plupart des pipelines bioinformatiques reposent sur la présence d'une référence. Soit elle existe, soit il faut en construire une.</p>
+						<p>Le génome de référence donne uniquement des informations sur la séquence. Toutes les informations recensées <a href="http://www.sequenceontology.org/so_wiki/index.php/Category:SO:SOFA">ici (Sequence Ontology)</a> (intron, exon, promoter, rRNA, CDS, centromere...) sont stockées ailleurs, dans un fichier d'annotation, qui indique leurs positions et leurs caractéristiques. </p>
 					</section>
 					
-					
-					<section>
-						<h1>Le format BED</h1>
-					</section>
 					<section>
 						<h1>Le format GFF</h1>
+					</section>
+					<section>
+						<p>Le format <a href="(http://gmod.org/wiki/GFF3)">Gene Feature Format</a>(GFF/ GFF2/GFF3) est un fichier texte où chaque ligne correspond à une annotation ou une feature.</p>
+						<p>Exemple d'un GFF3 :</p>
+						<p><img src="http://resources.qiagenbioinformatics.com/manuals/biomedicalgenomicsworkbench/350/importgff3.png"></img></p>
+					</section>
+					<section>
+						<p>Attention aux confusions. Les formats GFF, GFF2 et GFF3 sont légèrement différents. Certains outils nécessitent un format partuiculier pour les annotations. Cependant, les formats GFF et GFF2 sont dépréciés.</p>
+						<p>Le format GTF est identique au format GFF2</p>
+						<p>La séquence peut être ajoutée en fin de GFF3.</p>
+						<p>Il existe d'autres formats d'annotation, notamment <a href="http://quma.cdb.riken.jp/help/gbHelp.html">Genbank</a>, spécifique au NCBI, qui contient séquences et annotations.</p>
+						<em>Exemple d'une partie d'un fichier Genbank :</em>
+						<p><img src="http://aclame.ulb.ac.be/Tools/Prophinder/genbank_format.png"></img></p>
 					</section>
 				</section>
 				
-				<!-- LE MAPPING -->
-				<section>
-					<section>
-						<h1>Le mapping</h1>
-					</section>
+				
+					
 					
 					<section>
-						<h2>Avant de mapper les reads... on nettoie</h2>
-						<p>Il faut nettoyer les reads pour enlever tout ce qui n'est pas 'biologique' et de 'mauvaise qualité'.</p>
-						<p>En fonction de l'analyse, on peut :</p>
-						<ul>
-							<li>Enlever les adaptateurs de séquençage, les barcodes...</li>
-							<li>Supprimer les lectures trop petites</li>
-							<li>Trimmer les bases de mauvaise qualité</li>
-							<li>Enlever les lectures contenant des bases ambigues (pas toujours supportées par les outils)</li>
-							<li>Supprimer les lectures avec une complexité trop faible</li>
-							<li>...</li>
-						</ul>
-					</section>
-					
-					<section>
-						<h2>Avant de mapper les reads... on nettoie</h2>
-						<p>Il faut nettoyer les reads pour enlever tout ce qui n'est pas 'biologique' et de 'mauvaise qualité'.</p>
-						<p>En fonction de l'analyse, on peut :</p>
-						<ul>
-							<li>Enlever les adaptateurs de séquençage, les barcodes...</li>
-							<li>Supprimer les lectures trop petites</li>
-							<li>Trimmer les bases de mauvaise qualité</li>
-							<li>Enlever les lectures contenant des bases ambigues (pas toujours supportées par les outils)</li>
-							<li>Supprimer les lectures avec une complexité trop faible</li>
-							<li>...</li>
-						</ul>
-						<p>Le contrôle qualité vous permet de faire des choix</p>
-					</section>
-					
-					<section>
-						<h2>Les outils d'alignement</h2>
-					</section>
-					
-					<section>
-						<h1>Le format SAM / BAM</h1>
-					</section>
-					<section>
-						<h1>Le format GFF</h1>
+						<h1>Autres indispensables</h1>
 					</section>
 				</section>
 				
