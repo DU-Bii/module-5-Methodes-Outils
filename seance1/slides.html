@@ -38,7 +38,7 @@
 					<p>
 						<small>Olivier Rué & Olivier Kirsh</small>
 					</p>
-					<!--<img style="border:none ; box-shadow:none" src="img/MigaleTransparent.png" width="20%"></img>-->
+					<img style="border:none ; box-shadow:none" src="https://f-origin.hypotheses.org/wp-content/blogs.dir/534/files/2017/04/UPD-logo-A-LA-UNE-1.png" width="20%"></img>
 					<img style="border:none ; box-shadow:none" src="img/ifb_logo.png" width="20%"></img>
 				</section>
 
@@ -71,8 +71,8 @@
 					<p>Pour ce cours, vous travaillerez sur la machine locale qui vous est mise à disposition</p>
 					<p>Vous aurez besoin du terminal et d'un navigateur web</p>
 					
-						<img width="60" height="60" data-src="https://aozoeky4dglp5sh0-zippykid.netdna-ssl.com/wp-content/uploads/2016/09/terminal-icon.png" alt="Down arrow">
-						<img width="60" height="60" data-src="https://upload.wikimedia.org/wikipedia/commons/thumb/6/67/Firefox_Logo%2C_2017.svg/220px-Firefox_Logo%2C_2017.svg.png" alt="Down arrow">
+						<img width="80" style="border:none ; box-shadow:none" height="80" data-src="https://aozoeky4dglp5sh0-zippykid.netdna-ssl.com/wp-content/uploads/2016/09/terminal-icon.png" alt="Down arrow">
+						<img width="80" style="border:none ; box-shadow:none" height="80" data-src="https://upload.wikimedia.org/wikipedia/commons/thumb/6/67/Firefox_Logo%2C_2017.svg/220px-Firefox_Logo%2C_2017.svg.png" alt="Down arrow">
 				</section>
 					
 				
@@ -248,19 +248,23 @@
 					</section>
 					<section>
 						<p>C'est le format utilisé pour stocker des fragments séquencés (lectures ou reads)</p>
-						<p>Caractéristiques :</p>
-						<ul>
-							<li>Fichier texte (*.fastq)</li>
-							<li>4 lignes par séquence</li>
-							<li>Hautement compressible (*.fastq.gz)</li>
-						</ul>
 						<p><img src="https://www.drive5.com/usearch/manual/fastq_fig.jpg"></img></p>
+						<ul>
+							<li>Fichier texte (.fastq)</li>
+							<li>4 lignes par séquence</li>
+							<li>Hautement compressible (.fastq.gz)</li>
+						</ul>
+						<pre style='width:80%'><code class="bash" data-trim contenteditable>
+								gzip file.fastq # To compress
+								gzip -d file.fastq.gz # To uncompress
+						</code></pre>
 						
 					</section>
 					<section>
 						<h2>Encodage de la qualité de la base séquencée</h2>
 						<p>Un score Phred est attribué par le séquenceur à chaque base séquencée, quelle que soit la technologie utilisée. Elle représente la confiance accordée à la base.</p>
 						<p>Elle est encodée en ASCII pour tenir sur un seul caractère.</p>
+						<p style="color:red">Les scores de qualité varient selon les technologies de séquençage ! Attention !</p>
 						
 						<img src="https://image.slidesharecdn.com/bioinfoformatvisualizationv3-150908135312-lva1-app6891/95/nextgeneration-sequencing-data-format-and-visualization-with-ngsplot-2015-12-638.jpg?cb=1441720516"></img>
 						<img src="http://barcwiki.wi.mit.edu/raw-attachment/wiki/SOPs/qc_shortReads/fastq_phread-base.png"></img>
@@ -283,7 +287,21 @@
 					
 					<section>
 						<h2>Contrôle qualité des fichiers FASTQ</h2></br>
-						<p>Vous le verrez dans le cours Production de données #2</p>
+						<p><a href="https://www.bioinformatics.babraham.ac.uk/projects/fastqc/">FastQC</a> est la référence pour analyser la qualité des lectures au format FASTQ.</p>
+						<p><a href="https://multiqc.info/">MultiQC</a> permet de synthétiser tous les rapports en un seul rapport.</p>
+						<p>Vous aurez accès à :</p>
+						<ul>
+							<li>Nombre de lectures</li>
+							<li>Taille des lectures</li>
+							<li>Qualité moyenne de la base séquencée à chaque position</li>
+							<li>Présence d'adaptateurs de séquençage</li>
+							<li>GC content</li>
+							<li>...</li>
+						</ul>
+						<p style="color:blue">Vous le verrez en détail lors du cours Production de données #2</p>
+						<pre style='width:80%'><code class="bash" data-trim contenteditable>
+								fastqc file.fastq.gz # Run fastqc on one compressed FASTQ file
+						</code></pre>
 					</section>
 				</section>
 				
@@ -297,6 +315,11 @@
 					<section>
 						<p>La plupart des pipelines bioinformatiques reposent sur la présence d'une référence. Soit elle existe, soit il faut en construire une.</p>
 						<p>Attention, il existe des génomes complètement séquencés et très bien annotés (les organismes modèles), d'autres sont une succession de fragments représentant une sous-partie du génome.</p>
+						<p>La croissance du nombre de génomes est exponentielle (exemple du génome humain) :</p>
+						<div style="float:left ; width:50%"><img src="https://images.contentstack.io/v3/assets/blte41c17d7f8dda379/blta0a7b58fd26e80a1/5b16dae31d21468d5e20f689/costpergenome_2017.jpg"></img></div>
+						<div style="float:right ; width:50%"><img src="https://spectrum.ieee.org/image/MzExMzUyMQ.jpeg"></img></div>
+						
+						
 					</section>
 					
 					<section>
@@ -309,6 +332,39 @@
 							<li>Affichez les dix premières lignes du fichier</li>
 						</ol>
 					</section>
+					
+					<section>
+						<img src="img/NCBI_1.png"></img>
+					</section>
+					<section>
+						<img src="img/NCBI_2.png"></img>
+					</section>
+					<section>
+						<img src="img/NCBI_3.png"></img>
+					</section>
+					<section>
+						<img src="img/NCBI_4.png"></img>
+					</section>
+					<section>
+						<img src="img/NCBI_5.png"></img>
+					</section>
+					<section>
+						<pre style='width:80%'><code class="bash" data-trim contenteditable>
+						head sequence.fasta
+						>NZ_CP032667.1 Escherichia coli str. K-12 substr. MG1655 chromosome, complete genome
+						GTCCCGGCCCCGGCAGAACCGACCTATCGTTCTAACGTAAACGTCAAACACACGTTTGATAACTTCGTTG
+						AAGGTAAATCTAACCAACTGGCGCGCGCGGCGGCTCGCCAGGTGGCGGATAACCCTGGCGGTGCCTATAA
+						CCCGTTGTTCCTTTATGGCGGCACGGGTCTGGGTAAAACTCACCTGCTGCATGCGGTGGGTAACGGCATT
+						ATGGCGCGCAAGCCGAATGCCAAAGTGGTTTATATGCACTCCGAGCGCTTTGTTCAGGACATGGTTAAAG
+						CCCTGCAAAACAACGCGATCGAAGAGTTTAAACGCTACTACCGTTCCGTAGATGCACTGCTGATCGACGA
+						TATTCAGTTTTTTGCTAATAAAGAACGATCTCAGGAAGAGTTTTTCCACACCTTCAACGCCCTGCTGGAA
+						GGTAATCAACAGATCATTCTCACCTCGGATCGCTATCCGAAAGAGATCAACGGCGTTGAGGATCGTTTGA
+						AATCCCGCTTCGGTTGGGGACTGACTGTGGCGATCGAACCGCCAGAGCTGGAAACCCGTGTGGCGATCCT
+						GATGAAAAAGGCCGACGAAAACGACATTCGTTTGCCGGGCGAAGTGGCGTTCTTTATCGCCAAGCGTCTA
+
+						</code></pre>
+					</section>
+						
 					
 					<section>
 						<h1>Le format FASTA</h1>
@@ -326,6 +382,43 @@
 				<section>
 					<section>
 						<h1>Le mapping</h1>
+					</section>
+					
+					<section>
+						<h2>Les algorithmes de mapping</h2>
+						<p>Les algorithmes de mapping doivent s'adapter à la quantité et à la longueur des lectures issues du séquençage.</p>
+						<div style="float:left ; width:50%"><img src="img/mapping_tools.png"></img></div>
+						<div style="float:right ; width:50%"><img width="70%" src="https://www.ebi.ac.uk/~nf/hts_mappers/mappers_timeline.jpeg"></div>
+						
+					</section>
+					
+					<section>
+						<p>Le choix de l'outil et le paramétrage est dépendant des données (nature, longueur, quantité)</p>
+						<p>Quelques exemples parmi les plus utilisés :</p>
+						<ul>
+							<li>
+								Génomique :
+								<ul>
+									<li><a href="http://bowtie-bio.sourceforge.net/bowtie2/index.shtml">bowtie2</a> / <a href="http://bio-bwa.sourceforge.net/">bwa</a> : lectures courtes <1 kb</li>
+								</ul>
+							</li>
+							<li>
+								Transcriptomique (alignement splicé):
+								<ul>
+									<li><a href="https://github.com/alexdobin/STAR">STAR</a></li>
+									<li><a href="http://tophat.cbcb.umd.edu/">TopHat</a></li>
+									<li><a href="https://ccb.jhu.edu/software/hisat2/index.shtml">HiSat2</a></li>
+								</ul>
+							</li>
+							<li>
+								Long reads:
+								<ul>
+									<li><a href="https://github.com/alexdobin/STAR">STAR</a></li>
+									<li>Encore une question de recherche !</li>
+								</ul>
+							</li>
+							
+						</ul>
 					</section>
 					
 					<section>
@@ -363,41 +456,6 @@
 					</section>
 					
 					<section>
-						<h2>Les outils d'alignement</h2>
-						<p>Il existe une multitude d'outils d'alignement :</p>
-						<p><img width="50%" src="https://www.ebi.ac.uk/~nf/hts_mappers/mappers_timeline.jpeg"></p>
-					</section>
-					
-					<section>
-						<p>Le choix de l'outil et le paramétrage est dépendant des données (nature, longueur, quantité)</p>
-						<p>Quelques exemples parmi les plus utilisés :</p>
-						<ul>
-							<li>
-								Génomique :
-								<ul>
-									<li><a href="http://bowtie-bio.sourceforge.net/bowtie2/index.shtml">bowtie2</a> / <a href="http://bio-bwa.sourceforge.net/">bwa</a> : lectures courtes <1 kb</li>
-								</ul>
-							</li>
-							<li>
-								Transcriptomique (alignement splicé):
-								<ul>
-									<li><a href="https://github.com/alexdobin/STAR">STAR</a></li>
-									<li><a href="http://tophat.cbcb.umd.edu/">TopHat</a></li>
-									<li><a href="https://ccb.jhu.edu/software/hisat2/index.shtml">HiSat2</a></li>
-								</ul>
-							</li>
-							<li>
-								Long reads:
-								<ul>
-									<li><a href="https://github.com/alexdobin/STAR">STAR</a></li>
-									<li>Encore une question de recherche !</li>
-								</ul>
-							</li>
-							
-						</ul>
-					</section>
-					
-					<section>
 						<h2>Le format SAM / BAM</h2>
 					</section>
 					
@@ -432,6 +490,26 @@
 					</section>
 					<section>
 						<h2>Exercice n°X : Manipuler des fichiers SAM/BAM</h2>
+						<p>Visualiser le contenu d'un fichier BAM</p>
+						<pre style='width:80%'><code class="bash" data-trim contenteditable>
+						samtools view # Affiche l'aide
+						samtools view file.bam | less # Ne pas oublier | less
+						</code></pre>
+						<p>Obtenir des statistiques sur le fichier BAM</p>
+						<pre style='width:80%'><code class="bash" data-trim contenteditable>
+						samtools flafstat # Affiche l'aide
+						samtools flagstat file.bam
+						</code></pre>
+						<p>Trier le fichier BAM</p>
+						<pre style='width:80%'><code class="bash" data-trim contenteditable>
+						samtools sort # Affiche l'aide
+						samtools sort -o file.sorted.bam file.bam
+						</code></pre>
+						<p>Indexer le fichier BAM</p>
+						<pre style='width:80%'><code class="bash" data-trim contenteditable>
+						samtools index # Affiche l'aide
+						samtools index file.sorted.bam
+						</code></pre>
 					</section>
 				</section>
 
@@ -461,14 +539,38 @@
 						<em>Exemple d'une partie d'un fichier Genbank :</em>
 						<p><img src="http://aclame.ulb.ac.be/Tools/Prophinder/genbank_format.png"></img></p>
 					</section>
+					<section>
+						<h2>Exercice n°X : Récupérer l'annotation du génome E. coli K-12 MG1655</h2></br>
+					</section>
+					<section>
+						<img src="img/NCBI_gff.png"></img>
+					</section>
+					<section>
+						<p>Affichier les 10 premières lignes du fichier GFF3</p>>
+						<pre style='width:80%'><code class="bash" data-trim contenteditable>
+						head sequence.gff3
+						##sequence-region NZ_CP032667.1 1 4639694
+						##species https://www.ncbi.nlm.nih.gov/Taxonomy/Browser/wwwtax.cgi?id=511145
+						NZ_CP032667.1	RefSeq	region	1	4639694	.	+	.	ID=NZ_CP032667.1:1..4639694;Dbxref=taxon:511145;Is_circular=true;Name=ANONYMOUS;collection-date=2018;country=USA: Philadelphia;gbkey=Src;genome=chromosome;lat-lon=39.95 N 75.16 W;mol_type=genomic DNA;note=obtained from culture collection;old-name=Escherichia coli K-12;strain=K-12;substrain=MG1655
+						NZ_CP032667.1	RefSeq	gene	1052	2152	.	+	.	ID=gene-D8B36_RS00010;Name=D8B36_RS00010;gbkey=Gene;gene_biotype=protein_coding;locus_tag=D8B36_RS00010;old_locus_tag=D8B36_00010
+						NZ_CP032667.1	Protein Homology	CDS	1052	2152	.	+	0	ID=cds-WP_000673464.1;Parent=gene-D8B36_RS00010;Dbxref=Genbank:WP_000673464.1;Name=WP_000673464.1;gbkey=CDS;inference=COORDINATES: similar to AA sequence:RefSeq:WP_006177590.1;locus_tag=D8B36_RS00010;product=DNA polymerase III subunit beta;protein_id=WP_000673464.1;transl_table=11
+						NZ_CP032667.1	RefSeq	gene	2152	3225	.	+	.	ID=gene-D8B36_RS00015;Name=recF;gbkey=Gene;gene=recF;gene_biotype=protein_coding;locus_tag=D8B36_RS00015;old_locus_tag=D8B36_00015
+						NZ_CP032667.1	Protein Homology	CDS	2152	3225	.	+	0	ID=cds-WP_000060112.1;Parent=gene-D8B36_RS00015;Dbxref=Genbank:WP_000060112.1;Name=WP_000060112.1;gbkey=CDS;gene=recF;inference=COORDINATES: similar to AA sequence:RefSeq:WP_005121479.1;locus_tag=D8B36_RS00015;product=DNA replication/repair protein RecF;protein_id=WP_000060112.1;transl_table=11
+						NZ_CP032667.1	RefSeq	gene	3254	5668	.	+	.	ID=gene-D8B36_RS00020;Name=D8B36_RS00020;gbkey=Gene;gene_biotype=protein_coding;locus_tag=D8B36_RS00020;old_locus_tag=D8B36_00020
+						NZ_CP032667.1	Protein Homology	CDS	3254	5668	.	+	0	ID=cds-WP_000072067.1;Parent=gene-D8B36_RS00020;Dbxref=Genbank:WP_000072067.1;Name=WP_000072067.1;gbkey=CDS;inference=COORDINATES: similar to AA sequence:RefSeq:NP_312661.1;locus_tag=D8B36_RS00020;product=DNA gyrase subunit B;protein_id=WP_000072067.1;transl_table=11
+						NZ_CP032667.1	RefSeq	gene	5899	6306	.	+	.	ID=gene-D8B36_RS00025;Name=D8B36_RS00025;gbkey=Gene;gene_biotype=protein_coding;locus_tag=D8B36_RS00025;old_locus_tag=D8B36_00025
+
+						</code></pre>
+					</section>
 				</section>
 				
 				
 					
-					
+					<!--
 					<section>
 						<h1>Autres indispensables</h1>
 					</section>
+					-->
 				</section>
 				
 
