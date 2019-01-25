@@ -2,10 +2,11 @@ name: ngs
 channels:
   - auto
   - bioconda
+  - conda-forge
   - r
   - defaults
-  - conda-forge
-  - https://conda.anaconda.org/dranew
+  - dranew
+#  - https://conda.anaconda.org/dranew
 dependencies:
   - certifi=1.0.1=py27_0
   - macs=1.4.3=py27_0
@@ -316,5 +317,5 @@ dependencies:
   - bioconda::sniffles=1.0.10
   - bioconda::delly=0.7.9
 
-prefix: /home/olivier/anaconda3/envs/ngs
+# prefix: /home/olivier/anaconda3/envs/ngs
 
