@@ -202,10 +202,10 @@
 						<ol>
 							<li>Dans quelle base de données ont été déposées les données brutes ?</li>
 							<li>Quel est leur numéro d'accession ?</li>
-							<li>Allez sur le site en question et entrez le numéro d'accession dans la barre de recherche. Quelles informations avez-vous à disposition ?</li>
-							<li>Cliquez sur le BioProject ID pour avoir accès aux données brutes, puis suivez le lien vers SRA</li>
+							<li>Allez sur le site en question et entrez le numéro d'accession dans la barre de recherche. Combien d'échantillons sont disponibles ?</li>
+							<li>Cliquez sur la sous-série GSE41187 (analyse Chip-Seq) puis suivez le lien vers SRA</li>
 							<li>Combien de fichiers de séquences brutes pouvez-vous récupérer ?</li>
-							<li>Que pouvez-vous dire sur le séquençage du 1er run ?</li>
+							<li>Que pouvez-vous dire sur le séquençage du 1er run ? (SRX220453) </li>
 							<li>Pouvez-vous le télécharger via l'interface ?</li>
 							<li>Quelle solution vous est proposée ?</li>
 						</ol>
@@ -216,10 +216,10 @@
 						<ol>
 							<li>Dans quelle base de données ont été déposées les données brutes ? <em style='color:red'>GEO - NCBI</em></li>
 							<li>Quel est leur numéro d'accession ? <em style='color:red'>GSE41195</em></li>
-							<li>Allez sur le site en question et entrez le numéro d'accession dans la barre de recherche. Quelles informations avez-vous à disposition ? <em style='color:red'>auteurs, plateformes, publication, échantillons...</em></li>
-							<li>Cliquez sur le BioProject ID pour avoir accès aux données brutes, puis suivez le lien vers SRA</li>
-							<li>Combien de fichiers de séquences brutes pouvez-vous récupérer ? <em style='color:red'>13</em></li>
-							<li>Que pouvez-vous dire sur le séquençage du 1er run ? <em style='color:red'>RNAseq, Illumina GAIIx, reads pairés, 36 pb...</em></li>
+							<li>Allez sur le site en question et entrez le numéro d'accession dans la barre de recherche. Combien d'échantillons sont disponibles ? <em style='color:red'>48</em></li>
+							<li>Cliquez sur la sous-série GSE41187 (analyse Chip-Seq) puis suivez le lien vers SRA</li>
+							<li>Combien de fichiers de séquences brutes pouvez-vous récupérer ? <em style='color:red'>9</em></li>
+							<li>Que pouvez-vous dire sur le séquençage du 1er run ? (SRX220453) <em style='color:red'>Chip-Seq, Illumina GAIIx, reads sinlge-end, 878,466 reads</em></li>
 							<li>Pouvez-vous le télécharger via l'interface ? <em style='color:red'>Non</em></li>
 							<li>Quelle solution vous est proposée ? <em style='color:red'>SRA Toolkit</em></li>
 						</ol>
@@ -239,9 +239,10 @@
 					<section data-background="#bccecc">
 						<h2>Exercice n°2 : Utiliser SRA toolkit</h2></br>
 						<ol>
-							<li>Affichez l'aide de la commande fastq-dump</li>
-							<li>Télécharger le run SRR5344684 <em>(attention, données pairées !)</em></li>
-							<li>Affichez les dix premières lignes d'un des deux fichiers .fastq</li>
+							<li>Affichez l'aide de la commande fastq-dump dans le terminal</li>
+							<li>Télécharger le run SRR653522</li>
+							<li>Affichez les dix premières lignes du fichier</li>
+							<li><em>Bonus : télécharger une liste de fichiers SRR</em></li>
 						</ol>
 					</section>
 					
@@ -257,23 +258,39 @@
 						
 						</code></pre>
 						<pre style='width:80%'><code class="bash" data-trim contenteditable>
-						fastq-dump -I --split-files SRR5344684 # Télécharger le run SRR5344684
+						fastq-dump SRR653522 # Télécharger le run SRR653522
 						</code></pre>
 						
 						<pre style='width:80%'><code class="bash" data-trim contenteditable>
-						head SRR5344684_1.fastq
-						@SRR5344684.1.1 1204:1:1:1641:935 length=76
-						NATCGGAAGAGCGGTTCAGCAGGAATGCCGAGACCGATATCGTATGCCGTCTTCTGCTTGAAANNNNNNNNNNNNN
-						+SRR5344684.1.1 1204:1:1:1641:935 length=76
-						############################################################################
-						@SRR5344684.2.1 1204:1:1:1708:951 length=76
-						NATCGGAAGAGCGGTTCAGCAGGAATGCCGAGATCGGAAGAGCGGTTCAGCAGGAATGCCGAGACCGATATCGTAT
-						+SRR5344684.2.1 1204:1:1:1708:951 length=76
-						)333377777@@@@CCCC@@@CCC@C@@@C@@CC@C@@@C58998@@@@@C@@@@@@@@@CC@C@###########
-						@SRR5344684.3.1 1204:1:1:1765:941 length=76
-						NTGAAACATCTAAGTACCCCGAGGAAAAGAAATCAACCGAGATTCCCCCAGTAGCGGCGAGCGAACGGGGGGGAGC
-
+						head SRR653522.fastq
+						@SRR653522.1 ILLUMINA05:2:1:0:2016 length=35
+						NCGTCGACCATTTCCAGCTCGCCGCCAACCGGAAC
+						+SRR653522.1 ILLUMINA05:2:1:0:2016 length=35
+						&<9<<<<<<<<<<<<<9<<<<<<<<<2<<<<<<<<
+						@SRR653522.2 ILLUMINA05:2:1:0:69 length=35
+						NGGCTAATGGCATCTTTATGATTGTTAATAATAGA
+						+SRR653522.2 ILLUMINA05:2:1:0:69 length=35
+						&=AA=<2====<=??A=,==:=====9==.<=2=.
+						@SRR653522.3 ILLUMINA05:2:1:0:418 length=35
+						NAACGTACAAATACTGGGGTGATTTTGTTCGGATC
 						</code></pre>
+						
+						<pre style='width:80%'><code class="bash" data-trim contenteditable>
+						head SRR_accessions.txt # Il faut remplir le fichier avec les Accession Numbers trouvés sur la page du projet (SRA Run Selector)
+						SRR576933
+						SRR576934
+						SRR576935
+						SRR576936
+						SRR576937
+						SRR576938
+						SRR653520
+						SRR653521
+						SRR653522
+
+						cat SRR_accessions.txt | xargs fastq-dump # Télécharger une liste de SRR
+						</code></pre>
+						
+
 						
 						
 						
@@ -643,11 +660,37 @@
 				
 				
 					
-					<!--
+					
 					<section>
-						<h1>Autres indispensables</h1>
+						<section>
+							<h1>Autres indispensables</h1>
+						</section>
+						<section>
+						<p>Formats</p>
+							<ul>
+								<li>Format <a href="https://genome.ucsc.edu/FAQ/FAQformat.html">BED</a></li>
+								<li>Format <a href="https://genome.ucsc.edu/goldenPath/help/bedgraph.html">BedGraph</a></li>
+								<li>Format <a href="https://genome.ucsc.edu/goldenPath/help/bigWig.html">BigWig</a></li>
+								<li>Format <a href="http://www.internationalgenome.org/wiki/Analysis/Variant%20Call%20Format/vcf-variant-call-format-version-41">VCF</a></li>
+								<li>...</li>
+							</ul>
+						<p>Outils</p>
+							<ul>
+								<li><a href="https://bedtools.readthedocs.io/en/latest/">BEDtools</a> pour manipuler les fichiers génomiques (intersections...)</li>
+								<li><a href="http://software.broadinstitute.org/software/igv/">IGV</a> pour visualiser ces fichiers le long d'un génome</li>
+								<li>...</li>
+							</ul>
+						<p>Librairies</p>
+							<ul>
+								<li><a href="https://biopython.org/">BioPython</a></li>
+								<li><a href="https://bioperl.org/">BioPerl</a></li>
+								<li>...</li>
+							</ul>
+						</section>
+					
 					</section>
-					-->
+					
+					
 				</section>
 				
 
