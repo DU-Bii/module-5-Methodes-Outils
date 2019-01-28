@@ -27,7 +27,9 @@ Calendrier du DU-Bii : https://goo.gl/MVEA4q
 - Intervenants : Olivier Kirsh et Olivier Rué
 - Titre : Les bases de NGS
 
-Supports :
+[support PDF](https://github.com/DU-Bii/module-5-Methodes-Outils/blob/master/seance1/seance1.pdf)
+
+[support web](http://genome.jouy.inra.fr/~orue/module-5-Methodes-Outils/seance1/slides.html#/)
 
 ### Séance 2
 
