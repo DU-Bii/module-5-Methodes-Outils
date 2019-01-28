@@ -20,7 +20,7 @@ Calendrier du DU-Bii : https://goo.gl/MVEA4q
 
 ## Synopsis
 
-### Séance 1(https://github.com/DU-Bii/module-5-Methodes-Outils/tree/master/seance1)
+### [Séance 1](https://github.com/DU-Bii/module-5-Methodes-Outils/tree/master/seance1)
 
 - Date : 29 janvier 2019
 - Horaires : 14h30 - 17h30
