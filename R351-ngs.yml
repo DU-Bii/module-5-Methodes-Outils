@@ -23,7 +23,7 @@ dependencies:
   - bioconductor-bsgenome.hsapiens.ucsc.hg38=1.4.1
   - bioconductor-bsgenome.mmusculus.ucsc.mm10=1.4.0
   - bioconductor-bsgenome.mmusculus.ucsc.mm9=1.4.0
-  - bioconductor-chippeakanno=3.14.2
+  - bioconductor-chippeakanno >=3.12.0, <=3.14.2
   - bioconductor-chipseeker=1.16.1
   - bioconductor-complexheatmap=1.18.1
   - bioconductor-delayedarray=0.6.6
@@ -43,8 +43,8 @@ dependencies:
   - bioconductor-geoquery=2.48.0
   - bioconductor-go.db=3.6.0
   - bioconductor-gosemsim=2.6.2
-  - bioconductor-graph=1.58.2
-  - bioconductor-gseabase=1.42.0
+  - bioconductor-graph >= 1.56.0, <=1.58.2
+  - bioconductor-gseabase >=1.40.0, <=1.42.0
   - bioconductor-gviz=1.24.0
   - bioconductor-iranges=2.14.12
   - bioconductor-limma=3.36.5
@@ -73,7 +73,7 @@ dependencies:
   - r-base=3.5.1
   - r-factominer=1.41
   - r-ggrepel=0.8.0
-  - r-mixomics=6.3.2
+  - r-mixomics >=6.1.1, <=6.3.2
   - r-pheatmap=1.0.10
   - r-plotly=4.8.0
   - r-pmcmr=4.3
