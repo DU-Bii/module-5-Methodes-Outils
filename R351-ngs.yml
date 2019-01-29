@@ -43,7 +43,8 @@ dependencies:
   - bioconductor-geoquery=2.48.0
   - bioconductor-go.db=3.6.0
   - bioconductor-gosemsim=2.6.2
-  - bioconductor-graph >= 1.56.0, <=1.58.2
+  - bioconductor-graph=1.58.2
+#  - bioconductor-graph >= 1.56.0, <=1.58.2 ## DOES NOT WORK FOR MAC because 1.56.0 is not compatible wit r-base=3.5.1
   - bioconductor-gseabase >=1.40.0, <=1.42.0
   - bioconductor-gviz=1.24.0
   - bioconductor-iranges=2.14.12
