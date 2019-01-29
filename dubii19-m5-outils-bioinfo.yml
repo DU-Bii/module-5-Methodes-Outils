@@ -3,7 +3,9 @@ name: dubii2019_m5_methodes_outils_tools_r
 channels:
   - bioconda
   - conda-forge
+  - dranew
   - defaults
+  - auto
   - r
 #  - https://conda.anaconda.org/dranew
 dependencies:
