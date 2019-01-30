@@ -31,12 +31,14 @@ Calendrier du DU-Bii : https://goo.gl/MVEA4q
 
 [support web](http://genome.jouy.inra.fr/~orue/module-5-Methodes-Outils/seance1/slides.html#/)
 
+[Slides complémentaires](https://docs.google.com/presentation/d/e/2PACX-1vSMIVjj13RyUng6zZJTI1PXtzZKfuPzrq5J5GMcGfXFgV5_t-lydWDUXNhNhDo4hpMZ8jtWK2M2GYLE/pub?start=false&loop=true&delayms=3000&slide=id.g4ca819be8f_0_134)
+
 ### Séance 2
 
 - Date : 31 janvier 2019
 - Horaires : 13h00 - 16h00
 - Intervenants : Kevin Cheeseman et Damien Ulveling
-- Titre : ?
+- Titre : ChIP-Seq & RNA-Seq Workflow
 
 Supports :
 
