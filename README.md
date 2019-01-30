@@ -37,7 +37,7 @@ Calendrier du DU-Bii : https://goo.gl/MVEA4q
 
 - Date : 31 janvier 2019
 - Horaires : 13h00 - 16h00
-- Intervenants : Kevin Cheeseman et Damien Ulveling
+- Intervenants : Kevin Cheeseman, Damien Ulveling et Olivier Kirsh
 - Titre : ChIP-Seq & RNA-Seq Workflow
 
 Supports :
@@ -56,7 +56,7 @@ Supports :
 - Date : 19 février 2019
 - Horaires : 14h30 - 17h00
 - Intervenants : Fabien Jourdan et Thibaut Léger
-- Titre : ?
+- Titre : Métabolimique
 
 Supports :
 
