@@ -42,6 +42,8 @@ Calendrier du DU-Bii : https://goo.gl/MVEA4q
 
 [Support_PDF](https://github.com/DU-Bii/module-5-Methodes-Outils/blob/master/chip_rna_seq_DUBii.pdf)
 
+[IGV settings](https://github.com/DU-Bii/module-5-Methodes-Outils/blob/master/IGV-settings-dubii.Rmd)
+
 ### [Séance 3](https://github.com/DU-Bii/module-5-Methodes-Outils/tree/master/seance3)
 
 - Date : 7 février 2019
