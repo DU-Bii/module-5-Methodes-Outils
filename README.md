@@ -56,7 +56,7 @@ Supports :
 - Date : 19 février 2019
 - Horaires : 14h30 - 17h00
 - Intervenants : Fabien Jourdan et Thibaut Léger
-- Titre : Métabolimique
+- Titre : Protéomique & Métabolomique
 
 Supports :
 
