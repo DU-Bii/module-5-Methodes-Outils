@@ -79,7 +79,7 @@ prefetch SRR1176031
 prefetch SRR1176061
 
 # move files (from where vdb-config tells you where the files are)
-mv /shared/projects/du_bii_2019<yourlogin>/ncbi/public/*.sra sra/
+mv /shared/projects/du_bii_2019<yourlogin>/ncbi/public/sra/*.sra sra/
 
 
 # extract fastq with sra toolkit
@@ -111,13 +111,25 @@ cd ..
 /shared/projects/du_bii_2019/data/banks/hg19b2
 
 #define variable for index path
-b2ref=/shared/projects/du_bii_2019/data/banks/hg19b2
+b2ref=/shared/projects/du_bii_2019/data/banks/hg19b2/hg19
 
 # mapping with Bowtie2
 # http://bowtie-bio.sourceforge.net/bowtie2/index.shtml
 bowtie2 -t -q -p 8 --fast --phred33 -x $b2ref fastq/input.fastq > bam/input.sam
 bowtie2 -t -q -p 8 --fast --phred33 -x $b2ref fastq/quisuisje.fastq > bam/quisuisje.sam
 
+
+# you can run it with an sbatch
+# create it with nano
+
+#! /bin/bash
+#SBATCH -p fast
+#SBATCH -o mapping.out -e mapping.err
+b2ref=/shared/projects/du_bii_2019/data/banks/hg19b2/hg19
+srun -c 8  bowtie2 -t -q -p 8 --fast --phred33 -x $b2ref fastq/input.fastq > bam/input.sam
+srun -c 8 bowtie2 -t -q -p 8 --fast --phred33 -x $b2ref fastq/quisuisje.fastq > bam/quisuisje.sam
+
+# type ^x, o, enter to save your script
 
 
 # File conversion
