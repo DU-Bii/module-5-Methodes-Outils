@@ -38,7 +38,7 @@ vdb-config -i
 # you should see somthing like
 /shared/home/<yourlogin>/ncbi/public
 # or
-/shared/projects/du_bii_2019<yourlogin>/ncbi/public
+/shared/projects/du_bii_2019/<yourlogin>/ncbi/public
 
 # check where you are
 pwd
