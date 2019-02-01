@@ -84,8 +84,8 @@ mv /shared/projects/du_bii_2019<yourlogin>/ncbi/public/*.sra sra/
 
 # extract fastq with sra toolkit
 # https://ncbi.github.io/sra-tools/fastq-dump.html
-fastq-dump --outdir fastq/ sra/SRR1176031
-fastq-dump --outdir fastq/ sra/SRR1176061
+fastq-dump --outdir fastq/ sra/SRR1176031.sra
+fastq-dump --outdir fastq/ sra/SRR1176061.sra
 
 # renamfiles
 mv SRR1176031.fastq input.fastq
