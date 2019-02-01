@@ -88,11 +88,15 @@ fastq-dump --outdir fastq/ sra/SRR1176031.sra
 fastq-dump --outdir fastq/ sra/SRR1176061.sra
 
 # renamfiles
+cd fastq
 mv SRR1176031.fastq input.fastq
 mv SRR1176061.fastq quisuisje.fastq
 
+
 # FastQC
-fastqc --outdir *.fastq
+mkdir ../qc
+fastqc --outdir ../qc *.fastq
+cd ..
 
 # Trimming if necessary
 # with trim_galore, trimmomatic, sickle, cutadapt.
