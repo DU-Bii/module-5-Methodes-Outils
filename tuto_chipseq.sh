@@ -17,7 +17,7 @@ https://www.ncbi.nlm.nih.gov/geo/query/acc.cgi?acc=GSE53366
 #find one ZBTB33 IP sample and the corresponding input
 #highlight files and click on accession list button to generate an SRR_Acc_List.txt file
 SRR1176031  #input
-SRR1176061	#IP TF
+SRR1176061  #IP TF
 
 
 
@@ -115,21 +115,9 @@ b2ref=/shared/projects/du_bii_2019/data/banks/hg19b2/hg19
 
 # mapping with Bowtie2
 # http://bowtie-bio.sourceforge.net/bowtie2/index.shtml
+# add srun -c 8 before the bowtie
 bowtie2 -t -q -p 8 --fast --phred33 -x $b2ref fastq/input.fastq > bam/input.sam
 bowtie2 -t -q -p 8 --fast --phred33 -x $b2ref fastq/quisuisje.fastq > bam/quisuisje.sam
-
-
-# you can run it with an sbatch
-# create it with nano
-
-#! /bin/bash
-#SBATCH -p fast
-#SBATCH -o mapping.out -e mapping.err
-b2ref=/shared/projects/du_bii_2019/data/banks/hg19b2/hg19
-srun -c 8  bowtie2 -t -q -p 8 --fast --phred33 -x $b2ref fastq/input.fastq > bam/input.sam
-srun -c 8 bowtie2 -t -q -p 8 --fast --phred33 -x $b2ref fastq/quisuisje.fastq > bam/quisuisje.sam
-
-# type ^x, o, enter to save your script
 
 
 # File conversion
@@ -138,22 +126,24 @@ samtools view -b -h -S input.sam > input.bam
 samtools view -b -h -S quisuisje.sam > quisuisje.bam
 
 # Sort
-samtools sort input.bam inputs
-samtools sort quisuisje.bam quisuisjes
-
-# sam2bam and sort could be piped
+mkdir sorted
+cd sorted
+samtools sort ../input.bam -o input.sorted.bam
+samtools sort ../quisuisje.bam -o quisuisje.sorted.bam
 
 # Index for IGV visualization
-samtools index inputs.bam
-samtools index quisuisjes.bam
+samtools index input.sorted.bam
+samtools index quisuisje.sorted.bam
 
-rm *.sam
+cd ..
+
+
 cd ..
 
 ###### optionnal
 # Filtrer pour un chromosome
-samtools view -h -b inputs.bam "chr1" > inputsChr1.bam
-samtools view -h -b quisuisjes.bam "chr1" > quisuisjesChr1.bam
+samtools view -h -b input.sorted.bam "chr1" > inputChr1.bam
+samtools view -h -b quisuisje.sorted.bam "chr1" > quisuisjeChr1.bam
 ######
 
 
@@ -173,36 +163,42 @@ perl /shared/mfs/data/software/miniconda/envs/dubii2019_m5_methodes_outils_tools
 
 # all the following command can be saved in a bash script
 # and run with
-srun peakcalling.#!/bin/sh
+srun peakcalling.sh
 
 # create bash script
 nano peakcalling.sh
 
-# copy all the lines bellow
+# copy all the lines bellow , add the require #SBATCH options
 
 #!/bin/sh
+
+
 mkdir ana bedgraph
 
 # make tagdirectories
 # http://homer.ucsd.edu/homer/ngs/tagDir.html
-# here we use default settings, but many arguments exists
+# here we use default settings, but many arguments exists to enrich your outputs
 # we could have writen one line per sample, but here it's a for loop
 
+
+cd bam
+
 for n in *.bam
-  do
+  do 
   nom=${n%%.*}
   echo $nom
-  cd ana
-  makeTagDirectory ${nom}_tagdir/ ../$nom.bam
-  cd ..
+  cd ../ana
+  makeTagDirectory ${nom}_tagdir/ ../bam/$nom.bam  
+  cd ../bam	
 done
+
 
 # create Bedgraphs
 for n in *.bam
   do
   nom=${n%%.*}
   echo $nom
-  makeUCSCfile ./ana/${nom}_tagdir -o ./bedgraph/$nom.bedgraph -name $nom
+  makeUCSCfile ../ana/${nom}_tagdir -o ../bedgraph/$nom.bedgraph -name $nom
 done
 
 # perform peak calling
@@ -217,9 +213,6 @@ cd ../
 
 # annotation
 annotatePeaks.pl   peaks.bed hg19 > annotatedpeaks.txt
-
-# Motif enrichment
-findMotifsGenome.pl peaks.bed hg19 MotifOutput/ -size 200 -mask
 
 
 # type ^x, o, enter to save your script
