@@ -87,7 +87,7 @@ mv /shared/projects/du_bii_2019<yourlogin>/ncbi/public/sra/*.sra sra/
 fastq-dump --outdir fastq/ sra/SRR1176031.sra
 fastq-dump --outdir fastq/ sra/SRR1176061.sra
 
-# renamfiles
+# rename files
 cd fastq
 mv SRR1176031.fastq input.fastq
 mv SRR1176061.fastq quisuisje.fastq
