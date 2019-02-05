@@ -31,7 +31,7 @@ Calendrier du DU-Bii : https://goo.gl/MVEA4q
 
 [support web](http://genome.jouy.inra.fr/~orue/module-5-Methodes-Outils/seance1/slides.html#/)
 
-[Slides complémentaires](https://github.com/DU-Bii/module-5-Methodes-Outils/blob/master/DUBii2019-M5C1-SRA.pdf)
+[Slides complémentaires](https://github.com/DU-Bii/module-5-Methodes-Outils/blob/master/seance1/DUBii2019-M5C1-SRA.pdf)
 
 ### Séance 2
 
