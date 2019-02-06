@@ -49,9 +49,9 @@ Calendrier du DU-Bii : https://goo.gl/MVEA4q
 - Date : 7 février 2019
 - Horaires : 13h00 - 16h00
 - Intervenants : Olivier Rué et Thierry Grange
-- Titre : Analyse de variants génomiques
+- Titre : Mapping et Analyse de variants génomiques
 
-Supports :
+[Support](https://docs.google.com/presentation/d/10HM_pAU7OFMPHVUam-3e6uKB_rZbpc1QHaEuqmZGzTs/edit#slide=id.g4f4444721c_0_90)
 
 ### Séance 4
 
