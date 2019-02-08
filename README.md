@@ -51,7 +51,7 @@ Calendrier du DU-Bii : https://goo.gl/MVEA4q
 - Intervenants : Olivier Rué et Thierry Grange
 - Titre : Mapping et Analyse de variants génomiques
 
-[Support](https://docs.google.com/presentation/d/10HM_pAU7OFMPHVUam-3e6uKB_rZbpc1QHaEuqmZGzTs/edit#slide=id.g4f4444721c_0_90)
+[Support PDF](https://github.com/DU-Bii/module-5-Methodes-Outils/blob/master/seance3/DUBii-2019-module5-seance3.pdf)
 
 ### Séance 4
 
