@@ -1,0 +1,30 @@
+name: dubii2019_m5_methodes_outils
+channels:
+  - bioconda
+dependencies:
+  - fastqc
+  - multiqc
+  - sickle
+  - trimmomatic
+  - flash
+  - pear
+  - vsearch
+  - samtools
+  - perl-vcftools-vcf=0.1.16
+  - bcftools
+  - vcftools
+  - vcflib
+  - khmer
+  - qualimap
+  - velvet
+  - samtools
+  - spades
+  - quast
+  - gatk4
+  - varscan
+  - freebayes
+  - snpeff
+  - snpsift
+  - picard
+  - bedtools
+  - sra-tools
