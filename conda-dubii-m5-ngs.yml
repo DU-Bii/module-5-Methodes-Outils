@@ -28,3 +28,4 @@ dependencies:
   - picard
   - bedtools
   - sra-tools
+  - barrnap
