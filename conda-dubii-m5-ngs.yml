@@ -29,3 +29,5 @@ dependencies:
   - bedtools
   - sra-tools
   - barrnap
+  - canu
+  - fastp
