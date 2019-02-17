@@ -40,9 +40,9 @@ Calendrier du DU-Bii : https://goo.gl/MVEA4q
 - Intervenants : Kevin Cheeseman, Damien Ulveling et Olivier Kirsh
 - Titre : ChIP-Seq & RNA-Seq Workflow
 
-[Support_PDF](https://github.com/DU-Bii/module-5-Methodes-Outils/blob/master/chip_rna_seq_DUBii.pdf)
+[Support_PDF](https://github.com/DU-Bii/module-5-Methodes-Outils/blob/master/seance2/chip_rna_seq_DUBii.pdf)
 
-[IGV settings](https://github.com/DU-Bii/module-5-Methodes-Outils/blob/master/IGV-settings-dubii.md)
+[IGV settings](https://github.com/DU-Bii/module-5-Methodes-Outils/blob/master/seance2/IGV-settings-dubii.md)
 
 ### [Séance 3](https://github.com/DU-Bii/module-5-Methodes-Outils/tree/master/seance3)
 
