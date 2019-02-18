@@ -31,3 +31,9 @@ dependencies:
   - barrnap
   - canu
   - fastp
+  - bowtie2
+  - homer
+  - sickle-trim
+  - cutadapt
+  - bandage
+  - prokka
