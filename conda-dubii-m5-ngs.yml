@@ -37,3 +37,4 @@ dependencies:
   - cutadapt
   - bandage
   - prokka
+  - hmmer
