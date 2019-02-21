@@ -69,4 +69,4 @@ Supports :
 - Intervenants : Olivier Rué et Valentin Loux
 - Titre : Assemblage et Annotation de génomes
 
-[Support](https://docs.google.com/presentation/d/1DyIuT-T2d0bWnLEma_9wcWp46xXeN6T8stbQfehx1aQ/edit#slide=id.g4fc11bf09c_2_291)
+Support [Web](https://docs.google.com/presentation/d/1DyIuT-T2d0bWnLEma_9wcWp46xXeN6T8stbQfehx1aQ/edit#slide=id.g4fc11bf09c_2_291)[PDF](seance5/DUBii%20-%20Module5%20-%20Séance5%20-%20Assemblage%20et%20Annotation.pdf)
