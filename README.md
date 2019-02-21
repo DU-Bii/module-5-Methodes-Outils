@@ -61,7 +61,7 @@ Calendrier du DU-Bii : https://goo.gl/MVEA4q
 - Titre : Protéomique & Métabolomique
 
 Supports :
-[Support PDF](https://github.com/DU-Bii/module-4-Production-Donnees/blob/master/seance4/2019-02-19-Dubii-Metabolomics-Fabien-Jourdan.pdf)
+[Support PDF](https://github.com/DU-Bii/module-4-Production-Donnees/blob/master/seance4/2019-02-19-Dubii-Metabolomics_Fabien-Jourdan.pdf)
 ### Séance 5
 
 - Date : 21 février 2019
