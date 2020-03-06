@@ -28,7 +28,7 @@ Calendrier du DU-Bii : https://goo.gl/MVEA4q
 
 [support PDF](https://github.com/DU-Bii/module-5-Methodes-Outils/blob/master/seance1/seance1.pdf)
 
-[support web](https://genome.jouy.inra.fr/~orue/DUBII_2020/SEANCE1/slides.html)
+[support web](http://genome.jouy.inra.fr/~orue/DUBII_2020/SEANCE1/slides.html)
 
-[correction TP](https://genome.jouy.inra.fr/~orue/DUBII_2020/SEANCE1/document.html)
+[correction TP](http://genome.jouy.inra.fr/~orue/DUBII_2020/SEANCE1/document.html)
 
