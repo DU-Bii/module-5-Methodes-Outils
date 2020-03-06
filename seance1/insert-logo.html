@@ -1,0 +1,43 @@
+<style>
+.logo-inra {
+  background-image: url(images/logos/Logo-INRAE_Transparent.png);
+  background-size: contain;
+  background-repeat: no-repeat;
+  position: fixed;
+  bottom: -4em;
+  width: 53px;
+  height: 110px;
+  z-index: 0;
+  margin-bottom: -10px;
+}
+
+.logo-migale {
+  background-image: url(images/logos/migale-orange.png);
+  background-size: contain;
+  background-repeat: no-repeat;
+  position: fixed;
+  bottom: -4em;
+  width: 85px;
+  left: 7em;
+  height: 116px;
+  z-index: 0;
+  margin-bottom: -10px;
+}
+
+
+</style>
+
+<script>
+document
+  .querySelectorAll(
+    '.remark-slide-content' +
+    ':not(.title-slide)' +
+    // add additional classes to exclude here, e.g.
+    // ':not(.inverse)' +
+    ':not(.hide-logo)'
+  )
+  .forEach(el => {
+    el.innerHTML += '<div class="logo-inra"></div>';
+    el.innerHTML += '<div class="logo-migale"></div>';
+  });
+</script>
