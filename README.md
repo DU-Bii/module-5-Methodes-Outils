@@ -26,9 +26,9 @@ Calendrier du DU-Bii : https://goo.gl/MVEA4q
 - Intervenants : Olivier Rué et Valentin Loux
 - Titre : First steps with NGS data
 
-[support PDF](seance1/seance1.pdf)
+[support PDF](https://du-bii.github.io/module-5-Methodes-Outils/seance1/seance1.pdf)
 
-[support web](http://genome.jouy.inra.fr/~orue/DUBII_2020/SEANCE1/slides.html)
+[support web](https://du-bii.github.io/module-5-Methodes-Outils/seance1/slides.html)
 
-[correction TP](http://genome.jouy.inra.fr/~orue/DUBII_2020/SEANCE1/document.html)
+[correction TP](https://du-bii.github.io/module-5-Methodes-Outils/seance1//document.html)
 
