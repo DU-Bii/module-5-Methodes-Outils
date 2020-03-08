@@ -5,7 +5,8 @@
 * Olivier Rué - INRA - olivier.rue@inrae.fr
 
 ## Intervenants
-* Olivier Rué - INRA - olivier.rue@inra.fr
+* Claude Thermes - Institut de Biologie Intégrative de la Cellule - Claude.THERMES@i2bc.paris-saclay.fr
+* Olivier Rué - INRAE - olivier.rue@inra.fr
 * Valentin Loux - INRAE - valentin.loux@inrae.fr
 * Marc Deloger - Institut Gustave Roussy - marc.deloger@gustaveroussy.fr
 * Nicolas Servant - Institut Curie - nicolas.servant@curie.fr
@@ -25,6 +26,12 @@ Calendrier du DU-Bii : https://goo.gl/MVEA4q
 - Horaires : 10h00 - 17h30
 - Intervenants : Olivier Rué et Valentin Loux
 - Titre : First steps with NGS data
+
+[INTRODUCTION AU SÉQUENÇAGE À HAUT DÉBIT POUR LA GÉNOMIQUE 1](https://du-bii.github.io/module-5-Methodes-Outils/seance1/20200309_THERMES_1.pptx)
+
+[INTRODUCTION AU SÉQUENÇAGE À HAUT DÉBIT POUR LA GÉNOMIQUE 2](https://du-bii.github.io/module-5-Methodes-Outils/seance1/20200309_THERMES_2.pptx)
+
+[INTRODUCTION AU SÉQUENÇAGE À HAUT DÉBIT POUR LA GÉNOMIQUE 3](https://du-bii.github.io/module-5-Methodes-Outils/seance1/20200309_THERMES_3.pptx)
 
 [support PDF](https://du-bii.github.io/module-5-Methodes-Outils/seance1/seance1.pdf)
 
