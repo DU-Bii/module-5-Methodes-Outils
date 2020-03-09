@@ -27,15 +27,12 @@ Calendrier du DU-Bii : https://goo.gl/MVEA4q
 - Intervenants : Olivier Rué et Valentin Loux
 - Titre : First steps with NGS data
 
-[INTRODUCTION AU SÉQUENÇAGE À HAUT DÉBIT POUR LA GÉNOMIQUE 1](https://du-bii.github.io/module-5-Methodes-Outils/seance1/20200309_THERMES_1.pptx)
 
-[INTRODUCTION AU SÉQUENÇAGE À HAUT DÉBIT POUR LA GÉNOMIQUE 2](https://du-bii.github.io/module-5-Methodes-Outils/seance1/20200309_THERMES_2.pptx)
-
-[INTRODUCTION AU SÉQUENÇAGE À HAUT DÉBIT POUR LA GÉNOMIQUE 3](https://du-bii.github.io/module-5-Methodes-Outils/seance1/20200309_THERMES_3.pptx)
-
-[support PDF](https://du-bii.github.io/module-5-Methodes-Outils/seance1/seance1.pdf)
-
-[support web](https://du-bii.github.io/module-5-Methodes-Outils/seance1/slides.html)
-
-[correction TP](https://du-bii.github.io/module-5-Methodes-Outils/seance1//document.html)
+| Supports | Formats |
+|--------------------------------------------------|--------|
+| INTRODUCTION AU SÉQUENÇAGE À HAUT DÉBIT POUR LA GÉNOMIQUE 1 | [[pptx](https://du-bii.github.io/module-5-Methodes-Outils/seance1/20200309_THERMES_1.pptx)] [[pdf](https://du-bii.github.io/module-5-Methodes-Outils/seance1/20200309_THERMES_1.pdf)] |
+| INTRODUCTION AU SÉQUENÇAGE À HAUT DÉBIT POUR LA GÉNOMIQUE 2 | [[pptx](https://du-bii.github.io/module-5-Methodes-Outils/seance1/20200309_THERMES_2.pptx)] [[pdf](https://du-bii.github.io/module-5-Methodes-Outils/seance1/20200309_THERMES_2.pdf)] |
+| INTRODUCTION AU SÉQUENÇAGE À HAUT DÉBIT POUR LA GÉNOMIQUE 3 | [[pptx](https://du-bii.github.io/module-5-Methodes-Outils/seance1/20200309_THERMES_3.pptx)] [[pdf](https://du-bii.github.io/module-5-Methodes-Outils/seance1/20200309_THERMES_3.pdf)]  |
+| First steps with NGS data | [[pdf](https://du-bii.github.io/module-5-Methodes-Outils/seance1/seance1.pdf)] [[html](https://du-bii.github.io/module-5-Methodes-Outils/seance1/slides.html)] |
+| Correctionb TP | [[html](https://du-bii.github.io/module-5-Methodes-Outils/seance1//document.html)] |
 
