@@ -30,9 +30,9 @@ Calendrier du DU-Bii : https://goo.gl/MVEA4q
 
 | Supports | Formats |
 |--------------------------------------------------|--------|
-| INTRODUCTION AU SÉQUENÇAGE À HAUT DÉBIT POUR LA GÉNOMIQUE 1 | [[pptx](https://du-bii.github.io/module-5-Methodes-Outils/seance1/20200309_THERMES_1.pptx)] [[pdf](https://du-bii.github.io/module-5-Methodes-Outils/seance1/20200309_THERMES_1.pdf)] |
-| INTRODUCTION AU SÉQUENÇAGE À HAUT DÉBIT POUR LA GÉNOMIQUE 2 | [[pptx](https://du-bii.github.io/module-5-Methodes-Outils/seance1/20200309_THERMES_2.pptx)] [[pdf](https://du-bii.github.io/module-5-Methodes-Outils/seance1/20200309_THERMES_2.pdf)] |
-| INTRODUCTION AU SÉQUENÇAGE À HAUT DÉBIT POUR LA GÉNOMIQUE 3 | [[pptx](https://du-bii.github.io/module-5-Methodes-Outils/seance1/20200309_THERMES_3.pptx)] [[pdf](https://du-bii.github.io/module-5-Methodes-Outils/seance1/20200309_THERMES_3.pdf)]  |
-| First steps with NGS data | [[pdf](https://du-bii.github.io/module-5-Methodes-Outils/seance1/seance1.pdf)] [[html](https://du-bii.github.io/module-5-Methodes-Outils/seance1/slides.html)] |
-| Correctionb TP | [[html](https://du-bii.github.io/module-5-Methodes-Outils/seance1//document.html)] |
+| INTRODUCTION AU SÉQUENÇAGE À HAUT DÉBIT POUR LA GÉNOMIQUE 1 | [[pdf](seance1/20200309_THERMES_1.pdf)] [[pptx](seance1/20200309_THERMES_1.pptx)]  |
+| INTRODUCTION AU SÉQUENÇAGE À HAUT DÉBIT POUR LA GÉNOMIQUE 2 | [[pdf](seance1/20200309_THERMES_2.pdf)] [[pptx](seance1/20200309_THERMES_2.pptx)] |
+| INTRODUCTION AU SÉQUENÇAGE À HAUT DÉBIT POUR LA GÉNOMIQUE 3 | [[pdf](seance1/20200309_THERMES_3.pdf)] [[pptx](seance1/20200309_THERMES_3.pptx)] |
+| First steps with NGS data | [[pdf](seance1/seance1.pdf)] [[html](seance1/slides.html)] |
+| Correctionb TP | [[html](seance1//document.html)] |
 
