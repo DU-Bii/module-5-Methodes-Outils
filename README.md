@@ -16,7 +16,7 @@
 
 ## Calendrier 2020
 
-Calendrier du DU-Bii : https://goo.gl/MVEA4q
+Calendrier du DU-Bii : <https://du-bii.github.io/accueil/img/planning_DUBii_2020.png>
 
 ## Synopsis
 
