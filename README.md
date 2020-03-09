@@ -36,3 +36,15 @@ Calendrier du DU-Bii : <https://du-bii.github.io/accueil/img/planning_DUBii_2020
 | First steps with NGS data | [[pdf](seance1/seance1.pdf)] [[html](seance1/slides.html)] |
 | Correction TP | [[html](seance1//document.html)] |
 
+### [Séance 2](https://github.com/DU-Bii/module-5-Methodes-Outils/tree/master/seance2)
+
+- Date : 11 mars 2020
+- Horaires : 9h30 - 17h00
+- Intervenants : Nicolas Servant et Marc Deloger
+- Titre : RNAseq data analysis
+
+
+| Supports | Formats |
+|--------------------------------------------------|--------|
+| RNAseq processing | [[pdf](seance2/processing/RNAseq_processing.pdf)] [[pptx](seance2/processing/RNAseq_processing.html)]  |
+| what2do_with_count_table_diffan.pdf | [[pdf](seance2/R/what2do_with_count_table_diffan.pdf)] [[pptx](seance2/R/what2do_with_count_table_diffan.html)] |
