@@ -34,5 +34,5 @@ Calendrier du DU-Bii : https://goo.gl/MVEA4q
 | INTRODUCTION AU SÉQUENÇAGE À HAUT DÉBIT POUR LA GÉNOMIQUE 2 | [[pdf](seance1/20200309_THERMES_2.pdf)] [[pptx](seance1/20200309_THERMES_2.pptx)] |
 | INTRODUCTION AU SÉQUENÇAGE À HAUT DÉBIT POUR LA GÉNOMIQUE 3 | [[pdf](seance1/20200309_THERMES_3.pdf)] [[pptx](seance1/20200309_THERMES_3.pptx)] |
 | First steps with NGS data | [[pdf](seance1/seance1.pdf)] [[html](seance1/slides.html)] |
-| Correctionb TP | [[html](seance1//document.html)] |
+| Correction TP | [[html](seance1//document.html)] |
 
