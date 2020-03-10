@@ -3,13 +3,13 @@ title: "RNA-seq data mining & differential analysis using R"
 author: "DU Bii - N. Servant / M. Deloger"
 date: "11th March 2020"
 output:
-  pdf_document:
-    toc: yes
   html_document:
     code_folding: show
     df_print: kable
     toc: yes
     toc_float: yes
+  pdf_document:
+    toc: yes
 lastupdate: ''
 ---
 
@@ -59,7 +59,6 @@ From BioConductor :
 * [org.Hs.eg.db]
 * [clusterProfiler]
 
-
 In order to install these packages, use the following command :
 
 ```{r rd1, echo=TRUE, eval=FALSE}
@@ -76,7 +75,6 @@ biocLite("DESeq2")
 
 Google is your best friend !
 But a lot is already available within R ...
-
 
 ```{r rd2, echo=TRUE}
 ## Example of help in R
@@ -193,7 +191,7 @@ is.data.frame(d)
 ### Functions in R
 
 As in any programming langage, R allows the user to write functions.
-A function is (usually) defined by:
+A function is defined by:
 
 - A name
 - One or several argument(s)
@@ -302,7 +300,7 @@ Among them, pay attention to :
 
 ## Experimental data
 
-As a toy dataset, we will use the data published by *Horvath et al.* [^2] and available on GEO ([GSE52194](https://www.ncbi.nlm.nih.gov/geo/query/acc.cgi?acc=GSE52194)).  
+As a toy dataset, we will use the data published by *Horvath et al.* [^2] available on GEO ([GSE52194](https://www.ncbi.nlm.nih.gov/geo/query/acc.cgi?acc=GSE52194)).  
 This dataset is composed of `20 breast samples` :
 
 * 5 HER2+ samples (ER and PR negative)
@@ -394,8 +392,7 @@ nbgenes_at_zeros
 ```
 </details>
 
-
-- For each sample, how many genes have more than one ?
+- For each sample, how many genes have more than one count ?
 
 <details>
 <summary>Show</summary>
@@ -409,7 +406,6 @@ nbgenes_per_sample <- apply(d, 2, number_expressed)
 nbgenes_per_sample
 ```
 </details>
-
 
 - Draw the Log2 raw counts distribution per sample
 
@@ -436,7 +432,6 @@ barplot(d.tpm[erbb2_pos, ], ylab="TPM", las=2, col="gray50", border="white")
 ```
 </details>
 
-
 - How many genes are expressed (TPM > 1) in my data ?
 
 <details>
@@ -447,7 +442,6 @@ nb_expressed_genes
 ```
 </details>
 
-
 - Calculate the mean expression of all genes over TNBC and NonTNBC samples
 
 <details>
@@ -457,7 +451,6 @@ tnbc_mean <- rowMeans(d.tpm[,c("TNBC1","TNBC2", "TNBC3", "TNBC4", "TNBC5", "TNBC
 nontnbc_mean <- rowMeans(d.tpm[,c("NonTNBC1","NonTNBC2", "NonTNBC3", "NonTNBC4", "NonTNBC5", "NonTNBC6")])
 ```
 </details>
-
 
 - Calculate the log2 fold-change of my mean TNCB / NonTNBC samples
 
@@ -475,7 +468,6 @@ head(fc.ord, 10)
 ```
 </details>
 
-
 -  Display the two sample types using a scatter plot with the genes with a logFC>3 in red
 
 <details>
@@ -487,7 +479,6 @@ plot(x=log2(nontnbc_mean + 1), y=log2(tnbc_mean + 1), col=ifelse(abs(fc)>3, "red
      xlab="mean of NonTNBC (log2)", ylab="mean of TNBC (log2)")
 ```
 </details>
-
 
 - Extract the 10 first genes with the highest expression in TNBC samples
 
@@ -502,7 +493,7 @@ names(tnbc_mean[od[1:10]])
 
 ## Exploratory analysis
 
-Exploratory analysis assesses overall similarity between samples: Which samples are similar to each other ? which ones are different? Does this fit to the experimental design? is there any outlier samples? 
+Exploratory analysis assesses overall similarity between samples without any prior knowledge: which samples are similar to each other? Does this fit to the experimental design? is there any outlier samples? 
 
 TPM and RPKM are `units` that can be used to look at transcript abundance. However, they do not perform robust cross-sample normalization.
 Methods as implemented in the [limma](https://bioconductor.org/packages/release/bioc/html/limma.html),  [DESeq2](https://bioconductor.org/packages/release/bioc/html/DESeq2.html) or [edgeR](https://bioconductor.org/packages/release/bioc/html/edgeR.html) packages propose to normalize by sequencing depth by calculing scaling factors using more sophisticated approaches.  
@@ -546,13 +537,12 @@ plot(assay(rld)[,3:4],
 
 A first way to visualize distances between samples is to project the samples onto a 2-dimension plane such that they spread out optimally. This can be achieved using PCA analysis. Several PCA packages are available in R. Here, we simply use the function provided by DESeq2.
 
-
 ```{r PCA, echo=TRUE, eval=TRUE}
 ## short and easy version
 DESeq2::plotPCA(rld, intgroup = c("condition"), ntop=1000)
-
 ```
 
+Other (nicer) visualization functions with `FactoMineR` ...
 
 ```{r pca}
 library(FactoMineR) ## for PCA
@@ -567,7 +557,6 @@ mostvargenes <- order(gvar, decreasing=TRUE)[1:1000]
 
 ## Run PCA
 res_pca <- PCA(t(d.rlog[mostvargenes,]), ncp=3, graph=FALSE)
-
 
 ## Make beautiful plots
 fviz_eig(res_pca, addlabels = TRUE, ylim = c(0, 50))
@@ -587,7 +576,7 @@ barplot(d.tpm[best.contrib[7],], col="gray50",
 
 ### Hierarchical Clustering
 
-In addition to PCA analysis, hierarchical clustering is another way to represent the distances between samples using different metrics.
+In addition to PCA analysis, hierarchical clustering is another way to represent the similarity between samples using different metrics. Hierarchical clustering requires a `distance` between sample and a `method` to agglomerate clusters.
 
 ```{r clustering, eval=TRUE}
 require(pheatmap)
@@ -613,9 +602,7 @@ pheatmap(d.rlog[mostvargenes,],
           scale = "row")
 ```
 
-
 The first steps of the analysis presented above are dedicated to count data manipulation and exploration. The main goal is to validate the overlall quality of the dataset, and to see how similar are the different samples. If any outlier is detected, they will most likely increase the overall variability and thus decrease the statistical power later when testing for differential expression. It is therefore advised to discard these samples. Importantly, these analyses rely on appropriate normalization methods that stabilize the variance over the mean expression levels, and are therefore well designed for exploratory analysis.
-
 
 # Differential Analysis
 
@@ -758,14 +745,14 @@ dotplot(dropGO(ego.BP, level=c(1:3)), showCategory=20)
 
 ## Making beautiful plots with ggplot
 
-The previous VolcanoPlot is not very nice, and writting you own function can be useful to make beautiful paper !
+The previous VolcanoPlot is not very nice, and writting you own function can be useful to make beautiful plots !
 As an exercice, you can write your own function based on the ggplot2 package to make a much better VolcanoPlot.
 
 <details>
 <summary>Solution</summary>
 ```{r volcano2}
 LimmaVolcano <- function(res, main="", fct=1.5, pt=0.05){
-    require(ggplot2)
+    stopifnot(require(ggplot2))
     res$sign <- 0
     res$sign[which(res$adj.P.Val < pt & abs(res$logFC) > fct)] <- 1
 
@@ -799,7 +786,6 @@ Here, our dataset is based on ENSEMBL annotation. Our goal is thus to convert th
 ## gtf.in: path to gtf file
 ## return: x with ENSEMBL|SYMBOL annotation
 ensembl2symbol <- function(x, gtf.in){
-
   stopifnot(require(rtracklayer))
   message("Loading gtf file ...")
   dgtf <- rtracklayer::import(gtf.in)
@@ -819,7 +805,8 @@ ensembl2symbol <- function(x, gtf.in){
 }
 
 mygtf <- "/shared/projects/dubii2020/data/rnaseq/countsdata/gencode.v19.annotation.gtf.gz"
-d.ensembl <- read.csv("/shared/projects/dubii2020/data/rnaseq/countsdata/tablecounts_raw_ensembl.csv", row.names = 1)
+d.ensembl <- read.csv("/shared/projects/dubii2020/data/rnaseq/countsdata/tablecounts_raw_ensembl.csv", 
+                      row.names = 1)
 d.ensembl <- as.matrix(d.ensembl)
 d.annot <- ensembl2symbol(d.ensembl, mygtf)
 ```
@@ -992,6 +979,10 @@ Using the TPM values, we can now explore the expression of our favorite genes.
 ```{r, echo=TRUE, eval=TRUE}
 sessionInfo()
 ```
+
+# Acknowledgments
+
+This support has been prepared with the support of the Cancéropole Ile de France.
 
 # References
 
