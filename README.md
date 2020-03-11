@@ -46,6 +46,6 @@ Calendrier du DU-Bii : <https://du-bii.github.io/accueil/img/planning_DUBii_2020
 
 | Supports | Formats |
 |--------------------------------------------------|--------|
-| State of the art | [[pdf](seance2/processing/DUBii_State_of_the_art_of_what_can_be_done_with_RNA-seq_20200311.pdf)]
+| State of the art | [[pdf](seance2/DUBii_State_of_the_art_of_what_can_be_done_with_RNA-seq_20200311.pdf)]
 | RNAseq processing | [[pdf](seance2/processing/RNAseq_processing.pdf)] [[html](seance2/processing/RNAseq_processing.html)]  |
 | what2do_with_count_table_diffan | [[pdf](seance2/R/what2do_with_count_table_diffan.pdf)] [[html](seance2/R/what2do_with_count_table_diffan.html)] |
