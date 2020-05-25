@@ -85,6 +85,11 @@ Nous vous demandons de :
 
 Temps estimé : 30mn à 1h.
 
+A l'issu de ces activités, vous autrez :
+- des notions de bases en métabolomique
+- installé un outil de conversion de données au format proprietaire en format "open-source" qui sera utilisé lors du TP
+- Créé votre compte sur l'instance Galaxy usegalaxy.fr , fait vos premiers pas sous Galaxy. 
+
 En cas de blocage ou de question, n'hésitez pas à partager vos questions sur le Slack.
 
 
