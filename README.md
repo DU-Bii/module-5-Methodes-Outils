@@ -62,19 +62,19 @@ lien vers le rapport *MultiQC* sur le serveur IFB `/shared/projects/dubii2020/da
 
 #### Pré-requis :
 
-Notions générales de métabolomique :
+##### Notions générales de métabolomique :
 - Avoir suivi des vidéos introductives du [MOCC FUN Métabololique](https://www.fun-mooc.fr/courses/course-v1:cnrs+136001+session01/about  
 ). Ce MOCC est accessible librement (après inscription) le temps de la crise sanitaire. Suivre les vidéos S1C1 (semaine 1 cours 1) , S1C3, S1C4 et S3C6. 
 
 Temps estimé : 40 minutes.
 
-- Partie pratique  :
+##### Partie pratique  :
 
 - Pour les apprenants sous Linux ou Windows, avoir installé le logiciel suivant [ms-convert](http://proteowizard.sourceforge.net/download.html) sur leur poste , ainsi que ce [jeu de données](https://ent.uca.fr/filez/l9bc0j). 
 
 Temps estimé : 10 minutes.
 
-L'ensemble des TPs de cours auront lieu sous l'instance Galaxy workflow4metabolomics de [usegalaxy.fr](https://workflow4metabolomics.usegalaxy.fr)
+- L'ensemble des TPs de cours auront lieu sous l'instance Galaxy workflow4metabolomics de [usegalaxy.fr](https://workflow4metabolomics.usegalaxy.fr)
 
 Nous vous demandons de :
 - Créer un compte sur l'instance Galaxy (menu Authentification et Enregistrement). Pour les académiques, vous devriez pouvoir utiliser le bouton "Elixir login" avec vos authentifiants institutionnels. Pour les non-)académiques vous pouvez utiliser le lien "Don't have an account? Register here." sur cette même page.
@@ -85,14 +85,12 @@ Nous vous demandons de :
 
 Temps estimé : 30mn à 1h.
 
-A l'issu de ces activités, vous autrez :
+A l'issu de ces activités, vous aurez :
 - des notions de bases en métabolomique
 - installé un outil de conversion de données au format proprietaire en format "open-source" qui sera utilisé lors du TP
 - Créé votre compte sur l'instance Galaxy usegalaxy.fr , fait vos premiers pas sous Galaxy. 
 
 En cas de blocage ou de question, n'hésitez pas à partager vos questions sur le Slack.
-
-
 
 
 | Supports | Formats |
