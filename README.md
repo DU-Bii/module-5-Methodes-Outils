@@ -64,12 +64,15 @@ lien vers le rapport *MultiQC* sur le serveur IFB `/shared/projects/dubii2020/da
 
 Notions générales de métabolomique :
 - Avoir suivi des vidéos introductives du [MOCC FUN Métabololique](https://www.fun-mooc.fr/courses/course-v1:cnrs+136001+session01/about  
-). Ce MOCC est accessible librement (après inscription) le temps de la crise sanitaire. Suivre les vidéos S1C1 (semaine 1 cours 1) , S1C3, S1C4 et S3C6. Ces vidéos duent un dizaine de minutes chacunes.
+). Ce MOCC est accessible librement (après inscription) le temps de la crise sanitaire. Suivre les vidéos S1C1 (semaine 1 cours 1) , S1C3, S1C4 et S3C6. 
+
+Temps estimé : 40 minutes.
 
 - Partie pratique  :
 
 - Pour les apprenants sous Linux ou Windows, avoir installé le logiciel suivant [ms-convert](http://proteowizard.sourceforge.net/download.html) sur leur poste , ainsi que ce [jeu de données](https://ent.uca.fr/filez/l9bc0j). 
 
+Temps estimé : 10 minutes.
 
 L'ensemble des TPs de cours auront lieu sous l'instance Galaxy workflow4metabolomics de [usegalaxy.fr](https://workflow4metabolomics.usegalaxy.fr)
 
@@ -79,6 +82,8 @@ Nous vous demandons de :
 - Pour ceux n'ayant jamais utilisé Galaxy, suivre le tutoriel [A short introduction to Galaxy](https://galaxyproject.github.io/training-material/topics/introduction/tutorials/galaxy-intro-short/tutorial.html) 
 
 - Faire les premieres étapes du tutoriel [Mass spectrometry: LC-MS analysis](https://galaxyproject.github.io/training-material/topics/metabolomics/tutorials/lcms/tutorial.html)  jusqu'à la partie "1.2. Data preparation for XCMS: MSnbase readMSData" comprise. C'est ce tutoriel qui sera suivi en TP. 
+
+Temps estimé : 30mn à 1h.
 
 En cas de blocage ou de question, n'hésitez pas à partager vos questions sur le Slack.
 
