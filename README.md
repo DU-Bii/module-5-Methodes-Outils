@@ -52,3 +52,38 @@ Calendrier du DU-Bii : <https://du-bii.github.io/accueil/img/planning_DUBii_2020
 
 lien vers le rapport *MultiQC* sur le serveur IFB `/shared/projects/dubii2020/data/rnaseq/rawdata/multiqc_report.html`
 
+### [Séance 3](https://github.com/DU-Bii/module-5-Methodes-Outils/tree/master/seance3)
+
+- Date : 4 juin  2020
+- Horaires : 09h30 - 12h00 - 13h30-16h30
+- Intervenants : Mélanie Petera, Binta Dieme.
+- Titre : Metabolomics
+
+
+#### Pré-requis :
+
+Notions générales de métabolomique :
+- Avoir suivi des vidéos introductives du [MOCC FUN Métabololique](https://www.fun-mooc.fr/courses/course-v1:cnrs+136001+session01/about  
+). Ce MOCC est accessible librement (après inscription) le temps de la crise sanitaire. Suivre les vidéos S1C1 (semaine 1 cours 1) , S1C3, S1C4 et S3C6. Ces vidéos duent un dizaine de minutes chacunes.
+
+- Partie pratique  :
+
+- Pour les apprenants sous Linux ou Windows, avoir installé le logiciel suivant [ms-convert](http://proteowizard.sourceforge.net/download.html) sur leur poste , ainsi que ce [jeu de données](https://ent.uca.fr/filez/l9bc0j). 
+
+
+L'ensemble des TPs de cours auront lieu sous l'instance Galaxy workflow4metabolomics de [usegalaxy.fr](https://workflow4metabolomics.usegalaxy.fr)
+
+Nous vous demandons de :
+- Créer un compte sur l'instance Galaxy (menu Authentification et Enregistrement). Pour les académiques, vous devriez pouvoir utiliser le bouton "Elixir login" avec vos authentifiants institutionnels. Pour les non-)académiques vous pouvez utiliser le lien "Don't have an account? Register here." sur cette même page.
+
+- Pour ceux n'ayant jamais utilisé Galaxy, suivre le tutoriel [A short introduction to Galaxy](https://galaxyproject.github.io/training-material/topics/introduction/tutorials/galaxy-intro-short/tutorial.html) 
+
+- Faire les premieres étapes du tutoriel [Mass spectrometry: LC-MS analysis](https://galaxyproject.github.io/training-material/topics/metabolomics/tutorials/lcms/tutorial.html)  jusqu'à la partie "1.2. Data preparation for XCMS: MSnbase readMSData" comprise. C'est ce tutoriel qui sera suivi en TP. 
+
+En cas de blocage ou de question, n'hésitez pas à partager vos questions sur le Slack.
+
+
+
+
+| Supports | Formats |
+|--------------------------------------------------|--------|
