@@ -91,7 +91,3 @@ A l'issu de ces activités, vous aurez :
 - Créé votre compte sur l'instance Galaxy usegalaxy.fr , fait vos premiers pas sous Galaxy. 
 
 En cas de blocage ou de question, n'hésitez pas à partager vos questions sur le Slack.
-
-
-| Supports | Formats |
-|--------------------------------------------------|--------|
