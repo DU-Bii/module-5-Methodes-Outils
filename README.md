@@ -55,7 +55,7 @@ lien vers le rapport *MultiQC* sur le serveur IFB `/shared/projects/dubii2020/da
 ### [Séance 3](https://github.com/DU-Bii/module-5-Methodes-Outils/tree/master/seance3)
 
 - Date : 4 juin  2020
-- Horaires : 09h30 - 12h00 - 13h30-16h30
+- Horaires : 09h30 - 12h30 - 14h00-16h30
 - Intervenants : Mélanie Pétéra, Binta Diémé.
 - Titre : Metabolomics
 
