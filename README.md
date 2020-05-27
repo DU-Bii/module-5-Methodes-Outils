@@ -71,7 +71,7 @@ Temps estimé : 40 minutes.
 
 ##### Partie pratique  :
 
-- Pour les apprenants sous Windows, avoir installé sr leur poste les logiciel [ms-convert](http://proteowizard.sourceforge.net/download.html) et [InSilicosViewer](https://ent.uca.fr/filez/tb3n2etb)  ainsi que ce [jeu de données](https://ent.uca.fr/filez/wfm5cl4tn).
+- Pour les apprenants sous Windows, avoir installé sur leur poste les logiciel [ms-convert](http://proteowizard.sourceforge.net/download.html) et [InSilicosViewer](https://ent.uca.fr/filez/tb3n2etb)  ainsi que ce [jeu de données](https://ent.uca.fr/filez/wfm5cl4tn).
 
 Temps estimé : 10 minutes.
 
