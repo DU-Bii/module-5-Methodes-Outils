@@ -32,7 +32,7 @@ part là-dessus
 
 - Bedtools &lt;a name=cite-quinlan2010bedtools&gt;&lt;/a&gt;([Quinlan and Hall, 2010](#bib-quinlan2010bedtools)) et ses fonctionnalités sous forme de questions
 
- *  extraire les séquences des exons ?
+ * extraire les séquences des exons ?
 
  * trouver des gènes différentiellement exprimés ?
 
@@ -44,9 +44,70 @@ part là-dessus
 
  * impact des variants (amino acid changes) ?
 
+---
+
+# Rappels sur les formats de fichiers
+
+Format  | Contenu
+------------- | -------------
+FASTA  | Information de séquence
+FASTQ  | Séquence et qualité d'un read
+SAM/BAM  | Alignement des reads sur une référence
+BED/GTF/GFF  | Coordonnées et annotations génomiques
+VCF  | Positions des variants génomiques entre des reads et une référence 
+
+---
+
+## FASTA
+
+```bash
+&gt;foo
+ATGCC
+&gt;bar other optional text could go here
+CCGTA
+&gt;bidou
+ACTGCAGT
+TTCGN
+&gt;repeatmasker
+ATGTGTcggggggATTTT
+&gt;prot2; my_favourite_prot
+MTSRRSVKSGPREVPRDEYEDLYYTPSSGMASP
+```
+
+## FASTQ
+
+```bash
+@SEQ_ID
+GATTTGGGGTTCAAAGCAGTATCGATCAAATAGTAAATCCATTTGTTCAACTCACAGTTT
++
+!''*((((***+))%%%++)(%%%%).1***-+*''))**55CCF&gt;&gt;&gt;&gt;&gt;&gt;CCCCCCC65
+```
+---
+
+## BED
 
 
 ---
+
+## Données de ce cours
+
+* Génome humain : &lt;code&gt;FASTA&lt;/code&gt;
+* Annotation : &lt;code&gt;GFF3&lt;/code&gt;
+* Variants : &lt;code&gt;VCF&lt;/code&gt;
+* Liste de gènes différentiellement exprimés : &lt;code&gt;TXT&lt;/code&gt;
+* Sites de fixation de H3K4me3 : &lt;code&gt;BED&lt;/code&gt;
+
+
+```bash
+/shared/bank/homo_sapiens/GRCh38/fasta/Homo_sapiens.GRCh38.dna.toplevel.fa
+```
+
+---
+
+## Cas n°1 : extraire les séquences de mes gènes
+
+
+
 # References
 
 &lt;a name=bib-quinlan2010bedtools&gt;&lt;/a&gt;[Quinlan, A. R. and I. M.

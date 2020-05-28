@@ -36,7 +36,7 @@ part là-dessus
 
 - Bedtools `r Citep(bib, "quinlan2010bedtools")` et ses fonctionnalités sous forme de questions
 
- *  extraire les séquences des exons ?
+ * extraire les séquences des exons ?
 
  * trouver des gènes différentiellement exprimés ?
 
@@ -48,9 +48,81 @@ part là-dessus
 
  * impact des variants (amino acid changes) ?
 
+---
+
+# Rappels sur les formats de fichiers
+
+Format  | Contenu
+------------- | -------------
+FASTA  | Information de séquence
+FASTQ  | Séquence et qualité d'un read
+SAM/BAM  | Alignement des reads sur une référence
+BED/GTF/GFF  | Coordonnées et annotations génomiques
+VCF  | Positions des variants génomiques entre des reads et une référence 
+
+---
+
+## FASTA
+
+```bash
+>foo
+ATGCC
+>bar other optional text could go here
+CCGTA
+>bidou
+ACTGCAGT
+TTCGN
+>repeatmasker
+ATGTGTcggggggATTTT
+>prot2; my_favourite_prot
+MTSRRSVKSGPREVPRDEYEDLYYTPSSGMASP
+```
+
+## FASTQ
+
+```bash
+@SEQ_ID
+GATTTGGGGTTCAAAGCAGTATCGATCAAATAGTAAATCCATTTGTTCAACTCACAGTTT
++
+!''*((((***+))%%%++)(%%%%).1***-+*''))**55CCF>>>>>>CCCCCCC65
+```
+---
+
+## BED
 
 
 ---
+
+### Questions
+
+* 
+
+* Est-ce que mes gènes différentiellement exprimés contiennent plus de promoteurs actifs qu’attendu ?
+
+* Quels sont les variants qui sont dans les promoteurs de mes gènes différentiellement exprimés ?
+
+* Quels sont les gènes différentiellement exprimés les plus proches de mes pics ChIP qui contiennent une mutation ?
+
+---
+
+## Données de ce cours
+
+* Génome humain : <code>FASTA</code>
+* Annotation : <code>GFF3</code>
+* Variants : <code>VCF</code>
+* Liste de gènes différentiellement exprimés : <code>TXT</code>
+* Sites de fixation de H3K4me3 : <code>BED</code>
+
+```{bash, eval=FALSE}
+/shared/bank/homo_sapiens/GRCh38/fasta/Homo_sapiens.GRCh38.dna.toplevel.fa
+```
+
+---
+
+## Cas n°1 : extraire les séquences de mes gènes
+
+
+
 # References
 
 ```{r, results='asis', echo=FALSE}
