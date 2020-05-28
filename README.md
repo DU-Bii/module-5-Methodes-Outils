@@ -52,3 +52,43 @@ Calendrier du DU-Bii : <https://du-bii.github.io/accueil/img/planning_DUBii_2020
 
 lien vers le rapport *MultiQC* sur le serveur IFB `/shared/projects/dubii2020/data/rnaseq/rawdata/multiqc_report.html`
 
+### [Séance 3](https://github.com/DU-Bii/module-5-Methodes-Outils/tree/master/seance3)
+
+- Date : 4 juin  2020
+- Horaires : 09h30 - 12h30 - 14h00-16h30
+- Intervenants : Mélanie Pétéra, Binta Diémé.
+- Titre : Metabolomics
+
+
+#### Pré-requis :
+
+##### Notions générales de métabolomique :
+- Avoir suivi des vidéos introductives du [MOOC FUN Métabololique](https://www.fun-mooc.fr/courses/course-v1:cnrs+136001+session01/about  
+). Ce MOCC est accessible librement (après inscription) le temps de la crise sanitaire. Suivre les vidéos S1C1 (semaine 1 cours 1) , S1C3, S1C4 et S3C6. 
+Si vous ne souhaitez pas vous inscire, vous pouvez télécharger directement les vidéos à [cette adresse](https://pfem.clermont.inra.fr/pydio/public/617c6e)
+
+Temps estimé : 40 minutes.
+
+##### Partie pratique  :
+
+- Pour les apprenants sous Windows, avoir installé sur leur poste les logiciel [ms-convert](http://proteowizard.sourceforge.net/download.html) et [InSilicosViewer](https://ent.uca.fr/filez/tb3n2etb)  ainsi que ce [jeu de données](https://ent.uca.fr/filez/wfm5cl4tn).
+
+Temps estimé : 10 minutes.
+
+- L'ensemble des TPs de cours auront lieu sous l'instance Galaxy workflow4metabolomics de [usegalaxy.fr](https://workflow4metabolomics.usegalaxy.fr)
+
+Nous vous demandons de :
+- Créer un compte sur l'instance Galaxy (menu Authentification et Enregistrement). Pour les académiques, vous devriez pouvoir utiliser le bouton "Elixir login" avec vos authentifiants institutionnels. Pour les non-académiques vous pouvez utiliser le lien "Don't have an account? Register here." sur cette même page.
+
+- Pour ceux n'ayant jamais utilisé Galaxy, suivre le tutoriel [A short introduction to Galaxy](https://galaxyproject.github.io/training-material/topics/introduction/tutorials/galaxy-intro-short/tutorial.html) 
+
+- Faire les premieres étapes du tutoriel [Mass spectrometry: LC-MS analysis](https://galaxyproject.github.io/training-material/topics/metabolomics/tutorials/lcms/tutorial.html)  jusqu'à la partie "1.2. Data preparation for XCMS: MSnbase readMSData" comprise. C'est ce tutoriel qui sera suivi en TP. 
+
+Temps estimé : 30mn à 1h.
+
+A l'issu de ces activités préparatoires, vous aurez :
+- des notions de bases en métabolomique
+- installé un outil de conversion de données au format propriétaire en format "open-source" qui sera utilisé lors du TP
+- Créé votre compte sur l'instance Galaxy usegalaxy.fr , fait vos premiers pas sous Galaxy. 
+
+En cas de blocage ou de question, n'hésitez pas à partager vos questions sur le Slack.
