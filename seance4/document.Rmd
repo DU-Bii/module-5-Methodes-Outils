@@ -15,4 +15,162 @@ output:
 ---
 
 
+Nous reprenons les données du cours du Module 5 - Séance 2 (RNAseq). Voici le lien vers la [publication de Horvath et al](https://pubmed.ncbi.nlm.nih.gov/22355776/).
 
+La matrice de comptage a été utilisée lors du TP précédent avec tous les échantillons disponibles.
+
+Pour ce TP, nous ne repartirons que de 2 échantillons :
+
+* 1 échantillon TNBC (TNBC1)
+* 1 échantillon NonTNBC (NonTNBC1)
+
+pour lesquels nous avons les reads (SRRXX et SRRXX), les transcrits (de novo et avec référence) ainsi que les variants.
+
+Nous nous intéressons à 10 gènes potentiellement impliqués dans le cancer du sein.
+
+> Association studies have identified ATM, BRIP1, CASP8, CDH1, CHEK2, PALB2, PTEN, STK11, and TP53 as breast cancer susceptibility genes, https://www.ncbi.nlm.nih.gov/pmc/articles/PMC3722564/table/t1/
+
+
+# Récupération des séquences de ces gènes
+
+Nous aurons besoin :
+
+* de l'annotation du génome humain
+* de la séquence du génome humain
+
+```{bash, eval=FALSE}
+wget ftp://ftp.ensembl.org/pub/release-100/gff3/homo_sapiens/Homo_sapiens.GRCh38.100.gff3.gz
+gzip -d Homo_sapiens.GRCh38.100.gff3.gz
+ln -s /shared/data/bank/homo_sapiens/GRCh38/fasta/Homo_sapiens.GRCh38.dna.toplevel.fa .
+```
+
+Tout d'abord, il faut convertir les noms des gènes avec leur identifiant. Il serait tentant de faire un `grep` sur le fichier d'annotation GFF3 mais c'est dangereux. En effet, comme le montre l'exemple suivant avec le gène <code>ATM</code>, la recherche de caractères peut entraîner des faux positifs :
+
+```{bash, eval=FALSE}
+grep -w ATM  Homo_sapiens.GRCh38.94.gff3 | awk '$3=="gene"'
+11	ensembl_havana	gene	108222484	108369102	.	+	.	ID=gene:ENSG00000149311;Name=ATM;biotype=protein_coding;description=ATM serine/threonine kinase [Source:HGNC Symbol%3BAcc:HGNC:795];gene_id=ENSG00000149311;logic_name=ensembl_havana_gene;version=18
+16	ensembl_havana	gene	81035847	81047358	.	+	.	ID=gene:ENSG00000166454;Name=ATMIN;biotype=protein_coding;description=ATM interactor [Source:HGNC Symbol%3BAcc:HGNC:29034];gene_id=ENSG00000166454;logic_name=ensembl_havana_gene;version=9
+7	ensembl_havana	gene	2537877	2555727	.	-	.	ID=gene:ENSG00000106009;Name=BRAT1;biotype=protein_coding;description=BRCA1 associated ATM activator 1 [Source:HGNC Symbol%3BAcc:HGNC:21701];gene_id=ENSG00000106009;logic_name=ensembl_havana_gene;version=15
+
+```
+
+Il est préférable d'utiliser les identifiants uniques des gènes. Il est possible de faire la correspondance de façon programmatique avec ce package R :
+
+```{r, echo=FALSE}
+#if (!requireNamespace("BiocManager", quietly = TRUE))
+#    install.packages("BiocManager")
+#
+#BiocManager::install("mygene")
+
+library(mygene)
+mygenes=c("ATM","BRCA1","BRCA2","BRIP1","CASP8","CDH1","CHEK1","PTEN","STK11","TP53")
+queryMany(mygenes, scopes="symbol", fields="ensembl.gene", species="human")[,3:4]
+```
+
+La liste de ces identifiants est présente ici : /shared/mfs/data/projects/dubii2020/data/module5/seance4/genes_associated_hereditary_breast_cancer_ensembl.tsv
+
+Ensuite il est aisé de récupérer les coordonnées de ces gènes en utilisant l'annotation du génome au format GFF3 et la commande `grep` :
+
+```{bash, eval=FALSE}
+grep -w -f genes_associated_hereditary_breast_cancer_ensembl.tsv  Homo_sapiens.GRCh38.94.gff3 |awk '$3=="gene"' > genes.gff3
+```
+
+Enfin, la commande `bedtools getfasta` permet de récupérer la séquence à partir de coordonnées génomiques :
+
+```{bash, eval=FALSE}
+bedtools getfasta -fi Homo_sapiens.GRCh38.dna.toplevel.fa -bed genes.gff3 > genes.fasta
+# ou bien
+# bedtools getfasta -fi Homo_sapiens.GRCh38.dna.toplevel.fa -bed <(perl -lane '$start=$F[1]-500;$stop=$F[2]+500; print "$F[0]\t$start\t$stop\t$F[3]"' $i) -fo genes_extended.fasta
+```
+
+# Analyser la couverture des gènes d'intérêt
+
+Le script suivant lance *STAR* sur une liste d'échantillons passés en arguments.
+
+```{bash, eval=FALSE}
+module load sra-tools
+srun fasterq-dump -S -p SRR1027171 --outdir . --threads 1
+srun fasterq-dump -S -p SRR1027177 --outdir . --threads 1
+```
+
+
+```{bash, eval=FALSE}
+#!/bin/bash
+#SBATCH --job-name=star
+#SBATCH --cpus-per-task=8
+#SBATCH --mem-per-cpu=4G
+
+module load star/2.6
+
+## Homo Sapiens GRCh38
+gtf="/shared/mfs/data/projects/dubii2020/data/module5/seance4/Homo_sapiens.GRCh38.100.gtf"
+
+## Homo Sapiens GRCh38 STAR index
+index="/shared/data/bank/homo_sapiens/GRCh38/star/"
+
+path="/shared/projects/dubii2020/data/module5/seance4"
+r1="$path/${1}_1.fastq.gz"
+r2="$path/${1}_2.fastq.gz"
+
+starOpts="--outSAMmultNmax 1 --outFilterMismatchNmax 999 --outFilterMismatchNoverLmax 0.04 --outSAMprimaryFlag OneBestScore --outMultimapperOrder Random --outSAMattributes All"
+
+odir="./mapping"
+prefix=$(basename $r1 | sed -e 's/_1.fastq.gz//')
+cpus=8
+
+mkdir -p ${odir}
+srun STAR --genomeDir ${index} --readFilesIn ${r1} ${r2} --sjdbGTFfile ${gtf} --runThreadN ${cpus} --runMode alignReads --outSAMtype BAM Unsorted  --readFilesCommand zcat --outFileNamePrefix ${odir}/${prefix} --quantMode GeneCounts --outSAMattrRGline ID:${prefix} SM:${prefix} LB:Illumina PL:Illumina ${starOpts}
+
+```
+
+```{bash, eval=FALSE}
+for i in SRR1027171 SRR1027177 ; do sbatch star.sh $i ; done
+cd mapping
+srun --cpus-per-task 16 samtools sort -@ 16 SRR1027177Aligned.out.bam > SRR1027177Aligned.out.sorted.bam
+srun --cpus-per-task 16 samtools sort -@ 16 SRR1027171Aligned.out.bam > SRR1027171Aligned.out.sorted.bam
+```
+
+
+Puis on fait l'intersection entre les alignements et les coordonnées génomiques des gènes d'intérêt.
+
+```{bash, eval=FALSE}
+bedtools intersect -a mapping/SRR1027171Aligned.out.sorted.bam -b genes.gff3-s > SRR1027171_on_genes.bam
+```
+
+
+
+
+# Quels sont les variants présents dans les régions promotrices ?
+
+```{bash, eval=FALSE}
+wget https://ftp.ncbi.nlm.nih.gov/geo/samples/GSM1261nnn/GSM1261016/suppl/GSM1261016%5FIP2%2D50%5Fvar%2Eflt%2Evcf%2Egz
+wget https://ftp.ncbi.nlm.nih.gov/geo/samples/GSM1261nnn/GSM1261022/suppl/GSM1261022%5FIP2%2D42%5Fvar%2Eflt%2Evcf%2Egz
+gzip -d GSM1261016_IP2-50_var.flt.vcf.gz
+gzip -d GSM1261022_IP2-42_var.flt.vcf.gz
+mv GSM1261022_IP2-42_var.flt.vcf Non-TNBC1.vcf
+mv GSM1261016_IP2-50_var.flt.vcf TNBC1.vcf
+```
+
+```{bash, eval=FALSE}
+cut -f1,2 /shared/bank/homo_sapiens/GRCh38/fasta/Homo_sapiens.GRCh38.dna.primary_assembly.fa.fai > my.genome
+bedtools flank -g my.genome -i genes.gff3 -l 2000 -r 0 > genes_prom.gff3
+```
+
+Variants déjà connus chez l'homme :
+
+```{bash, eval=FALSE}
+wget ftp://ftp.ensembl.org/pub/release-100/variation/vcf/homo_sapiens/homo_sapiens_clinically_associated.vcf.gz
+# All variations from the current Ensembl release that have been
+# described by ClinVar as being probable-pathogenic, pathogenic,
+# drug-response or histocompatibility
+```
+
+
+```{bash, eval=FALSE}
+bedtools intersect -a genes_prom.gff3 -b TNBC1.vcf -loj | grep -v "\-1"
+
+11	ensembl_havana	gene	108220484	108222483	.	+	.	ID=gene:ENSG00000149311;Name=ATM;biotype=protein_coding;description=ATM serine/threonine kinase [Source:HGNC Symbol%3BAcc:HGNC:795];gene_id=ENSG00000149311;logic_name=ensembl_havana_gene;version=18	11	108221099	.	A	C	9.31	.	DP=2;VDB=0.0134;AF1=1;AC1=2;DP4=0,0,1,1;MQ=20;FQ=-33	GT:PL:GQ	1/1:40,6,0:8
+
+bedtools intersect -a genes_prom.gff3 -b Non-TNBC1.vcf -loj | grep -v "\-1"
+
+```
