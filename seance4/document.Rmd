@@ -10,88 +10,227 @@ output:
       number_sections: false
       code_folding: "show"
       toc: true
-      toc_depth: 1
+      toc_depth: 3
       toc_float: true
 ---
 
+## Introduction
 
-Nous reprenons les données du cours du Module 5 - Séance 2 (RNAseq). Voici le lien vers la [publication de Horvath et al](https://pubmed.ncbi.nlm.nih.gov/22355776/).
+Nous travaillons dans ce tutoriel sur les données du cours du Module 5 - Séance 2 (RNAseq). Voici le lien vers la [publication de Horvath et al](https://pubmed.ncbi.nlm.nih.gov/22355776/).
 
-La matrice de comptage a été utilisée lors du TP précédent avec tous les échantillons disponibles.
+Des données RNAseq ont été générés à partir entre autres d'échantillons de patientes saines (NonTNBC) et de patientes atteintes du cancer du sein (TNBC).
 
-Pour ce TP, nous ne repartirons que de 2 échantillons :
+Pour rappel, voici un design de l'étude :
 
-* 1 échantillon TNBC (TNBC1)
-* 1 échantillon NonTNBC (NonTNBC1)
+<center>
+![](https://www.ncbi.nlm.nih.gov/pmc/articles/PMC3278922/bin/srep00264-f1.jpg)
+</center>
 
-pour lesquels nous avons les reads (SRRXX et SRRXX), les transcrits (de novo et avec référence) ainsi que les variants.
+L'analyse différentielle a ressorti le gène **ENSG00000091831** comme étant le plus différentiellement exprimé.
 
-Nous nous intéressons à 10 gènes potentiellement impliqués dans le cancer du sein.
+![](images/ENSG00000091831.png)
 
-> Association studies have identified ATM, BRIP1, CASP8, CDH1, CHEK2, PALB2, PTEN, STK11, and TP53 as breast cancer susceptibility genes, https://www.ncbi.nlm.nih.gov/pmc/articles/PMC3722564/table/t1/
+---
 
+Pour ce TP, nous ne n'utilisserons que de 2 échantillons :
 
-# Récupération des séquences de ces gènes
+* 1 échantillon TNBC (TNBC) : SRR1027171 (GSM1261016)
+* 1 échantillon NonTNBC (NonTNBC) : SRR1027177 (GSM1261022)
 
-Nous aurons besoin :
+Pour chacun nous allons récupérer les reads bruts, les transcrits (de novo et avec référence) ainsi que les variants. Nous avons au préalable effectué le mapping de ces reads pour gagner du temps.
 
-* de l'annotation du génome humain
-* de la séquence du génome humain
+Nous aurons également besoin de données publiques du génome humain :
+
+* le génome humain
+* son annotation 
+* les variants humains connus
+
+Nous allons croiser ces données hétérogènes pour répondre à différentes questions :
+
+- Quelle est la séquence génomique du gène ENSG00000091831 ? (getfasta)
+- Combien de variants connus sont présents dans ce gène ? Y a-t-il des variants communs ou spécifiques à un échantillon ? Sont-ils nouveaux ?
+- Existe-t-il des variants connus dans la région promotrice de ce gène ? (flank)
+- Quels sont les transcrits complets spécifiques à l'échantillon NonTNBC1 ? (subtract)
+- Quel est le micro-ARN (miRNA) le plus proche de ce gène ? (closest)
+- Calculer et comparer la couverture et profondeur du gène ENSG00000091831 pour les échantillons TNBC1 et NonTNBC1 (genomecov / coverage / intersect bam / bam2bed)
+
+### Préparation de l'espace de travail et récupération des données publiques
+
+Les données que nous utiliserons sont dans le répertoire <code>/shared/projects/dubii2020/data/module5/seance4/data</code>. Un lien symbolique du répertoire permettra d'y avoir accès sans dupliquer les données.
 
 ```{bash, eval=FALSE}
+mkdir ~/M5-S4/
+cd ~/M5-S4
+ln -s /shared/projects/dubii2020/data/module5/seance4/data .
+```
+
+Pour information, voici les commandes utilisées pour récupérer les données.
+
+```{bash, eval=FALSE}
+## Les fichiers FASTQ de la publication
+module load sra-tools
+srun --cpus-per-task 8 fasterq-dump -S -p SRR1027171 --outdir . --threads 8
+srun --cpus-per-task 8 fasterq-dump -S -p SRR1027177 --outdir . --threads 8
+## Le génome humain au format FASTA et son index
+ln -s /shared/data/bank/homo_sapiens/GRCh38/fasta/Homo_sapiens.GRCh38.dna.toplevel.fa .
+ln -s /shared/data/bank/homo_sapiens/GRCh38/fasta/Homo_sapiens.GRCh38.dna.toplevel.fa.fai .
+
+## L'annotation du génome humain au format GFF3
 wget ftp://ftp.ensembl.org/pub/release-100/gff3/homo_sapiens/Homo_sapiens.GRCh38.100.gff3.gz
 gzip -d Homo_sapiens.GRCh38.100.gff3.gz
-ln -s /shared/data/bank/homo_sapiens/GRCh38/fasta/Homo_sapiens.GRCh38.dna.toplevel.fa .
+
+## Les variants issus des deux échantillons de la publication
+wget https://ftp.ncbi.nlm.nih.gov/geo/samples/GSM1261nnn/GSM1261016/suppl/GSM1261016%5FIP2%2D50%5Fvar%2Eflt%2Evcf%2Egz
+wget https://ftp.ncbi.nlm.nih.gov/geo/samples/GSM1261nnn/GSM1261022/suppl/GSM1261022%5FIP2%2D42%5Fvar%2Eflt%2Evcf%2Egz
+gzip -d GSM1261016_IP2-50_var.flt.vcf.gz
+gzip -d GSM1261022_IP2-42_var.flt.vcf.gz
+mv GSM1261022_IP2-42_var.flt.vcf NonTNBC1.vcf
+mv GSM1261016_IP2-50_var.flt.vcf TNBC1.vcf
+
+## Les variants humains connus
+wget ftp://ftp.ncbi.nih.gov/snp/organisms/human_9606_b151_GRCh38p7/VCF/common_all_20180418.vcf.gz
+gzip -d common_all_20180418.vcf.gz
+
+## Les transcrits reconstruits des deux échantillons
+wget https://ftp.ncbi.nlm.nih.gov/geo/samples/GSM1261nnn/GSM1261016/suppl/GSM1261016%5FIP2%2D50%5Fdenovo%5Ftranscripts%2Egtf%2Egz
+gzip -d GSM1261016_IP2-50_denovo_transcripts.gtf.gz
+mv GSM1261016_IP2-50_denovo_transcripts.gtf TNBC1_denovo_transcripts.gtf
+wget https://ftp.ncbi.nlm.nih.gov/geo/samples/GSM1261nnn/GSM1261022/suppl/GSM1261022%5FIP2%2D42%5Fdenovo%5Ftranscripts%2Egtf%2Egz
+gzip -d GSM1261022_IP2-42_denovo_transcripts.gtf.gz
+mv GSM1261022_IP2-42_denovo_transcripts.gtf NonTNBC1_denovo_transcripts.gtf
+
 ```
 
-Tout d'abord, il faut convertir les noms des gènes avec leur identifiant. Il serait tentant de faire un `grep` sur le fichier d'annotation GFF3 mais c'est dangereux. En effet, comme le montre l'exemple suivant avec le gène <code>ATM</code>, la recherche de caractères peut entraîner des faux positifs :
+## Quelle est la séquence génomique du gène ENSG00000091831 ?
+
+Il faut dans un premier temps récupérer les coordonnées du gène.
 
 ```{bash, eval=FALSE}
-grep -w ATM  Homo_sapiens.GRCh38.94.gff3 | awk '$3=="gene"'
-11	ensembl_havana	gene	108222484	108369102	.	+	.	ID=gene:ENSG00000149311;Name=ATM;biotype=protein_coding;description=ATM serine/threonine kinase [Source:HGNC Symbol%3BAcc:HGNC:795];gene_id=ENSG00000149311;logic_name=ensembl_havana_gene;version=18
-16	ensembl_havana	gene	81035847	81047358	.	+	.	ID=gene:ENSG00000166454;Name=ATMIN;biotype=protein_coding;description=ATM interactor [Source:HGNC Symbol%3BAcc:HGNC:29034];gene_id=ENSG00000166454;logic_name=ensembl_havana_gene;version=9
-7	ensembl_havana	gene	2537877	2555727	.	-	.	ID=gene:ENSG00000106009;Name=BRAT1;biotype=protein_coding;description=BRCA1 associated ATM activator 1 [Source:HGNC Symbol%3BAcc:HGNC:21701];gene_id=ENSG00000106009;logic_name=ensembl_havana_gene;version=15
-
+grep ENSG00000091831 data/Homo_sapiens.GRCh38.100.gff3 | awk '$3=="gene"' > ENSG00000091831_gene.gff3
 ```
 
-Il est préférable d'utiliser les identifiants uniques des gènes. Il est possible de faire la correspondance de façon programmatique avec ce package R :
-
-```{r, echo=FALSE}
-#if (!requireNamespace("BiocManager", quietly = TRUE))
-#    install.packages("BiocManager")
-#
-#BiocManager::install("mygene")
-
-library(mygene)
-mygenes=c("ATM","BRCA1","BRCA2","BRIP1","CASP8","CDH1","CHEK1","PTEN","STK11","TP53")
-queryMany(mygenes, scopes="symbol", fields="ensembl.gene", species="human")[,3:4]
-```
-
-La liste de ces identifiants est présente ici : /shared/mfs/data/projects/dubii2020/data/module5/seance4/genes_associated_hereditary_breast_cancer_ensembl.tsv
-
-Ensuite il est aisé de récupérer les coordonnées de ces gènes en utilisant l'annotation du génome au format GFF3 et la commande `grep` :
+Puis bedtools getfasta permet de récupérer la séquence génomique du gène.
 
 ```{bash, eval=FALSE}
-grep -w -f genes_associated_hereditary_breast_cancer_ensembl.tsv  Homo_sapiens.GRCh38.94.gff3 |awk '$3=="gene"' > genes.gff3
+module load bedtools
+
+# Afficher l'aide
+bedtools getfasta 
+
+srun bedtools getfasta -fi data/Homo_sapiens.GRCh38.dna.toplevel.fa -bed ENSG00000091831_gene.gff3 > ENSG00000091831_gene.fasta
 ```
 
-Enfin, la commande `bedtools getfasta` permet de récupérer la séquence à partir de coordonnées génomiques :
+Attention, le header du FASTA généré correspond aux coordonnées génomiques extraites :
 
 ```{bash, eval=FALSE}
-bedtools getfasta -fi Homo_sapiens.GRCh38.dna.toplevel.fa -bed genes.gff3 > genes.fasta
-# ou bien
-# bedtools getfasta -fi Homo_sapiens.GRCh38.dna.toplevel.fa -bed <(perl -lane '$start=$F[1]-500;$stop=$F[2]+500; print "$F[0]\t$start\t$stop\t$F[3]"' $i) -fo genes_extended.fasta
+head -n 1 ENSG00000091831_gene.fasta
+>6:151656690-152129619
 ```
 
-# Analyser la couverture des gènes d'intérêt
+À vous de le renommer si vous souhaitez indiquer le nom du gène par exemple.
+
+## Combien de variants connus existe-t-il dans ce gène ?
+
+<div class="alert danger">Attention, le format de sortie correspond au format du fichier passé par l'option -a ! </div>
+
+```{bash, eval=FALSE}
+srun bedtools intersect -b ENSG00000091831_gene.gff3 -a data/common_all_20180418.vcf -sorted -g data/my.genome -header > ENSG00000091831_known.vcf
+grep -vc "^#" ENSG00000091831_known.vcf
+6018
+```
+
+<div class="alert danger">Le header d'un fichier VCF est indispensable ! S'il n'est pas présent, certains outils ne fonctionneront pas.</div>
+
+### Combien de SNV (single nucleotide variants) sont communs et différents entre TNBC1 et NonTNBC1 sur le gène ?
+
+```{bash, eval=FALSE}
+vcftools --vcf ENSG00000091831_known.vcf --remove-indels --recode --recode-INFO-all --stdout > ENSG00000091831_known_SNV.vcf
+vcftools --vcf data/TNBC1.vcf --remove-indels --recode --recode-INFO-all --stdout > TNBC1_SNV.vcf
+vcftools --vcf data/NonTNBC1.vcf --remove-indels --recode --recode-INFO-all --stdout > NonTNBC1_SNV.vcf
+
+```
+
+
+```{bash, eval=FALSE}
+
+srun bedtools intersect -b ENSG00000091831_gene.gff3 -a TNBC1_SNV.vcf -sorted -g data/my.genome -header | egrep "^#|\/" > TNBC1_ENSG00000091831.vcf
+grep -vc "^#" TNBC1_ENSG00000091831.vcf
+15
+
+# Vérification 
+awk '$1==6' TNBC1_SNV.vcf | awk '$2>151656690' | awk '$2<152129619' | wc -l
+15
+
+srun bedtools intersect -b ENSG00000091831_gene.gff3 -a NonTNBC1_SNV.vcf -sorted -g data/my.genome -header > NonTNBC1_ENSG00000091831.vcf
+grep -vc "^#" NonTNBC1_ENSG00000091831.vcf
+106
+
+# Vérification 
+awk '$1==6' NonTNBC1_SNV.vcf | awk '$2>151656690' | awk '$2<152129619' | wc -l
+106
+
+# Communs aux deux
+srun bedtools intersect -a TNBC1_ENSG00000091831.vcf -b NonTNBC1_ENSG00000091831.vcf -sorted -g data/my.genome -header > commonTNBC1_NonTNBC1_ENSG00000091831.vcf
+grep -vc "^#" commonTNBC1_NonTNBC1_ENSG00000091831.vcf
+2
+
+# Spécifiques à TNBC1
+srun bedtools intersect -a TNBC1_ENSG00000091831.vcf -v -b NonTNBC1_ENSG00000091831.vcf -sorted -g data/my.genome -header > specificTNBC1_ENSG00000091831.vcf
+grep -vc "^#" specificTNBC1_ENSG00000091831.vcf
+13
+
+# Spécifiques à TNBC1
+srun bedtools intersect -a NonTNBC1_ENSG00000091831.vcf -v -b TNBC1_ENSG00000091831.vcf -sorted -g data/my.genome -header > specificNonTNBC1_ENSG00000091831.vcf
+grep -vc "^#" specificNonTNBC1_ENSG00000091831.vcf
+104
+
+# Spécifiques à NonTNBC1 et non connus ?
+srun bedtools intersect -a specificNonTNBC1_ENSG00000091831.vcf  -b ENSG00000091831_known.vcf -sorted -g data/my.genome -header > specificNonTNBC1_known_ENSG00000091831.vcf
+grep -vc "^#" specificNonTNBC1_known_ENSG00000091831.vcf
+3
+```
+
+
+## Existe-t-il des variants connus dans la région promotrice de ce gène ?
+
+On définit une région promotrice comme étant les 2 kb précédant le gène.
+
+```{bash, eval=FALSE}
+cut -f1,2 /shared/bank/homo_sapiens/GRCh38/fasta/Homo_sapiens.GRCh38.dna.primary_assembly.fa.fai > my.genome
+bedtools flank -g data/my.genome -i ENSG00000091831_gene.gff3 -l 2000 -r 0 > ENSG00000091831_prom_gene.gff3
+
+srun bedtools intersect -b ENSG00000091831_prom_gene.gff3 -a data/common_all_20180418.vcf -sorted -g data/my.genome -header > ENSG00000091831_prom_gene_known.vcf
+grep -vc "^#" ENSG00000091831_prom_gene_known.vcf
+20
+
+```
+
+## Quels sont les transcrits spécifiques à l'échantillon NonTNBC1 ?
+
+```{bash, eval=FALSE}
+awk '$3=="transcript"' data/TNBC1_denovo_transcripts.gtf | cut -f 1,4-5 | sed "s/chr//" | sort -k1,1 -k2,2n > TNBC1_denovo_transcripts.bed
+awk '$3=="transcript"' data/NonTNBC1_denovo_transcripts.gtf | cut -f 1,4-5 | sed "s/chr//" | sort -k1,1 -k2,2n > NonTNBC1_denovo_transcripts.bed
+
+bedtools intersect -b ENSG00000091831_gene.gff3 -a TNBC1_denovo_transcripts.bed > TNBC1_denovo_transcripts_ENSG00000091831.bed
+bedtools intersect -b ENSG00000091831_gene.gff3 -a NonTNBC1_denovo_transcripts.bed > NonTNBC1_denovo_transcripts_ENSG00000091831.bed
+
+bedtools subtract -a NonTNBC1_denovo_transcripts_ENSG00000091831.bed -b TNBC1_denovo_transcripts_ENSG00000091831.bed -A > specificNonTNBC1_denovo_transcripts_ENSG00000091831.bed
+```
+
+
+## Quel est le miRNA le plus proche de ce gène ?
+
+```{bash, eval=FALSE}
+awk '$3=="miRNA"' data/Homo_sapiens.GRCh38.100.gff3 > Homo_sapiens.GRCh38.100.miRNA.gff3
+srun bedtools closest -a ENSG00000091831_gene.gff3 -b Homo_sapiens.GRCh38.100.miRNA.gff3 -d 
+```
+
+
+## Couverture / Profondeur
+
+### Mapping
 
 Le script suivant lance *STAR* sur une liste d'échantillons passés en arguments.
-
-```{bash, eval=FALSE}
-module load sra-tools
-srun fasterq-dump -S -p SRR1027171 --outdir . --threads 1
-srun fasterq-dump -S -p SRR1027177 --outdir . --threads 1
-```
 
 
 ```{bash, eval=FALSE}
@@ -128,49 +267,385 @@ for i in SRR1027171 SRR1027177 ; do sbatch star.sh $i ; done
 cd mapping
 srun --cpus-per-task 16 samtools sort -@ 16 SRR1027177Aligned.out.bam > SRR1027177Aligned.out.sorted.bam
 srun --cpus-per-task 16 samtools sort -@ 16 SRR1027171Aligned.out.bam > SRR1027171Aligned.out.sorted.bam
+
+## Rennomage des fichiers BAM
+mv SRR1027171Aligned.out.sorted.bam TNBC1.bam
+mv SRR1027177Aligned.out.sorted.bam NonTNBC1.bam
 ```
 
-
-Puis on fait l'intersection entre les alignements et les coordonnées génomiques des gènes d'intérêt.
+Les BAM sont disponibles dans le répertoire data.
 
 ```{bash, eval=FALSE}
-bedtools intersect -a mapping/SRR1027171Aligned.out.sorted.bam -b genes.gff3-s > SRR1027171_on_genes.bam
+srun bedtools intersect -a data/TNBC1.bam -b ENSG00000091831_gene.gff3 -sorted -g data/my.genome  > TNBC1_on_ENSG00000091831.bam
+srun bedtools intersect -a data/NonTNBC1.bam -b ENSG00000091831_gene.gff3 -sorted -g data/my.genome  > NonTNBC1_on_ENSG00000091831.bam
+
+# Transformer les BAM en BED
+srun bedtools bamtobed -i TNBC1_on_ENSG00000091831.bam -split > TNBC1_on_ENSG00000091831.bed
+sort -k1,1 -k2,2n TNBC1_on_ENSG00000091831.bed > TNBC1_on_ENSG00000091831_sorted.bed
+srun bedtools bamtobed -i NonTNBC1_on_ENSG00000091831.bam -split > NonTNBC1_on_ENSG00000091831.bed
+sort -k1,1 -k2,2n NonTNBC1_on_ENSG00000091831.bed > NonTNBC1_on_ENSG00000091831_sorted.bed
+
+# Merger les intervalles
+srun bedtools merge -i TNBC1_on_ENSG00000091831_sorted.bed > TNBC1_on_ENSG00000091831_merged.bed
+srun bedtools merge -i NonTNBC1_on_ENSG00000091831_sorted.bed > NonTNBC1_on_ENSG00000091831_merged.bed
+
+# Calculer la couverture
+bedtools coverage -a ENSG00000091831_gene.gff3 -b TNBC1_on_ENSG00000091831_merged.bed -hist
+bedtools coverage -a ENSG00000091831_gene.gff3 -b NonTNBC1_on_ENSG00000091831_merged.bed -hist
+
+bedtools genomecov -ibam TNBC1_on_ENSG00000091831.bam -bga > TNBC1_on_ENSG00000091831.bedgraph
+bedtools genomecov -ibam NonTNBC1_on_ENSG00000091831.bam -bga > NonTNBC1_on_ENSG00000091831.bedgraph
+
+bedtools intersect -a TNBC1.bam -b ENSG00000091831.gff3 > TNBC1_on_ENSG00000091831.bam
+bedtools intersect -a NonTNBC1.bam -b ENSG00000091831.gff3 > NonTNBC1_on_ENSG00000091831.bam
+
+bedtools bamtobed -i TNBC1_on_ENSG00000091831.bam -split > TNBC1_on_ENSG00000091831.bed
+sort -k1,1 -k2,2n TNBC1_on_ENSG00000091831.bed > TNBC1_on_ENSG00000091831_sorted.bed
+bedtools bamtobed -i NonTNBC1_on_ENSG00000091831.bam -split > NonTNBC1_on_ENSG00000091831.bed
+sort -k1,1 -k2,2n NonTNBC1_on_ENSG00000091831.bed > NonTNBC1_on_ENSG00000091831_sorted.bed
+
+# Merger les intervalles
+bedtools merge -i TNBC1_on_ENSG00000091831_sorted.bed > TNBC1_on_ENSG00000091831_merged.bed
+bedtools merge -i NonTNBC1_on_ENSG00000091831_sorted.bed > NonTNBC1_on_ENSG00000091831_merged.bed
+
+# Calculer la couverture
+bedtools coverage -a genes.gff3 -b TNBC1_on_ENSG00000091831_merged.bed -hist
+bedtools coverage -a genes.gff3 -b NonTNBC1_on_ENSG00000091831_merged.bed -hist
+
+bedtools genomecov -ibam TNBC1_on_ENSG00000091831.bam -bga > TNBC1_on_ENSG00000091831.bedgraph
+bedtools genomecov -ibam NonTNBC1_on_ENSG00000091831.bam -bga > NonTNBC1_on_ENSG00000091831.bedgraph
+```
+
+```{r, eval=TRUE}
+library(Sushi)
+tnbc <- read.delim("TNBC1_on_ENSG00000091831.bedgraph")
+nontnbc <- read.delim("NonTNBC1_on_ENSG00000091831.bedgraph")
+
+chrom            = "6"
+chromstart = 151656690
+chromend = 152129619
+
+plotBedgraph(nontnbc,chrom,chromstart,chromend,transparency=.50,flip=FALSE,color="blue",linecol="blue")
+plotBedgraph(tnbc,chrom,chromstart,chromend,transparency=.50,flip=FALSE,color="#E5001B",linecol="#E5001B",overlay=TRUE,rescaleoverlay=FALSE)
+labelgenome(chrom,chromstart,chromend,side=1,scipen=20,n=3,line=.18,chromline=.5,scaleline=0.5,scale="Mb")
+
+transparency = 0.5
+col1 = col2rgb("blue")
+finalcolor1 = rgb(col1[1],col1[2],col1[3],alpha=transparency * 255,maxColorValue = 255)
+col2 = col2rgb("#E5001B")
+finalcolor2 = rgb(col2[1],col2[2],col2[3],alpha=transparency * 255,maxColorValue = 255)
+
+legend("topright",inset=0.025,legend=c("NonTNBC1","TNBC1"),fill=c(finalcolor1,finalcolor2),border=c("blue","#E5001B"),text.font=2,cex=0.75)
+axis(side=2,las=2,tcl=.2)
+
+mtext("Read Depth",side=2,line=3,cex=.75,font=2)
+```
+
+Ou pour séparer les deux pistes
+
+```{r}
+par(mfrow=c(2,1))
+plotBedgraph(nontnbc,chrom,chromstart,chromend,transparency=.50,flip=FALSE,color="blue",linecol="blue")
+labelgenome(chrom,chromstart,chromend,side=1,scipen=20,n=3,line=.18,chromline=.5,scaleline=0.5,scale="Mb")
+legend("topright",inset=0.025,legend=c("NonTNBC1"),fill=c(finalcolor1),border=c("blue"),text.font=2,cex=0.75)
+axis(side=2,las=2,tcl=.2)
+mtext("Read Depth",side=2,line=3,cex=.75,font=2)
+
+plotBedgraph(tnbc,chrom,chromstart,chromend,transparency=.50,flip=FALSE,color="#E5001B",linecol="#E5001B")
+labelgenome(chrom,chromstart,chromend,side=1,scipen=20,n=3,line=.18,chromline=.5,scaleline=0.5,scale="Mb")
+legend("topright",inset=0.025,legend=c("TNBC1"),fill=c(finalcolor2),border=c("#E5001B"),text.font=2,cex=0.75)
+axis(side=2,las=2,tcl=.2)
+mtext("Read Depth",side=2,line=3,cex=.75,font=2)
+
 ```
 
 
 
 
-# Quels sont les variants présents dans les régions promotrices ?
-
-```{bash, eval=FALSE}
-wget https://ftp.ncbi.nlm.nih.gov/geo/samples/GSM1261nnn/GSM1261016/suppl/GSM1261016%5FIP2%2D50%5Fvar%2Eflt%2Evcf%2Egz
-wget https://ftp.ncbi.nlm.nih.gov/geo/samples/GSM1261nnn/GSM1261022/suppl/GSM1261022%5FIP2%2D42%5Fvar%2Eflt%2Evcf%2Egz
-gzip -d GSM1261016_IP2-50_var.flt.vcf.gz
-gzip -d GSM1261022_IP2-42_var.flt.vcf.gz
-mv GSM1261022_IP2-42_var.flt.vcf Non-TNBC1.vcf
-mv GSM1261016_IP2-50_var.flt.vcf TNBC1.vcf
-```
-
-```{bash, eval=FALSE}
-cut -f1,2 /shared/bank/homo_sapiens/GRCh38/fasta/Homo_sapiens.GRCh38.dna.primary_assembly.fa.fai > my.genome
-bedtools flank -g my.genome -i genes.gff3 -l 2000 -r 0 > genes_prom.gff3
-```
-
-Variants déjà connus chez l'homme :
-
-```{bash, eval=FALSE}
-wget ftp://ftp.ensembl.org/pub/release-100/variation/vcf/homo_sapiens/homo_sapiens_clinically_associated.vcf.gz
-# All variations from the current Ensembl release that have been
-# described by ClinVar as being probable-pathogenic, pathogenic,
-# drug-response or histocompatibility
-```
 
 
-```{bash, eval=FALSE}
-bedtools intersect -a genes_prom.gff3 -b TNBC1.vcf -loj | grep -v "\-1"
 
-11	ensembl_havana	gene	108220484	108222483	.	+	.	ID=gene:ENSG00000149311;Name=ATM;biotype=protein_coding;description=ATM serine/threonine kinase [Source:HGNC Symbol%3BAcc:HGNC:795];gene_id=ENSG00000149311;logic_name=ensembl_havana_gene;version=18	11	108221099	.	A	C	9.31	.	DP=2;VDB=0.0134;AF1=1;AC1=2;DP4=0,0,1,1;MQ=20;FQ=-33	GT:PL:GQ	1/1:40,6,0:8
 
-bedtools intersect -a genes_prom.gff3 -b Non-TNBC1.vcf -loj | grep -v "\-1"
 
-```
+
+
+
+
+
+
+
+
+
+
+<!-- ## Quelles sont les séquences génomiques de ces gènes ? -->
+
+<!-- <div class="alert comment">Vous aurez souvent besoin de récupérer la séquence génomique de gènes ou autres à partir d'une annotation d'un génome.</div> -->
+
+<!-- Nous aurons besoin : -->
+
+<!-- * de l'annotation du génome humain -->
+<!-- * de la séquence du génome humain -->
+
+<!-- <details> -->
+<!-- <summary>Un protocole possible</summary> -->
+
+<!-- * Trouver les identifiants uniques des gènes -->
+<!-- * Récupérer les coordonnées génomiques des gènes d'intérêt avec `grep` -->
+<!-- * Extraire les séquences avec `bedtools` -->
+
+<!-- </details> -->
+
+<!-- <details> -->
+<!-- <summary>Solution</summary> -->
+
+<!-- Tout d'abord, il faut convertir les noms des gènes avec leur identifiant. Il serait tentant de faire un `grep` sur le fichier d'annotation GFF3 mais c'est dangereux. En effet, comme le montre l'exemple suivant avec le gène <code>ATM</code>, la recherche de caractères peut entraîner des faux positifs : -->
+
+<!-- ```{bash, eval=FALSE} -->
+<!-- grep -w ATM  Homo_sapiens.GRCh38.94.gff3 | awk '$3=="gene"' -->
+<!-- 11	ensembl_havana	gene	108222484	108369102	.	+	.	ID=gene:ENSG00000149311;Name=ATM;biotype=protein_coding;description=ATM serine/threonine kinase [Source:HGNC Symbol%3BAcc:HGNC:795];gene_id=ENSG00000149311;logic_name=ensembl_havana_gene;version=18 -->
+<!-- 16	ensembl_havana	gene	81035847	81047358	.	+	.	ID=gene:ENSG00000166454;Name=ATMIN;biotype=protein_coding;description=ATM interactor [Source:HGNC Symbol%3BAcc:HGNC:29034];gene_id=ENSG00000166454;logic_name=ensembl_havana_gene;version=9 -->
+<!-- 7	ensembl_havana	gene	2537877	2555727	.	-	.	ID=gene:ENSG00000106009;Name=BRAT1;biotype=protein_coding;description=BRCA1 associated ATM activator 1 [Source:HGNC Symbol%3BAcc:HGNC:21701];gene_id=ENSG00000106009;logic_name=ensembl_havana_gene;version=15 -->
+
+<!-- ``` -->
+
+<!-- Il est préférable d'utiliser les identifiants uniques des gènes. Il est possible de faire la correspondance de façon automatique avec ce package R : -->
+
+<!-- ```{r, echo=FALSE} -->
+<!-- #if (!requireNamespace("BiocManager", quietly = TRUE)) -->
+<!-- #    install.packages("BiocManager") -->
+<!-- # -->
+<!-- #BiocManager::install("mygene") -->
+
+<!-- library(mygene) -->
+<!-- mygenes=c("ATM","BRCA1","BRCA2","BRIP1","CASP8","CDH1","CHEK1","PTEN","STK11","TP53") -->
+<!-- queryMany(mygenes, scopes="symbol", fields="ensembl.gene", species="human")[,3:4] -->
+<!-- ``` -->
+
+<!-- La liste de ces identifiants est présente ici : /shared/mfs/data/projects/dubii2020/data/module5/seance4/genes_associated_hereditary_breast_cancer_ensembl.tsv -->
+
+<!-- Ensuite il est aisé de récupérer les coordonnées de ces gènes en utilisant l'annotation du génome au format GFF3 et la commande `grep` : -->
+
+<!-- ```{bash, eval=FALSE} -->
+<!-- grep -w -f genes_associated_hereditary_breast_cancer_ensembl.tsv  Homo_sapiens.GRCh38.94.gff3 |awk '$3=="gene"' > genes.gff3 -->
+<!-- ``` -->
+
+<!-- Enfin, la commande `bedtools getfasta` permet de récupérer la séquence à partir de coordonnées génomiques : -->
+
+<!-- ```{bash, eval=FALSE} -->
+<!-- bedtools getfasta -fi Homo_sapiens.GRCh38.dna.toplevel.fa -bed genes.gff3 > genes.fasta -->
+<!-- # ou bien -->
+<!-- # bedtools getfasta -fi Homo_sapiens.GRCh38.dna.toplevel.fa -bed <(perl -lane '$start=$F[1]-500;$stop=$F[2]+500; print "$F[0]\t$start\t$stop\t$F[3]"' $i) -fo genes_extended.fasta -->
+<!-- ``` -->
+
+<!-- </details> -->
+
+<!-- ## Vérifier la couverture de ces gènes sur les deux échantillons -->
+
+<!-- Nous aurons besoin : -->
+
+<!-- * des données brutes au format FASTQ -->
+<!-- * de l'annotation des gènes d'intérêt au format GFF3 -->
+<!-- * de l'outil <strong class="tool">bedtools</strong> -->
+
+<!-- <details> -->
+<!-- <summary>Un protocole possible</summary> -->
+
+<!-- * Mapper les reads sur le génome humain -->
+<!-- * Récupérer les alignements dans les gènes d'intérêt -->
+<!-- * Calculer la couverture avec <strong class="tool">bedtools coverage</strong> -->
+
+<!-- </details> -->
+
+<!-- <details> -->
+<!-- <summary>Solution</summary> -->
+
+
+
+
+<!-- Puis on fait l'intersection entre les alignements et les coordonnées génomiques des gènes d'intérêt. -->
+
+
+
+<!-- ```{bash, eval=FALSE} -->
+
+<!-- for i in SRR1027171 SRR1027177 ; do -->
+
+<!-- bedtools intersect -a TNBC1.bam -b genes.gff3 > TNBC1_on_genes.bam -->
+<!-- bedtools intersect -a NonTNBC1.bam -b genes.gff3 > NonTNBC1_on_genes.bam -->
+
+<!-- # Transformer les BAM en BED -->
+<!-- bedtools bamtobed -i TNBC1_on_genes.bam -split > TNBC1_on_genes.bed -->
+<!-- sort -k1,1 -k2,2n TNBC1_on_genes.bed > TNBC1_on_genes_sorted.bed -->
+<!-- bedtools bamtobed -i NonTNBC1_on_genes.bam -split > NonTNBC1_on_genes.bed -->
+<!-- sort -k1,1 -k2,2n NonTNBC1_on_genes.bed > NonTNBC1_on_genes_sorted.bed -->
+
+<!-- # Merger les intervalles -->
+<!-- bedtools merge -i TNBC1_on_genes_sorted.bed > TNBC1_on_genes_merged.bed -->
+<!-- bedtools merge -i NonTNBC1_on_genes_sorted.bed > NonTNBC1_on_genes_merged.bed -->
+
+<!-- # Calculer la couverture -->
+<!-- bedtools coverage -a genes.gff3 -b TNBC1_on_genes_merged.bed -hist -->
+<!-- bedtools coverage -a genes.gff3 -b NonTNBC1_on_genes_merged.bed -hist -->
+
+
+<!-- bedtools intersect -a TNBC1.bam -b ENSG00000091831.gff3 > TNBC1_on_ENSG00000091831.bam -->
+<!-- bedtools intersect -a NonTNBC1.bam -b ENSG00000091831.gff3 > NonTNBC1_on_ENSG00000091831.bam -->
+
+<!-- bedtools bamtobed -i TNBC1_on_ENSG00000091831.bam -split > TNBC1_on_ENSG00000091831.bed -->
+<!-- sort -k1,1 -k2,2n TNBC1_on_ENSG00000091831.bed > TNBC1_on_ENSG00000091831_sorted.bed -->
+<!-- bedtools bamtobed -i NonTNBC1_on_ENSG00000091831.bam -split > NonTNBC1_on_ENSG00000091831.bed -->
+<!-- sort -k1,1 -k2,2n NonTNBC1_on_ENSG00000091831.bed > NonTNBC1_on_ENSG00000091831_sorted.bed -->
+
+<!-- # Merger les intervalles -->
+<!-- bedtools merge -i TNBC1_on_ENSG00000091831_sorted.bed > TNBC1_on_ENSG00000091831_merged.bed -->
+<!-- bedtools merge -i NonTNBC1_on_ENSG00000091831_sorted.bed > NonTNBC1_on_ENSG00000091831_merged.bed -->
+
+<!-- # Calculer la couverture -->
+<!-- bedtools coverage -a genes.gff3 -b TNBC1_on_ENSG00000091831_merged.bed -hist -->
+<!-- bedtools coverage -a genes.gff3 -b NonTNBC1_on_ENSG00000091831_merged.bed -hist -->
+
+<!-- bedtools genomecov -ibam TNBC1_on_ENSG00000091831.bam -bga -->
+
+<!-- ``` -->
+
+<!-- </summary> -->
+
+<!-- ## Comparer la couverture/profondeur du gène ENSG00000171862 des échantillons TNBC et NonTNBC -->
+
+<!-- Pour calculer la couverture des gènes : -->
+
+<!-- ```{bash, eval=FALSE} -->
+<!-- # Transformer les BAM en BED -->
+<!-- bedtools bamtobed -i SRR1027171_on_genes.bam > SRR1027171_on_genes.bed -->
+<!-- # Merger les intervalles -->
+<!-- bedtools merge -i SRR1027171_on_genes.bed > SRR1027171_on_genes_merged.bed -->
+<!-- # Calculer la couverture -->
+<!-- bedtools coverage -a genes.gff3 -b SRR1027171_on_genes_merged.bed -hist -->
+
+<!-- bedtools genomecov -ibam TNBC1_on_genes.bam -bga > TNBC1_on_genes.bedgraph -->
+<!-- bedtools genomecov -ibam NonTNBC1_on_genes.bam -bga > NonTNBC1_on_genes.bedgraph -->
+<!-- ``` -->
+
+
+<!-- Pour obtenir les comptages sur le gène ENSG00000171862 : -->
+
+<!-- ```{bash, eval=FALSE} -->
+<!-- [orue@clust-slurm-client seance4]$ bedtools intersect -b <(grep ENSG00000171862 genes.gff3) -a SRR1027171_on_genes.bam -s | samtools view -c -->
+<!-- 2280 -->
+<!-- [orue@clust-slurm-client seance4]$ bedtools intersect -b <(grep ENSG00000171862 genes.gff3) -a SRR1027177_on_genes.bam -s | samtools view -c -->
+<!-- 10195 -->
+
+<!-- ``` -->
+
+<!-- Plot : -->
+
+<!-- ```{bash} -->
+<!-- awk '$1=="10" && ($3=="exon")' genes_complete.gff3 | perl -lane 'if($F[2] eq "mRNA"){($id)=$_=~/ID=transcript:(\w+);/}else{($id)=$_=~/exon_id=(\w+);/};print "$F[0]\t$F[3]\t$F[4]\t$id\t.\t$F[6]"' > genes.bed  -->
+<!-- ``` -->
+
+
+<!-- ```{r, eval=TRUE} -->
+<!-- library(Sushi) -->
+
+<!-- #tnbc <- read.delim("/shared/mfs/data/projects/dubii2020/data/module5/seance4/SRR1027171_on_genes.bedgraph") -->
+<!-- tnbc <- read.delim("TNBC1_on_ENSG00000091831.bedgraph") -->
+<!-- #nontnbc <- read.delim("/shared/mfs/data/projects/dubii2020/data/module5/seance4/SRR1027177_on_genes.bedgraph") -->
+<!-- nontnbc <- read.delim("NonTNBC1_on_ENSG00000091831.bedgraph") -->
+
+<!-- chrom            = "6" -->
+<!-- chromstart = 151656690 -->
+<!-- chromend = 152129619 -->
+<!-- #chr10:87925505-87925565 -->
+<!-- #>6:151656690-152129619 -->
+
+<!--  par(mfrow=c(2,1)) -->
+
+<!-- plotBedgraph(nontnbc,chrom,chromstart,chromend,transparency=.50,flip=FALSE,color="blue",linecol="blue",addscale=F) -->
+<!-- axis(side=2,las=2,tcl=.2) -->
+
+<!-- mtext("Read Depth",side=2,line=1.75,cex=.75,font=2) -->
+<!-- labelgenome( chrom, chromstart,chromend,side=1,scipen=20,n=3,scale="Mb",line=.18,chromline=.5,scaleline=0.5) -->
+<!-- plotBedgraph(tnbc,chrom,chromstart,chromend,transparency=.50,flip=FALSE,color="#E5001B",linecol="#E5001B") -->
+<!-- #plotGenes(bed2,chrom,chromstart,chromend ,types=bed2$type, -->
+<!-- #     maxrows=1,height=0.5,plotgenetype="arrow",bentline=FALSE,col="blue", -->
+<!-- #     labeloffset=1,fontsize=1.2,overlay=TRUE,rescaleoverlay=TRUE) -->
+<!-- #labelgenome(chrom,chromstart,chromend,side=1,scipen=20,n=3,line=.18,chromline=.5,scaleline=0.5,scale="Mb") -->
+
+<!-- transparency = 0.5 -->
+<!-- col1 = col2rgb("blue") -->
+<!-- finalcolor1 = rgb(col1[1],col1[2],col1[3],alpha=transparency * 255,maxColorValue = 255) -->
+<!-- col2 = col2rgb("#E5001B") -->
+
+<!-- #bed <- read.delim("/shared/mfs/data/projects/dubii2020/data/module5/seance4/genes.bed") -->
+<!-- #bed <- read.delim("genes.bed", header = F) -->
+<!-- #colnames(bed) <- c("chrom","start","stop","gene","score","strand") -->
+<!-- #bed -->
+<!-- #chrom            = 15 -->
+<!-- #chromstart       = 73017309 -->
+<!-- #chromend         = 73008626 -->
+<!-- #bed -->
+<!-- #plotGenes(bed2,chrom,chromstart,chromend ,types=bed2$type, -->
+<!-- #     maxrows=1,height=0.5,plotgenetype="arrow",bentline=FALSE,col="blue", -->
+<!-- #     labeloffset=1,fontsize=1.2) -->
+
+<!-- #chrom            = "chr15" -->
+<!-- #chromstart       = 72998000 -->
+<!-- #chromend         = 73020000 -->
+<!-- #chrom_biomart    = 15 -->
+<!-- #plotGenes(bed2,chrom_biomart,chromstart,chromend , -->
+<!-- #     maxrows=1,height=0.5,plotgenetype="arrow",bentline=FALSE,col="blue", -->
+<!-- #     labeloffset=1,fontsize=1.2) -->
+
+<!-- labelgenome( chrom, chromstart,chromend,side=1,scipen=20,n=3,scale="Mb",line=.18,chromline=.5,scaleline=0.5) -->
+
+<!-- axis(side=2,las=2,tcl=.2) -->
+
+<!-- mtext("Read Depth",side=2,line=1.75,cex=.75,font=2) -->
+
+<!-- ``` -->
+
+
+
+
+
+
+
+<!-- ## Quels sont les variants présents dans les régions promotrices ? -->
+
+<!-- ```{bash, eval=FALSE} -->
+
+<!-- ``` -->
+
+<!-- ```{bash, eval=FALSE} -->
+<!-- cut -f1,2 /shared/bank/homo_sapiens/GRCh38/fasta/Homo_sapiens.GRCh38.dna.primary_assembly.fa.fai > my.genome -->
+<!-- bedtools flank -g my.genome -i genes.gff3 -l 2000 -r 0 > genes_prom.gff3 -->
+<!-- ``` -->
+
+<!-- Variants déjà connus chez l'homme : -->
+
+<!-- ```{bash, eval=FALSE} -->
+<!-- wget ftp://ftp.ensembl.org/pub/release-100/variation/vcf/homo_sapiens/homo_sapiens_clinically_associated.vcf.gz -->
+<!-- # All variations from the current Ensembl release that have been -->
+<!-- # described by ClinVar as being probable-pathogenic, pathogenic, -->
+<!-- # drug-response or histocompatibility -->
+<!-- ``` -->
+
+
+<!-- ```{bash, eval=FALSE} -->
+<!-- bedtools intersect -a genes_prom.gff3 -b TNBC1.vcf -loj | grep -v "\-1" -->
+
+<!-- 11	ensembl_havana	gene	108220484	108222483	.	+	.	ID=gene:ENSG00000149311;Name=ATM;biotype=protein_coding;description=ATM serine/threonine kinase [Source:HGNC Symbol%3BAcc:HGNC:795];gene_id=ENSG00000149311;logic_name=ensembl_havana_gene;version=18	11	108221099	.	A	C	9.31	.	DP=2;VDB=0.0134;AF1=1;AC1=2;DP4=0,0,1,1;MQ=20;FQ=-33	GT:PL:GQ	1/1:40,6,0:8 -->
+
+<!-- bedtools intersect -a genes_prom.gff3 -b Non-TNBC1.vcf -loj | grep -v "\-1" -->
+
+<!-- ``` -->
+
+<!-- ## Variants connus les plus proches de mes gènes -->
+
+<!-- ```{bash, eval=FALSE} -->
+<!-- srun --mem=32G bedtools closest -a genes_sorted.gff3 -b common_all_20180418.vcf -g my.genome -->
+
+<!-- # miRNA -->
+<!-- srun --mem=32G bedtools closest -a genes_sorted.gff3 -b Homo_sapiens.GRCh38.100.miRNA.gff3 -g my.genome -d | rev | cut -f 1 | rev  -->
+<!-- ``` -->
+
