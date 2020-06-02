@@ -1,5 +1,5 @@
 <!DOCTYPE html>
-<html xmlns="http://www.w3.org/1999/xhtml" lang="" xml:lang="">
+<html lang="" xml:lang="">
   <head>
     <title>Croisement de données</title>
     <meta charset="utf-8" />
@@ -27,22 +27,29 @@ class: center, middle, inverse, title-slide
 # Programme
 
 
-- rappel sur les formats de fichiers (BED) et présentation VCF si on
-part là-dessus
+- Introduction
 
-- Bedtools &lt;a name=cite-quinlan2010bedtools&gt;&lt;/a&gt;([Quinlan and Hall, 2010](#bib-quinlan2010bedtools)) et ses fonctionnalités sous forme de questions
+- Rappel sur les formats de fichiers
 
- * extraire les séquences des exons ?
+- &lt;strong class="tool"&gt;Bedtools&lt;/strong&gt; &lt;a id='cite-quinlan2010bedtools'&gt;&lt;/a&gt;(&lt;a href='#bib-quinlan2010bedtools'&gt;Quinlan and Hall, 2010&lt;/a&gt;) et ses fonctionnalités
 
- * trouver des gènes différentiellement exprimés ?
+- TP en mode distanciation sociale
 
- * extaire des régions flanquantes ?
+.center[
+![](images/formation-a-distance.jpeg)
+]
 
- * compter le nombre de variants dans des gènes ?
+---
 
-- SNPeff pour croiser variants et annotations structurales et fonctionnelles
+# Rappels sur les formats de fichiers
 
- * impact des variants (amino acid changes) ?
+Format  | Contenu
+------------- | -------------
+FASTA  | ?
+FASTQ  | ?
+SAM/BAM  | ?
+BED/GTF/GFF  | ?
+VCF  | ? 
 
 ---
 
@@ -84,36 +91,265 @@ GATTTGGGGTTCAAAGCAGTATCGATCAAATAGTAAATCCATTTGTTCAACTCACAGTTT
 ```
 ---
 
-## BED
+## SAM/BAM
+
+- _Sequence Alignment Map_
+
+- Contient les alignements des reads sur le génome
+
+- 2 sections
+  - le header
+  - les alignements
+
+- Se manipule avec 
+  - &lt;strong class="tool"&gt;samtools&lt;/strong&gt; &lt;a id='cite-samtools'&gt;&lt;/a&gt;(&lt;a href='#bib-samtools'&gt;Li, Handsaker, Wysoker, Fennell, Ruan, Homer, Marth, Abecasis, and Durbin, 2009&lt;/a&gt;),
+  - &lt;strong class="tool"&gt;bedtools&lt;/strong&gt; (&lt;a href='#bib-quinlan2010bedtools'&gt;Quinlan and Hall, 2010&lt;/a&gt;),
+  - &lt;strong class="tool"&gt;Picard tools&lt;/strong&gt; &lt;a id='cite-picardtools'&gt;&lt;/a&gt;(&lt;a href='#bib-picardtools'&gt;Broad Institute, 2018&lt;/a&gt;),
+  - ...
+
+- Toujours travailler avec le BAM, trié et indexé
+
+---
+
+## SAM/BAM
+
+
+&lt;img src="images/SAM_format.jpg" width="80%" style="display: block; margin: auto;" /&gt;
 
 
 ---
 
-## Données de ce cours
+## BED
 
-* Génome humain : &lt;code&gt;FASTA&lt;/code&gt;
-* Annotation : &lt;code&gt;GFF3&lt;/code&gt;
-* Variants : &lt;code&gt;VCF&lt;/code&gt;
-* Liste de gènes différentiellement exprimés : &lt;code&gt;TXT&lt;/code&gt;
-* Sites de fixation de H3K4me3 : &lt;code&gt;BED&lt;/code&gt;
+- _Browser Extensible Data_
+
+- Ce sont des formats "d'intervalles". Chaque ligne contient un intervalle de coordonnées génomiques avec au minimum 3 colonnes :
 
 
 ```bash
-/shared/bank/homo_sapiens/GRCh38/fasta/Homo_sapiens.GRCh38.dna.toplevel.fa
+# BED 3 columns
+#chromosome  start  end
+chr1  145  200
+chr1  345  500
+chr1  600  1000
+```
+
+- Plus d'informations avec 6 colonnes :
+  
+
+```bash
+# BED 6 columns
+#chromosome  start  end  name  score  strand
+chr1  145  200  i1  0  +
+chr1  345  500  i2  0  +
+chr1  600  1000  i3  0  +
+```
+
+
+---
+
+## BED
+
+&lt;img src="images/BED_format.png" width="100%" style="display: block; margin: auto;" /&gt;
+
+---
+
+## GFF
+
+- _General Feature Format_
+
+- GFF puis GFF2 puis GFF3
+
+- GFF3 actuellement en vigueur : &lt;a href="http://gmod.org/wiki/GFF3"&gt;documentation&lt;/a&gt;
+
+- Format utilisé pour localiser et décrire toute zone caractéristique d'un génome (ex : un exon)
+
+- Un header
+
+
+```bash
+##gff-version 3
+```
+
+- 9 colonnes décrivant des *features*
+
+
+```bash
+ctg123 . mRNA            1300  9000  .  +  .  ID=mrna0001;Name=sonichedgehog
+ctg123 . exon            1300  1500  .  +  .  ID=exon00001;Parent=mrna0001
+ctg123 . exon            1050  1500  .  +  .  ID=exon00002;Parent=mrna0001
+ctg123 . exon            3000  3902  .  +  .  ID=exon00003;Parent=mrna0001
+ctg123 . exon            5000  5500  .  +  .  ID=exon00004;Parent=mrna0001
+ctg123 . exon            7000  9000  .  +  .  ID=exon00005;Parent=mrna0001
 ```
 
 ---
 
-## Cas n°1 : extraire les séquences de mes gènes
+## GFF3
+
+1. seqid - Nom du chromosome ou scaffold
+2. source - Nom du programme utilisé pour générer ce fichier
+3. type - Type d'élément (feature). Doit correspondre à l'ontologie &lt;a href="http://www.sequenceontology.org/so_wiki/index.php/Category:SO:SOFA"&gt;SOFA&lt;/a&gt; &lt;a id='cite-eilbeck2005sequence'&gt;&lt;/a&gt;(&lt;a href='#bib-eilbeck2005sequence'&gt;Eilbeck, Lewis, Mungall, Yandell, Stein, Durbin, and Ashburner, 2005&lt;/a&gt;)
+4. start - Début (1-based)
+5. end - Fin
+6. score - Score décimal
+7. strand - Brin + (forward) ou - (reverse).
+8. phase - Phase : 0, 1 ou 2 (base du codon)
+9. attributes - Liste de paires tag-valeur, par exemple ID, Name, Alias, Parent...
 
 
+```bash
+#seqid source type  start  end   score  strand  phase  attributes
+ctg123 .      mRNA  1300   9000  .      +       .      ID=mrna0001;Name=bidou;Parent=gene001
+```
+
+---
+
+## GTF
+
+- Dérivé du GFF
+- 8 premières colonnes identiques
+- La 9ème (attributes) doit contenir gene_id ou transcript_id
+- Spécialisé dans l'annotation des gènes
+  - gene_id obligatoire
+  - transcript_id obligatoire
+- GTF == GFF2
+
+
+```bash
+chr1	Cufflinks	transcript	62948	63887	1000	+	.	gene_id "ENSG00000240361"; transcript_id "ENST00000492842"; FPKM "0.1133032705"; frac "1.596713"; conf_lo "0.000000"; conf_hi "0.312052"; cov "0.351936"; full_read_support "yes";
+```
+
+--
+
+&lt;div class="alert danger"&gt;Attention au parsing du GTF, il y a des espaces dans la 9ème colonne !&lt;/div&gt;
+
+---
+
+## Système de coordonnées
+
+
+.pull-left[
+0-based:
+
+
+```bash
+ACTGACTG
+012345678
+```
+
+- BED
+- BAM
+
+]
+
+.pull-right[
+1-based:
+
+
+```bash
+ACTGACTG
+12345678
+```
+
+- GTF
+- GFF
+- SAM
+- VCF
+
+]
+
+--
+
+&lt;div class="alert comment"&gt;Les outils font automatiquement la conversion, attention si vous cherchez l'information directement !&lt;/div&gt;
+---
+
+## BEDTOOLS
+
+- Le couteau suisse pour travailler sur des fichiers d'intervalles et croiser différents types de données
+
+- Permet de nombreuses manipulations et croisement sur :
+  - BAM
+  - BED
+  - GFF/GTF
+  - VCF
+
+.pull-left[
+![](images/bedtools_logo.png)
+]
+.pull-right[
+- Documentation : https://bedtools.readthedocs.io/en/latest/
+- Tutoriel : http://quinlanlab.org/tutorials/bedtools/bedtools.html
+]
+
+---
+
+## Une super documentation !
+
+- Avec des schémas
+
+&lt;img src="images/bedtools_intersect.png" width="30%" style="display: block; margin: auto;" /&gt;
+
+- Une documentation complète
+
+- De nombreux exemples
+
+&lt;a href="https://bedtools.readthedocs.io/en/latest/content/tools/intersect.html"&gt;Exemple pour l'outil intersect&lt;/a&gt;
+
+---
+
+## Performance
+
+- Pas de multithreading avec Bedtools
+- Sur de gros jeux de données, il faut que les fichiers soient triés (de la même manière bien sûr)
+
+&lt;img src="images/bedtools_time.png" width="30%" style="display: block; margin: auto;" /&gt;
+
+---
+
+## TP : Données à croiser
+
+.pull-left[
+* Génome humain : &lt;code&gt;FASTA&lt;/code&gt;
+* Annotation : &lt;code&gt;GFF3&lt;/code&gt;
+* Variants : &lt;code&gt;VCF&lt;/code&gt;
+* Alignements : &lt;code&gt;BAM&lt;/code&gt;
+* Transcrits : &lt;code&gt;GTF&lt;/code&gt;
+]
+
+.pull-right[
+&lt;img src="images/croisement.jpg" width="60%" style="display: block; margin: auto;" /&gt;
+]
+
+--
+
+Ce &lt;a href=""&gt;document&lt;/a&gt; vous permettra de suivre pas à pas le TP associé à la suite BEDtools
+
+&lt;img src="images/Charge-mentale-1__1_.jpg" width="30%" style="display: block; margin: auto;" /&gt;
+
+---
 
 # References
 
-&lt;a name=bib-quinlan2010bedtools&gt;&lt;/a&gt;[Quinlan, A. R. and I. M.
-Hall](#cite-quinlan2010bedtools) (2010). "BEDTools: a flexible suite of
-utilities for comparing genomic features". In: _Bioinformatics_ 26.6,
-pp. 841-842.
+&lt;p&gt;&lt;cite&gt;&lt;a id='bib-picardtools'&gt;&lt;/a&gt;&lt;a href="#cite-picardtools"&gt;Broad Institute&lt;/a&gt;
+(2018).
+&lt;em&gt;Picard Tools&lt;/em&gt;.
+&lt;a href="http://broadinstitute.github.io/picard/"&gt;http://broadinstitute.github.io/picard/&lt;/a&gt;.&lt;/cite&gt;&lt;/p&gt;
+
+&lt;p&gt;&lt;cite&gt;&lt;a id='bib-eilbeck2005sequence'&gt;&lt;/a&gt;&lt;a href="#cite-eilbeck2005sequence"&gt;Eilbeck, K, S. E. Lewis, C. J. Mungall, et al.&lt;/a&gt;
+(2005).
+&amp;ldquo;The Sequence Ontology: a tool for the unification of genome annotations&amp;rdquo;.
+In: &lt;em&gt;Genome biology&lt;/em&gt; 6.5, p. R44.&lt;/cite&gt;&lt;/p&gt;
+
+&lt;p&gt;&lt;cite&gt;&lt;a id='bib-samtools'&gt;&lt;/a&gt;&lt;a href="#cite-samtools"&gt;Li, H, B. Handsaker, A. Wysoker, et al.&lt;/a&gt;
+(2009).
+&amp;ldquo;The sequence alignment/map format and SAMtools&amp;rdquo;.
+In: &lt;em&gt;Bioinformatics&lt;/em&gt; 25.16, pp. 2078&amp;ndash;2079.&lt;/cite&gt;&lt;/p&gt;
+
+&lt;p&gt;&lt;cite&gt;&lt;a id='bib-quinlan2010bedtools'&gt;&lt;/a&gt;&lt;a href="#cite-quinlan2010bedtools"&gt;Quinlan, A. R. and I. M. Hall&lt;/a&gt;
+(2010).
+&amp;ldquo;BEDTools: a flexible suite of utilities for comparing genomic features&amp;rdquo;.
+In: &lt;em&gt;Bioinformatics&lt;/em&gt; 26.6, pp. 841&amp;ndash;842.&lt;/cite&gt;&lt;/p&gt;
     </textarea>
 <style data-target="print-only">@media screen {.remark-slide-container{display:block;}.remark-slide-scaler{box-shadow:none;}}</style>
 <script src="https://remarkjs.com/downloads/remark-latest.min.js"></script>
@@ -158,9 +394,25 @@ if (window.HTMLWidgets) slideshow.on('afterShowSlide', function (slide) {
     }
     deleted = true;
   });
-})();</script>
-
-<script>
+})();
+(function() {
+  "use strict"
+  // Replace <script> tags in slides area to make them executable
+  var scripts = document.querySelectorAll(
+    '.remark-slides-area .remark-slide-container script'
+  );
+  if (!scripts.length) return;
+  for (var i = 0; i < scripts.length; i++) {
+    var s = document.createElement('script');
+    var code = document.createTextNode(scripts[i].textContent);
+    s.appendChild(code);
+    var scriptAttrs = scripts[i].attributes;
+    for (var j = 0; j < scriptAttrs.length; j++) {
+      s.setAttribute(scriptAttrs[j].name, scriptAttrs[j].value);
+    }
+    scripts[i].parentElement.replaceChild(s, scripts[i]);
+  }
+})();
 (function() {
   var links = document.getElementsByTagName('a');
   for (var i = 0; i < links.length; i++) {
@@ -168,8 +420,7 @@ if (window.HTMLWidgets) slideshow.on('afterShowSlide', function (slide) {
       links[i].target = '_blank';
     }
   }
-})();
-</script>
+})();</script>
 
 <script>
 slideshow._releaseMath = function(el) {

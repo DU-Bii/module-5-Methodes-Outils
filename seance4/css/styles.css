@@ -90,3 +90,18 @@ slides > slide:not(.nobackground)::before {
   margin-top: -30px;
   margin-right: -30px;
 }
+
+.tool,.databank{
+    background-color: #8eadac;
+    color: white;
+    padding: 1px 1px 3px 6px;
+    border-radius: 8px;
+}
+
+.tool:after {    
+    font-family: "FontAwesome";  /* updated font-family */
+    font-weight: 900;
+    content: '\f0Ad';
+    margin:0 5px 0 5px;
+    color: white;
+}

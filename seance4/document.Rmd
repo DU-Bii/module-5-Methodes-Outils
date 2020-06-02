@@ -48,6 +48,7 @@ Nous aurons également besoin de données publiques du génome humain :
 Nous allons croiser ces données hétérogènes pour répondre à différentes questions :
 
 - Quelle est la séquence génomique du gène ENSG00000091831 ? (getfasta)
+- Quel est son contenu en GC ? (nuc)
 - Combien de variants connus sont présents dans ce gène ? Y a-t-il des variants communs ou spécifiques à un échantillon ? Sont-ils nouveaux ?
 - Existe-t-il des variants connus dans la région promotrice de ce gène ? (flank)
 - Quels sont les transcrits complets spécifiques à l'échantillon NonTNBC1 ? (subtract)
@@ -128,6 +129,13 @@ head -n 1 ENSG00000091831_gene.fasta
 ```
 
 À vous de le renommer si vous souhaitez indiquer le nom du gène par exemple.
+
+## Contenu en GC
+
+```{bash, eval=FALSE}
+bedtools nuc -fi data/Homo_sapiens.GRCh38.dna.toplevel.fa -bed ENSG00000091831_gene.gff3
+```
+
 
 ## Combien de variants connus existe-t-il dans ce gène ?
 

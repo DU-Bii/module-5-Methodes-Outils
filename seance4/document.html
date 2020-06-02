@@ -1693,6 +1693,7 @@ div.tocify {
 <p>Nous allons croiser ces données hétérogènes pour répondre à différentes questions :</p>
 <ul>
 <li>Quelle est la séquence génomique du gène ENSG00000091831 ? (getfasta)</li>
+<li>Quel est son contenu en GC ? (nuc)</li>
 <li>Combien de variants connus sont présents dans ce gène ? Y a-t-il des variants communs ou spécifiques à un échantillon ? Sont-ils nouveaux ?</li>
 <li>Existe-t-il des variants connus dans la région promotrice de ce gène ? (flank)</li>
 <li>Quels sont les transcrits complets spécifiques à l’échantillon NonTNBC1 ? (subtract)</li>
@@ -1755,6 +1756,10 @@ srun bedtools getfasta -fi data/Homo_sapiens.GRCh38.dna.toplevel.fa -bed ENSG000
 <pre class="bash"><code>head -n 1 ENSG00000091831_gene.fasta
 &gt;6:151656690-152129619</code></pre>
 <p>À vous de le renommer si vous souhaitez indiquer le nom du gène par exemple.</p>
+</div>
+<div id="contenu-en-gc" class="section level2">
+<h2>Contenu en GC</h2>
+<pre class="bash"><code>bedtools nuc -fi data/Homo_sapiens.GRCh38.dna.toplevel.fa -bed ENSG00000091831_gene.gff3</code></pre>
 </div>
 <div id="combien-de-variants-connus-existe-t-il-dans-ce-gène" class="section level2">
 <h2>Combien de variants connus existe-t-il dans ce gène ?</h2>
