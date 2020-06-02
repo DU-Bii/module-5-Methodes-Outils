@@ -13,6 +13,7 @@
 * Mélanie Petera - INRAE - melanie.petera@inrae.fr
 * Binta Dieme - Université Clermont d’Auvergne (UCA) - binta.dieme@uca.fr
 * Thibaut Léger - Institut Jacques Monod - thibaut.leger@ijm.fr
+* Matthias Zytnicki - INRAE - matthias.zytnicki@inrae.fr
 
 ## Calendrier 2020
 
@@ -92,3 +93,16 @@ A l'issu de ces activités préparatoires, vous aurez :
 - Créé votre compte sur l'instance Galaxy usegalaxy.fr , fait vos premiers pas sous Galaxy. 
 
 En cas de blocage ou de question, n'hésitez pas à partager vos questions sur le Slack.
+
+### [Séance 4](https://github.com/DU-Bii/module-5-Methodes-Outils/tree/master/seance4)
+
+- Date : 5 juin 2020
+- Horaires : 9h30 - 17h00
+- Intervenants : Olivier Rué et Matthias Zytnicki
+- Titre : Croisement de données
+
+
+| Supports | Formats |
+|--------------------------------------------------|--------|
+| Slides | [[html](seance4/slides.html)]
+| TP | [[html](seance4/document.html)]  |
