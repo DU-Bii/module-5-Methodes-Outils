@@ -12,6 +12,16 @@ code{
   border-radius: 4px;
 }
 
+p > code{
+  color: #c7254e !important;
+  background-color: #f9f2f4 !important;
+}
+
+li > code{
+  color: #c7254e !important;
+  background-color: #f9f2f4 !important;
+}
+
 .bash{
   overflow: auto;
   background-color: #f0f0f0;

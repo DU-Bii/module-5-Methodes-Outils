@@ -1,7 +1,7 @@
 ---
 title: "Croisement de données"
 author: "Olivier Rué - Matthias Zytnicki"
-subtitle: "DUBii - Module 5"
+subtitle: "DUBii - Module 5 - Séance 4"
 css: css/styles.css
 date: "2020/06/05"
 output:
@@ -34,8 +34,8 @@ L'analyse différentielle a ressorti le gène **ENSG00000091831** comme étant l
 
 Pour ce TP, nous ne n'utilisserons que de 2 échantillons :
 
-* 1 échantillon TNBC (TNBC) : SRR1027171 (GSM1261016)
-* 1 échantillon NonTNBC (NonTNBC) : SRR1027177 (GSM1261022)
+* 1 échantillon TNBC (TNBC1) : SRR1027171 (GSM1261016)
+* 1 échantillon NonTNBC (NonTNBC1) : SRR1027177 (GSM1261022)
 
 Pour chacun nous allons récupérer les reads bruts, les transcrits (de novo et avec référence) ainsi que les variants. Nous avons au préalable effectué le mapping de ces reads pour gagner du temps.
 
@@ -47,7 +47,7 @@ Nous aurons également besoin de données publiques du génome humain :
 
 Nous allons croiser ces données hétérogènes en utilisant *bedtools* pour répondre à différentes questions :
 
-- Quelle est la séquence génomique du gène ENSG00000091831 ? (`getfasta`)
+- Quelle est la séquence génomique du gène ENSG00000091831 ? ( `getfasta` )
 - Quel est son contenu en GC ? (`nuc`)
 - Combien de variants connus sont présents dans ce gène ? Y a-t-il des variants communs ou spécifiques à un échantillon ? Sont-ils nouveaux ?
 - Existe-t-il des variants connus dans la région promotrice de ce gène ? (`flank`)
@@ -124,6 +124,10 @@ grep ENSG00000091831 data/Homo_sapiens.GRCh38.100.gff3 | awk '$3=="gene"' > ENSG
 
 Puis `bedtools getfasta` permet de récupérer la séquence génomique du gène.
 
+```{r, out.width = "70%", echo=FALSE, fig.align="center"}
+knitr::include_graphics("images/getfasta.png")
+```
+
 *Étape 1*: Chargez le bon module.
 
 ```{bash, eval=FALSE}
@@ -133,10 +137,12 @@ module load bedtools
 *Étape 2*: Affichez l'aide.
 
 ```{bash, eval=FALSE}
-module load bedtools
+bedtools getfasta
 ```
 
-*Étape 3*: Lanchez la commande.
+*Étape 3*: Lancez la commande.
+
+<div class="alert danger">Il faut utiliser le cluster de calcul pour lancer les outils bioinformatiques ! (srun...)</div>
 
 ```{bash, eval=FALSE}
 srun bedtools getfasta -fi data/Homo_sapiens.GRCh38.dna.toplevel.fa -bed ENSG00000091831_gene.gff3 > ENSG00000091831_gene.fasta
@@ -152,8 +158,26 @@ Attention, le header du FASTA généré correspond aux coordonnées génomiques 
 
 ## Contenu en GC
 
+La documentation sur le site web de bedtools est désespérément vide. En effet, l'outil calcule seulement des statistiques de base sur le contenu en nucléotides. Rien de compliqué.
+
+*Étape 1*: Afficher l'aide de l'outil `bedtools nuc`
+
+```{bash, eval=FALSE}
+bedtools nuc
+```
+
+*Étape 2*: Lancer la commande
+
 ```{bash, eval=FALSE}
 bedtools nuc -fi data/Homo_sapiens.GRCh38.dna.toplevel.fa -bed ENSG00000091831_gene.gff3
+```
+
+*Étape 3*: Repérer le numéro de colonne contenant le %GC content et l'extraire
+
+```{bash, eval=FALSE}
+bedtools nuc -fi data/Homo_sapiens.GRCh38.dna.toplevel.fa -bed ENSG00000091831_gene.gff3 | cut -f 11
+# awk
+# bedtools nuc -fi data/Homo_sapiens.GRCh38.dna.toplevel.fa -bed ENSG00000091831_gene.gff3 | awk -F "\t" '{print $11}'
 ```
 
 

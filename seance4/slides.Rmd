@@ -228,6 +228,26 @@ chr1	Cufflinks	transcript	62948	63887	1000	+	.	gene_id "ENSG00000240361"; transc
 
 ---
 
+## VCF
+
+- _Variant Calling Format_
+
+- En migration vers _gVCF_
+
+- Header décrivant le format et l'obtention du fichier
+
+- Une ligne par variant (SNV, INSERTION, DELETION...)
+
+---
+
+## VCF
+
+```{r, out.width = "100%", echo=FALSE, fig.align="center"}
+knitr::include_graphics("images/VCF_format.png")
+```
+
+---
+
 ## Système de coordonnées
 
 
