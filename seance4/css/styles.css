@@ -115,3 +115,7 @@ slides > slide:not(.nobackground)::before {
     margin:0 5px 0 5px;
     color: white;
 }
+
+summary{
+  cursor:pointer;
+}
