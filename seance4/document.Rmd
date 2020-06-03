@@ -181,12 +181,50 @@ bedtools nuc -fi data/Homo_sapiens.GRCh38.dna.toplevel.fa -bed ENSG00000091831_g
 ```
 
 
-## Combien de variants connus existe-t-il dans ce gène ?
+## Extraire et compter le nombre de variants connus dans ce gène ?
 
-<div class="alert danger">Attention, le format de sortie correspond au format du fichier passé par l'option `-a` ! </div>
+*Autre formulation* : Générér un fichier VCF contenant les variants connus qui intersectent le gène ENSG00000091831. Puis compter le nombre de lignes du fichier VCF de sortie contenant les variants.
+
+Le fichier de variants connus est : `data/common_all_20180418.vcf`.
+
+*Étape 1*: Afficher l'aide de l'outil `bedtools intersect`.
+
+```{r, out.width = "70%", echo=FALSE, fig.align="center"}
+knitr::include_graphics("images/bedtools_intersect_1db.png")
+```
+
+```{bash, eval=FALSE}
+bedtools intersect
+```
+
+Quel fichier doit correspondre au `-a` ? 
+
+*Étape 2*: Préparer la commande
+
+```{bash, eval=FALSE}
+srun bedtools intersect -b ENSG00000091831_gene.gff3 -a data/common_all_20180418.vcf 
+```
+
+<div class="alert comment">
+<b>Pour les gros fichiers</b> :<br>
+If you are trying to intersect very large files and are having trouble with excessive memory usage, please presort your data by chromosome and then by start position (e.g., sort -k1,1 -k2,2n in.bed > in.sorted.bed for BED files) and then use the -sorted option. This invokes a memory-efficient algorithm designed for large files. This algorithm has been substantially improved in recent (>=2.18.0) releases.
+</div>
+
+L
+
+```{bash, eval=FALSE}
+srun bedtools intersect -b ENSG00000091831_gene.gff3 -a data/common_all_20180418.vcf -sorted -g data/my.genome 
+```
+
+
+
+*Étape 3*: Rediriger la sortie dans un ficher VCF *valide*
 
 ```{bash, eval=FALSE}
 srun bedtools intersect -b ENSG00000091831_gene.gff3 -a data/common_all_20180418.vcf -sorted -g data/my.genome -header > ENSG00000091831_known.vcf
+```
+
+
 grep -vc "^#" ENSG00000091831_known.vcf
 6018
 ```
