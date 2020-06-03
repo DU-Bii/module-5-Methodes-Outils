@@ -210,40 +210,65 @@ srun bedtools intersect -b ENSG00000091831_gene.gff3 -a data/common_all_20180418
 If you are trying to intersect very large files and are having trouble with excessive memory usage, please presort your data by chromosome and then by start position (e.g., sort -k1,1 -k2,2n in.bed > in.sorted.bed for BED files) and then use the -sorted option. This invokes a memory-efficient algorithm designed for large files. This algorithm has been substantially improved in recent (>=2.18.0) releases.
 </div>
 
-L
-
 ```{bash, eval=FALSE}
 srun bedtools intersect -b ENSG00000091831_gene.gff3 -a data/common_all_20180418.vcf -sorted -g data/my.genome 
 ```
 
 
-
-*Étape 3*: Rediriger la sortie dans un ficher VCF *valide*
+*Étape 3*: Redirigez la sortie dans un ficher VCF *valide*.
 
 ```{bash, eval=FALSE}
 srun bedtools intersect -b ENSG00000091831_gene.gff3 -a data/common_all_20180418.vcf -sorted -g data/my.genome -header > ENSG00000091831_known.vcf
 ```
 
 
+*Étape 4*: Lisez le ficher.
+Quelles sont les deux parties principales d'un ficher VCF?
+Donnez le nombre de variants trouvés.
+
+
+```{bash, eval=FALSE}
 grep -vc "^#" ENSG00000091831_known.vcf
 6018
 ```
 
 <div class="alert danger">Le header d'un fichier VCF est indispensable ! S'il n'est pas présent, certains outils ne fonctionneront pas.</div>
 
+
 ### Combien de SNV (single nucleotide variants) sont communs et différents entre TNBC1 et NonTNBC1 sur le gène ?
 
-```{bash, eval=FALSE}
-vcftools --vcf ENSG00000091831_known.vcf --remove-indels --recode --recode-INFO-all --stdout > ENSG00000091831_known_SNV.vcf
-vcftools --vcf data/TNBC1.vcf --remove-indels --recode --recode-INFO-all --stdout > TNBC1_SNV.vcf
-vcftools --vcf data/NonTNBC1.vcf --remove-indels --recode --recode-INFO-all --stdout > NonTNBC1_SNV.vcf
+Pour le traitement de fichers VCF, nous pouvons utiliser les *[VCFtools](https://vcftools.github.io/man_latest.html)*.
 
+*Etape 1*: Chargez le bon module.
+
+```{bash, eval=FALSE}
+module load vcftools
 ```
 
+*Etape 2*: Sélectionnez uniquement les SNV dans les deux fichiers de VCF correspondant aux deux conditions.
+Un exemple du manuel devrait vous mettre sur la piste.
+Sélectionnez également les SNV connus de `ENSG00000091831`.
 
 ```{bash, eval=FALSE}
+srun vcftools --vcf data/TNBC1.vcf --remove-indels --recode --recode-INFO-all --stdout > TNBC1_SNV.vcf
+srun vcftools --vcf data/NonTNBC1.vcf --remove-indels --recode --recode-INFO-all --stdout > NonTNBC1_SNV.vcf
+srum vcftools --vcf ENSG00000091831_known.vcf --remove-indels --recode --recode-INFO-all --stdout > ENSG00000091831_known_SNV.vcf
+```
 
+*Etape 3:*: Ne conservez que les SNV vus dans les deux conditions qui sont sur `ENSG00000091831`.
+
+**Je n'ai pas compris le `egrep`.**
+
+```{bash, eval=FALSE}
 srun bedtools intersect -b ENSG00000091831_gene.gff3 -a TNBC1_SNV.vcf -sorted -g data/my.genome -header | egrep "^#|\/" > TNBC1_ENSG00000091831.vcf
+srun bedtools intersect -b ENSG00000091831_gene.gff3 -a NonTNBC1_SNV.vcf -sorted -g data/my.genome -header > NonTNBC1_ENSG00000091831.vcf
+```
+
+*Étape 4*: Comptez le nombre de variants sur ce gène.
+Vérifiez que tous les variants sont bien sur le gène.
+
+
+```{bash, eval=FALSE}
 grep -vc "^#" TNBC1_ENSG00000091831.vcf
 15
 
@@ -251,14 +276,18 @@ grep -vc "^#" TNBC1_ENSG00000091831.vcf
 awk '$1==6' TNBC1_SNV.vcf | awk '$2>151656690' | awk '$2<152129619' | wc -l
 15
 
-srun bedtools intersect -b ENSG00000091831_gene.gff3 -a NonTNBC1_SNV.vcf -sorted -g data/my.genome -header > NonTNBC1_ENSG00000091831.vcf
 grep -vc "^#" NonTNBC1_ENSG00000091831.vcf
 106
 
 # Vérification 
 awk '$1==6' NonTNBC1_SNV.vcf | awk '$2>151656690' | awk '$2<152129619' | wc -l
 106
+```
 
+*Étape 5*: Trouvez les SNV vus simultanément dans les conditions, et ceux spécifiques à chaque condition.
+Comptez ces SNV.
+
+```{bash, eval=FALSE}
 # Communs aux deux
 srun bedtools intersect -a TNBC1_ENSG00000091831.vcf -b NonTNBC1_ENSG00000091831.vcf -sorted -g data/my.genome -header > commonTNBC1_NonTNBC1_ENSG00000091831.vcf
 grep -vc "^#" commonTNBC1_NonTNBC1_ENSG00000091831.vcf
@@ -273,8 +302,12 @@ grep -vc "^#" specificTNBC1_ENSG00000091831.vcf
 srun bedtools intersect -a NonTNBC1_ENSG00000091831.vcf -v -b TNBC1_ENSG00000091831.vcf -sorted -g data/my.genome -header > specificNonTNBC1_ENSG00000091831.vcf
 grep -vc "^#" specificNonTNBC1_ENSG00000091831.vcf
 104
+```
 
-# Spécifiques à NonTNBC1 et non connus ?
+*Étape 6*: Trouvez les SNV spécifiques à Non-TNBC1, et non connus.
+Comptez-les.
+
+```{bash, eval=FALSE}
 srun bedtools intersect -a specificNonTNBC1_ENSG00000091831.vcf  -b ENSG00000091831_known.vcf -sorted -g data/my.genome -header > specificNonTNBC1_known_ENSG00000091831.vcf
 grep -vc "^#" specificNonTNBC1_known_ENSG00000091831.vcf
 3
