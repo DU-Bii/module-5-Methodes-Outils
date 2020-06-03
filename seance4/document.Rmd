@@ -99,29 +99,54 @@ Pour information, voici les commandes utilisées pour récupérer les données.
 
 ## Quelle est la séquence génomique du gène ENSG00000091831 ?
 
-Il faut dans un premier temps récupérer les coordonnées du gène.
+*Étape 1*: Comment retrouver toutes les lignes qui contiennent le `ENSG00000091831`.
+S'agit-il uniquement du gène ?
+
+```{bash, eval=FALSE}
+grep ENSG00000091831 data/Homo_sapiens.GRCh38.100.gff3
+```
+
+*Étape 2*: Comment ne garder que l'annotation du gène?
+On peut utiliser l'outil *awk*.
+Il est passablement complexe, mais nous allons l'utiliser uniquement pour sélectionner le fait que la *n*ième colonne doivent contenir la valeur *X*.
+On peut l'utiliser ainsi:
+
+    awk '($1 == "bla")' fichier.txt
+
+Il ne sélectionnera que les lignes où la première colonne contient `bla`, et écrira la solution sur la sortie standard.
+Si `fichier.txt` est absent, l'entrée standard est lue à la place.
+
+Utilisez ceci pour sélectionner uniquement le gène ENSG00000091831.
 
 ```{bash, eval=FALSE}
 grep ENSG00000091831 data/Homo_sapiens.GRCh38.100.gff3 | awk '$3=="gene"' > ENSG00000091831_gene.gff3
 ```
 
-Puis bedtools getfasta permet de récupérer la séquence génomique du gène.
+Puis `bedtools getfasta` permet de récupérer la séquence génomique du gène.
+
+*Étape 1*: Chargez le bon module.
 
 ```{bash, eval=FALSE}
 module load bedtools
+```
 
-# Afficher l'aide
-bedtools getfasta 
+*Étape 2*: Affichez l'aide.
 
+```{bash, eval=FALSE}
+module load bedtools
+```
+
+*Étape 3*: Lanchez la commande.
+
+```{bash, eval=FALSE}
 srun bedtools getfasta -fi data/Homo_sapiens.GRCh38.dna.toplevel.fa -bed ENSG00000091831_gene.gff3 > ENSG00000091831_gene.fasta
 ```
 
 Attention, le header du FASTA généré correspond aux coordonnées génomiques extraites :
 
-```{bash, eval=FALSE}
-head -n 1 ENSG00000091831_gene.fasta
->6:151656690-152129619
-```
+    head -n 1 ENSG00000091831_gene.fasta
+    >6:151656690-152129619
+    
 
 À vous de le renommer si vous souhaitez indiquer le nom du gène par exemple.
 
