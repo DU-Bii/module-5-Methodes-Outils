@@ -92,7 +92,16 @@ A l'issu de ces activités préparatoires, vous aurez :
 - installé un outil de conversion de données au format propriétaire en format "open-source" qui sera utilisé lors du TP
 - Créé votre compte sur l'instance Galaxy usegalaxy.fr , fait vos premiers pas sous Galaxy. 
 
-En cas de blocage ou de question, n'hésitez pas à partager vos questions sur le Slack.
+En cas de blocage ou de question, n'hésitez pas à partager vos questions sur le channel #help de Slack.
+
+| Supports | Formats |
+|--------------------------------------------------|--------|
+| Cours | [[pdf](seance3/presentation-dubii_04-06-2020.pdf)]
+| TP Msconvert | [[pdf](seance3/MSconvert-dubii.pdf)]  |
+| Présentation Workflow4metabolomics | [[pdf](seance3/DUBii2020_W4M.pdf)] |
+| Support Galaxy Training  | [[pdf](seance3/DUBii2020_W4M.pdf)] |
+
+
 
 ### [Séance 4](https://github.com/DU-Bii/module-5-Methodes-Outils/tree/master/seance4)
 
