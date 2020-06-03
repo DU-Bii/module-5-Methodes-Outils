@@ -319,7 +319,8 @@ bedtools genomecov -ibam TNBC1_on_ENSG00000091831.bam -bga > TNBC1_on_ENSG000000
 bedtools genomecov -ibam NonTNBC1_on_ENSG00000091831.bam -bga > NonTNBC1_on_ENSG00000091831.bedgraph
 ```
 
-```{r, eval=TRUE}
+Utilisez la librarie Sushi.
+```{r, eval=TRUE, message=FALSE}
 library(Sushi)
 tnbc <- read.delim("TNBC1_on_ENSG00000091831.bedgraph")
 nontnbc <- read.delim("NonTNBC1_on_ENSG00000091831.bedgraph")

@@ -567,15 +567,9 @@ bedtools coverage -a genes.gff3 -b NonTNBC1_on_ENSG00000091831_merged.bed -hist
 
 bedtools genomecov -ibam TNBC1_on_ENSG00000091831.bam -bga &gt; TNBC1_on_ENSG00000091831.bedgraph
 bedtools genomecov -ibam NonTNBC1_on_ENSG00000091831.bam -bga &gt; NonTNBC1_on_ENSG00000091831.bedgraph</code></pre>
-<pre class="r"><code>library(Sushi)</code></pre>
-<pre><code>## Loading required package: zoo</code></pre>
-<pre><code>## 
-## Attaching package: 'zoo'</code></pre>
-<pre><code>## The following objects are masked from 'package:base':
-## 
-##     as.Date, as.Date.numeric</code></pre>
-<pre><code>## Loading required package: biomaRt</code></pre>
-<pre class="r"><code>tnbc &lt;- read.delim(&quot;TNBC1_on_ENSG00000091831.bedgraph&quot;)
+<p>Utilisez la librarie Sushi.</p>
+<pre class="r"><code>library(Sushi)
+tnbc &lt;- read.delim(&quot;TNBC1_on_ENSG00000091831.bedgraph&quot;)
 nontnbc &lt;- read.delim(&quot;NonTNBC1_on_ENSG00000091831.bedgraph&quot;)
 
 chrom            = &quot;6&quot;
