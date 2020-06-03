@@ -8,7 +8,7 @@ output:
     html_document:
       self_contained: true
       number_sections: false
-      code_folding: "show"
+      code_folding: "hide"
       toc: true
       toc_depth: 3
       toc_float: true
@@ -59,48 +59,43 @@ Nous allons croiser ces données hétérogènes pour répondre à différentes q
 
 Les données que nous utiliserons sont dans le répertoire <code>/shared/projects/dubii2020/data/module5/seance4/data</code>. Un lien symbolique du répertoire permettra d'y avoir accès sans dupliquer les données.
 
-```{bash, eval=FALSE}
-mkdir ~/M5-S4/
-cd ~/M5-S4
-ln -s /shared/projects/dubii2020/data/module5/seance4/data .
-```
+    mkdir ~/M5-S4/
+    cd ~/M5-S4
+    ln -s /shared/projects/dubii2020/data/module5/seance4/data .
 
 Pour information, voici les commandes utilisées pour récupérer les données.
 
-```{bash, eval=FALSE}
-## Les fichiers FASTQ de la publication
-module load sra-tools
-srun --cpus-per-task 8 fasterq-dump -S -p SRR1027171 --outdir . --threads 8
-srun --cpus-per-task 8 fasterq-dump -S -p SRR1027177 --outdir . --threads 8
-## Le génome humain au format FASTA et son index
-ln -s /shared/data/bank/homo_sapiens/GRCh38/fasta/Homo_sapiens.GRCh38.dna.toplevel.fa .
-ln -s /shared/data/bank/homo_sapiens/GRCh38/fasta/Homo_sapiens.GRCh38.dna.toplevel.fa.fai .
-
-## L'annotation du génome humain au format GFF3
-wget ftp://ftp.ensembl.org/pub/release-100/gff3/homo_sapiens/Homo_sapiens.GRCh38.100.gff3.gz
-gzip -d Homo_sapiens.GRCh38.100.gff3.gz
-
-## Les variants issus des deux échantillons de la publication
-wget https://ftp.ncbi.nlm.nih.gov/geo/samples/GSM1261nnn/GSM1261016/suppl/GSM1261016%5FIP2%2D50%5Fvar%2Eflt%2Evcf%2Egz
-wget https://ftp.ncbi.nlm.nih.gov/geo/samples/GSM1261nnn/GSM1261022/suppl/GSM1261022%5FIP2%2D42%5Fvar%2Eflt%2Evcf%2Egz
-gzip -d GSM1261016_IP2-50_var.flt.vcf.gz
-gzip -d GSM1261022_IP2-42_var.flt.vcf.gz
-mv GSM1261022_IP2-42_var.flt.vcf NonTNBC1.vcf
-mv GSM1261016_IP2-50_var.flt.vcf TNBC1.vcf
-
-## Les variants humains connus
-wget ftp://ftp.ncbi.nih.gov/snp/organisms/human_9606_b151_GRCh38p7/VCF/common_all_20180418.vcf.gz
-gzip -d common_all_20180418.vcf.gz
-
-## Les transcrits reconstruits des deux échantillons
-wget https://ftp.ncbi.nlm.nih.gov/geo/samples/GSM1261nnn/GSM1261016/suppl/GSM1261016%5FIP2%2D50%5Fdenovo%5Ftranscripts%2Egtf%2Egz
-gzip -d GSM1261016_IP2-50_denovo_transcripts.gtf.gz
-mv GSM1261016_IP2-50_denovo_transcripts.gtf TNBC1_denovo_transcripts.gtf
-wget https://ftp.ncbi.nlm.nih.gov/geo/samples/GSM1261nnn/GSM1261022/suppl/GSM1261022%5FIP2%2D42%5Fdenovo%5Ftranscripts%2Egtf%2Egz
-gzip -d GSM1261022_IP2-42_denovo_transcripts.gtf.gz
-mv GSM1261022_IP2-42_denovo_transcripts.gtf NonTNBC1_denovo_transcripts.gtf
-
-```
+    ## Les fichiers FASTQ de la publication
+    module load sra-tools
+    srun --cpus-per-task 8 fasterq-dump -S -p SRR1027171 --outdir . --threads 8
+    srun --cpus-per-task 8 fasterq-dump -S -p SRR1027177 --outdir . --threads 8
+    ## Le génome humain au format FASTA et son index
+    ln -s /shared/data/bank/homo_sapiens/GRCh38/fasta/Homo_sapiens.GRCh38.dna.toplevel.fa .
+    ln -s /shared/data/bank/homo_sapiens/GRCh38/fasta/Homo_sapiens.GRCh38.dna.toplevel.fa.fai .
+    
+    ## L'annotation du génome humain au format GFF3
+    wget ftp://ftp.ensembl.org/pub/release-100/gff3/homo_sapiens/Homo_sapiens.GRCh38.100.gff3.gz
+    gzip -d Homo_sapiens.GRCh38.100.gff3.gz
+    
+    ## Les variants issus des deux échantillons de la publication
+    wget https://ftp.ncbi.nlm.nih.gov/geo/samples/GSM1261nnn/GSM1261016/suppl/GSM1261016%5FIP2%2D50%5Fvar%2Eflt%2Evcf%2Egz
+    wget https://ftp.ncbi.nlm.nih.gov/geo/samples/GSM1261nnn/GSM1261022/suppl/GSM1261022%5FIP2%2D42%5Fvar%2Eflt%2Evcf%2Egz
+    gzip -d GSM1261016_IP2-50_var.flt.vcf.gz
+    gzip -d GSM1261022_IP2-42_var.flt.vcf.gz
+    mv GSM1261022_IP2-42_var.flt.vcf NonTNBC1.vcf
+    mv GSM1261016_IP2-50_var.flt.vcf TNBC1.vcf
+    
+    ## Les variants humains connus
+    wget ftp://ftp.ncbi.nih.gov/snp/organisms/human_9606_b151_GRCh38p7/VCF/common_all_20180418.vcf.gz
+    gzip -d common_all_20180418.vcf.gz
+    
+    ## Les transcrits reconstruits des deux échantillons
+    wget https://ftp.ncbi.nlm.nih.gov/geo/samples/GSM1261nnn/GSM1261016/suppl/GSM1261016%5FIP2%2D50%5Fdenovo%5Ftranscripts%2Egtf%2Egz
+    gzip -d GSM1261016_IP2-50_denovo_transcripts.gtf.gz
+    mv GSM1261016_IP2-50_denovo_transcripts.gtf TNBC1_denovo_transcripts.gtf
+    wget https://ftp.ncbi.nlm.nih.gov/geo/samples/GSM1261nnn/GSM1261022/suppl/GSM1261022%5FIP2%2D42%5Fdenovo%5Ftranscripts%2Egtf%2Egz
+    gzip -d GSM1261022_IP2-42_denovo_transcripts.gtf.gz
+    mv GSM1261022_IP2-42_denovo_transcripts.gtf NonTNBC1_denovo_transcripts.gtf
 
 ## Quelle est la séquence génomique du gène ENSG00000091831 ?
 
