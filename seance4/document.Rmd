@@ -99,6 +99,11 @@ Pour information, voici les commandes utilisées pour récupérer les données.
 
 ## Quelle est la séquence génomique du gène ENSG00000091831 ?
 
+Il s'agit de sélectionner les informations du gène ENSG00000091831 à partir du fichier d'annotation puis d'utiliser un outil de la suite bedtools qui permet d'extraire la séquence génomique d'éléments.
+
+<details>
+<summary>Solution pas à pas</summary>
+
 *Étape 1*: Comment retrouver toutes les lignes qui contiennent le `ENSG00000091831`.
 S'agit-il uniquement du gène ?
 
@@ -156,9 +161,14 @@ Attention, le header du FASTA généré correspond aux coordonnées génomiques 
 
 À vous de le renommer si vous souhaitez indiquer le nom du gène par exemple.
 
+</details>
+
 ## Contenu en GC
 
 La documentation sur le site web de bedtools est désespérément vide. En effet, l'outil calcule seulement des statistiques de base sur le contenu en nucléotides. Rien de compliqué.
+
+<details>
+<summary>Solution pas à pas</summary>
 
 *Étape 1*: Afficher l'aide de l'outil `bedtools nuc`
 
@@ -180,12 +190,16 @@ bedtools nuc -fi data/Homo_sapiens.GRCh38.dna.toplevel.fa -bed ENSG00000091831_g
 # bedtools nuc -fi data/Homo_sapiens.GRCh38.dna.toplevel.fa -bed ENSG00000091831_gene.gff3 | awk -F "\t" '{print $11}'
 ```
 
+</details>
 
 ## Extraire et compter le nombre de variants connus dans ce gène ?
 
 *Autre formulation* : Générér un fichier VCF contenant les variants connus qui intersectent le gène ENSG00000091831. Puis compter le nombre de lignes du fichier VCF de sortie contenant les variants.
 
 Le fichier de variants connus est : `data/common_all_20180418.vcf`.
+
+<details>
+<summary>Solution pas à pas</summary>
 
 *Étape 1*: Afficher l'aide de l'outil `bedtools intersect`.
 
@@ -210,28 +224,275 @@ srun bedtools intersect -b ENSG00000091831_gene.gff3 -a data/common_all_20180418
 If you are trying to intersect very large files and are having trouble with excessive memory usage, please presort your data by chromosome and then by start position (e.g., sort -k1,1 -k2,2n in.bed > in.sorted.bed for BED files) and then use the -sorted option. This invokes a memory-efficient algorithm designed for large files. This algorithm has been substantially improved in recent (>=2.18.0) releases.
 </div>
 
-L
+Quelles sont les deux options à rajouter ? Quel est donc ce fichier `genome` ?
+
+Le fichier genome doit recenser sur deux colonnes le nom du chromosome et sa longueur. Cette information est disponible dans le fichier `.fai` qui doit accompagner le génome. C'est son index, qui est créé par la commande `samtools faidx`. Ce fichier est déjà disponible dans le répertoire `data`.
+
+
+    head data/Homo_sapiens.GRCh38.dna.toplevel.fa.fai 
+    1	248956422	56	60	61
+    2	242193529	253105808	60	61
+    3	198295559	499335952	60	61
+    4	190214555	700936493	60	61
+    5	181538259	894321347	60	61
+    6	170805979	1078885300	60	61
+
+Le détail des colonnes est disponible <a href="http://www.htslib.org/doc/faidx.html">ici</a>.
+
+Il suffit alors de sélectionner les deux premières colonnes et de rediriger la sortie dans un fichier : 
 
 ```{bash, eval=FALSE}
-srun bedtools intersect -b ENSG00000091831_gene.gff3 -a data/common_all_20180418.vcf -sorted -g data/my.genome 
+cut -f1,2 data/Homo_sapiens.GRCh38.dna.toplevel.fa.fai > hg38.genome
 ```
 
 
-
-*Étape 3*: Rediriger la sortie dans un ficher VCF *valide*
-
 ```{bash, eval=FALSE}
-srun bedtools intersect -b ENSG00000091831_gene.gff3 -a data/common_all_20180418.vcf -sorted -g data/my.genome -header > ENSG00000091831_known.vcf
+srun bedtools intersect -b ENSG00000091831_gene.gff3 -a data/common_all_20180418.vcf -sorted -g > hg38.genome
 ```
 
+Voici la démonstration de l'efficacité de cet algorithme :
 
+
+    date ; srun bedtools intersect -b ENSG00000091831_gene.gff3 -a data/common_all_20180418.vcf -header -sorted -g data/my.genome > ENSG00000091831_known.vcf2 ; date
+    mer. juin  3 21:45:29 CEST 2020
+    mer. juin  3 21:46:37 CEST 2020
+    # Environ 1 min
+    
+    date ; srun bedtools intersect -b ENSG00000091831_gene.gff3 -a data/common_all_20180418.vcf -header > ENSG00000091831_known.vcf ; date
+    mer. juin  3 21:21:29 CEST 2020
+    mer. juin  3 21:24:37 CEST 2020
+    # environ 3 min
+
+*Étape 3*: Rediriger la sortie dans un ficher VCF *valide* (avec le header)
+
+Quelle option rajouter ?
+
+```{bash, eval=FALSE}
+srun bedtools intersect -b ENSG00000091831_gene.gff3 -a data/common_all_20180418.vcf -header > ENSG00000091831_known.vcf
+```
+
+*Étape 4*: On compte le nombre de lignes de variants
+
+```{bash, eval=FALSE}
 grep -vc "^#" ENSG00000091831_known.vcf
 6018
 ```
 
-<div class="alert danger">Le header d'un fichier VCF est indispensable ! S'il n'est pas présent, certains outils ne fonctionneront pas.</div>
+</details>
 
-### Combien de SNV (single nucleotide variants) sont communs et différents entre TNBC1 et NonTNBC1 sur le gène ?
+
+
+
+
+## Existe-t-il des variants connus dans la région promotrice de ce gène ?
+
+On définit une région promotrice comme étant les 2 kb précédant le gène.
+
+```{bash, eval=FALSE}
+cut -f1,2 /shared/bank/homo_sapiens/GRCh38/fasta/Homo_sapiens.GRCh38.dna.primary_assembly.fa.fai > my.genome
+bedtools flank -g data/my.genome -i ENSG00000091831_gene.gff3 -l 2000 -r 0 > ENSG00000091831_prom_gene.gff3
+
+srun bedtools intersect -b ENSG00000091831_prom_gene.gff3 -a data/common_all_20180418.vcf -sorted -g data/my.genome -header > ENSG00000091831_prom_gene_known.vcf
+grep -vc "^#" ENSG00000091831_prom_gene_known.vcf
+20
+
+```
+
+## Quels sont les transcrits spécifiques à l'échantillon NonTNBC1 ?
+
+Il s'agit dans cet exercice d'utiliser les fichiers `GTF` contenant pour chaque échantillon les coordonnées des transcrits détectés dans cette étude.
+Attention, l'annotation des fichiers `GTF` n'est pas conforme avec nos fichiers !
+
+<details>
+<summary>Solution pas à pas</summary>
+
+```{bash, eval=FALSE}
+awk '$3=="transcript"' data/TNBC1_denovo_transcripts.gtf | cut -f 1,4-5 | sed "s/chr//" | sort -k1,1 -k2,2n > TNBC1_denovo_transcripts.bed
+awk '$3=="transcript"' data/NonTNBC1_denovo_transcripts.gtf | cut -f 1,4-5 | sed "s/chr//" | sort -k1,1 -k2,2n > NonTNBC1_denovo_transcripts.bed
+
+bedtools intersect -b ENSG00000091831_gene.gff3 -a TNBC1_denovo_transcripts.bed > TNBC1_denovo_transcripts_ENSG00000091831.bed
+bedtools intersect -b ENSG00000091831_gene.gff3 -a NonTNBC1_denovo_transcripts.bed > NonTNBC1_denovo_transcripts_ENSG00000091831.bed
+
+bedtools subtract -a NonTNBC1_denovo_transcripts_ENSG00000091831.bed -b TNBC1_denovo_transcripts_ENSG00000091831.bed -A > specificNonTNBC1_denovo_transcripts_ENSG00000091831.bed
+```
+
+</details>
+
+## Quel est le miRNA le plus proche de ce gène ?
+
+Les miRNA sont un des éléments du fichier d'annotation. Il est nécessaire dans un premier temps d'extraire les lignes correspondant aux miRNA puis de lancer un outil de la suite bedtools qui permet de rechercher le ou les éléments les plus proches d'éléments d'un autre fichier.
+
+<details>
+<summary>Solution pas à pas</summary>
+
+*Étape 1*: Sélectionner les miRNA
+
+```{bash, eval=FALSE}
+awk '$3=="miRNA"' data/Homo_sapiens.GRCh38.100.gff3 > Homo_sapiens.GRCh38.100.miRNA.gff3
+```
+
+*Étape 2*: Lancer l'outil `bedtools closest`
+
+```{bash, eval=FALSE}
+srun bedtools closest -a ENSG00000091831_gene.gff3 -b Homo_sapiens.GRCh38.100.miRNA.gff3 -d 
+```
+
+</details>
+
+## Couverture / Profondeur
+
+Il s'agit ici d'utiliser les fichiers `BAM` qui contiennent les reads mappés sur génome humain qui sont présents dans le répertoire `data`.
+
+<details>
+<summary>Rappel sur le mapping</summary>
+
+### Mapping
+
+Le script suivant, `star.sh`, lance *STAR* sur une liste d'échantillons passés en arguments.
+
+    #!/bin/bash
+    #SBATCH --job-name=star
+    #SBATCH --cpus-per-task=8
+    #SBATCH --mem-per-cpu=4G
+    
+    module load star/2.6
+    
+    ## Homo Sapiens GRCh38
+    gtf="/shared/mfs/data/projects/dubii2020/data/module5/seance4/Homo_sapiens.GRCh38.100.gtf"
+    
+    ## Homo Sapiens GRCh38 STAR index
+    index="/shared/data/bank/homo_sapiens/GRCh38/star/"
+    
+    path="/shared/projects/dubii2020/data/module5/seance4"
+    r1="$path/${1}_1.fastq.gz"
+    r2="$path/${1}_2.fastq.gz"
+    
+    starOpts="--outSAMmultNmax 1 --outFilterMismatchNmax 999 --outFilterMismatchNoverLmax 0.04 --outSAMprimaryFlag OneBestScore --outMultimapperOrder Random --outSAMattributes All"
+    
+    odir="./mapping"
+    prefix=$(basename $r1 | sed -e 's/_1.fastq.gz//')
+    cpus=8
+    
+    mkdir -p ${odir}
+    srun STAR --genomeDir ${index} --readFilesIn ${r1} ${r2} --sjdbGTFfile ${gtf} --runThreadN ${cpus} --runMode alignReads --outSAMtype BAM Unsorted  --readFilesCommand zcat --outFileNamePrefix ${odir}/${prefix} --quantMode GeneCounts --outSAMattrRGline ID:${prefix} SM:${prefix} LB:Illumina PL:Illumina ${starOpts}
+
+
+On peut le lancer de la manière suivante:
+
+    for i in SRR1027171 SRR1027177 ; do sbatch star.sh $i ; done
+    cd mapping
+    srun --cpus-per-task 16 samtools sort -@ 16 SRR1027177Aligned.out.bam > SRR1027177Aligned.out.sorted.bam
+    srun --cpus-per-task 16 samtools sort -@ 16 SRR1027171Aligned.out.bam > SRR1027171Aligned.out.sorted.bam
+    
+    ## Rennomage des fichiers BAM
+    mv SRR1027171Aligned.out.sorted.bam TNBC1.bam
+    mv SRR1027177Aligned.out.sorted.bam NonTNBC1.bam
+    
+
+</details>
+
+<details>
+<summary>Solution pas à pas</summary>
+
+```{bash, eval=FALSE}
+srun bedtools intersect -a data/TNBC1.bam -b ENSG00000091831_gene.gff3 -sorted -g data/my.genome  > TNBC1_on_ENSG00000091831.bam
+srun bedtools intersect -a data/NonTNBC1.bam -b ENSG00000091831_gene.gff3 -sorted -g data/my.genome  > NonTNBC1_on_ENSG00000091831.bam
+
+# Transformer les BAM en BED
+srun bedtools bamtobed -i TNBC1_on_ENSG00000091831.bam -split > TNBC1_on_ENSG00000091831.bed
+sort -k1,1 -k2,2n TNBC1_on_ENSG00000091831.bed > TNBC1_on_ENSG00000091831_sorted.bed
+srun bedtools bamtobed -i NonTNBC1_on_ENSG00000091831.bam -split > NonTNBC1_on_ENSG00000091831.bed
+sort -k1,1 -k2,2n NonTNBC1_on_ENSG00000091831.bed > NonTNBC1_on_ENSG00000091831_sorted.bed
+
+# Merger les intervalles
+srun bedtools merge -i TNBC1_on_ENSG00000091831_sorted.bed > TNBC1_on_ENSG00000091831_merged.bed
+srun bedtools merge -i NonTNBC1_on_ENSG00000091831_sorted.bed > NonTNBC1_on_ENSG00000091831_merged.bed
+
+# Calculer la couverture
+bedtools coverage -a ENSG00000091831_gene.gff3 -b TNBC1_on_ENSG00000091831_merged.bed -hist
+bedtools coverage -a ENSG00000091831_gene.gff3 -b NonTNBC1_on_ENSG00000091831_merged.bed -hist
+
+bedtools genomecov -ibam TNBC1_on_ENSG00000091831.bam -bga > TNBC1_on_ENSG00000091831.bedgraph
+bedtools genomecov -ibam NonTNBC1_on_ENSG00000091831.bam -bga > NonTNBC1_on_ENSG00000091831.bedgraph
+
+bedtools intersect -a TNBC1.bam -b ENSG00000091831.gff3 > TNBC1_on_ENSG00000091831.bam
+bedtools intersect -a NonTNBC1.bam -b ENSG00000091831.gff3 > NonTNBC1_on_ENSG00000091831.bam
+
+bedtools bamtobed -i TNBC1_on_ENSG00000091831.bam -split > TNBC1_on_ENSG00000091831.bed
+sort -k1,1 -k2,2n TNBC1_on_ENSG00000091831.bed > TNBC1_on_ENSG00000091831_sorted.bed
+bedtools bamtobed -i NonTNBC1_on_ENSG00000091831.bam -split > NonTNBC1_on_ENSG00000091831.bed
+sort -k1,1 -k2,2n NonTNBC1_on_ENSG00000091831.bed > NonTNBC1_on_ENSG00000091831_sorted.bed
+
+# Merger les intervalles
+bedtools merge -i TNBC1_on_ENSG00000091831_sorted.bed > TNBC1_on_ENSG00000091831_merged.bed
+bedtools merge -i NonTNBC1_on_ENSG00000091831_sorted.bed > NonTNBC1_on_ENSG00000091831_merged.bed
+
+# Calculer la couverture
+bedtools coverage -a genes.gff3 -b TNBC1_on_ENSG00000091831_merged.bed -hist
+bedtools coverage -a genes.gff3 -b NonTNBC1_on_ENSG00000091831_merged.bed -hist
+
+bedtools genomecov -ibam TNBC1_on_ENSG00000091831.bam -bga > TNBC1_on_ENSG00000091831.bedgraph
+bedtools genomecov -ibam NonTNBC1_on_ENSG00000091831.bam -bga > NonTNBC1_on_ENSG00000091831.bedgraph
+```
+
+</details>
+
+<details>
+<summary>Exemple de représentation des couvertures sous R avec la librairie `Sushi`</summary>
+
+```{r, eval=TRUE, message=FALSE}
+library(Sushi)
+tnbc <- read.delim("TNBC1_on_ENSG00000091831.bedgraph")
+nontnbc <- read.delim("NonTNBC1_on_ENSG00000091831.bedgraph")
+
+chrom            = "6"
+chromstart = 151656690
+chromend = 152129619
+
+plotBedgraph(nontnbc,chrom,chromstart,chromend,transparency=.50,flip=FALSE,color="blue",linecol="blue")
+plotBedgraph(tnbc,chrom,chromstart,chromend,transparency=.50,flip=FALSE,color="#E5001B",linecol="#E5001B",overlay=TRUE,rescaleoverlay=FALSE)
+labelgenome(chrom,chromstart,chromend,side=1,scipen=20,n=3,line=.18,chromline=.5,scaleline=0.5,scale="Mb")
+
+transparency = 0.5
+col1 = col2rgb("blue")
+finalcolor1 = rgb(col1[1],col1[2],col1[3],alpha=transparency * 255,maxColorValue = 255)
+col2 = col2rgb("#E5001B")
+finalcolor2 = rgb(col2[1],col2[2],col2[3],alpha=transparency * 255,maxColorValue = 255)
+
+legend("topright",inset=0.025,legend=c("NonTNBC1","TNBC1"),fill=c(finalcolor1,finalcolor2),border=c("blue","#E5001B"),text.font=2,cex=0.75)
+axis(side=2,las=2,tcl=.2)
+
+mtext("Read Depth",side=2,line=3,cex=.75,font=2)
+```
+
+Ou pour séparer les deux pistes
+
+```{r}
+par(mfrow=c(2,1))
+plotBedgraph(nontnbc,chrom,chromstart,chromend,transparency=.50,flip=FALSE,color="blue",linecol="blue")
+labelgenome(chrom,chromstart,chromend,side=1,scipen=20,n=3,line=.18,chromline=.5,scaleline=0.5,scale="Mb")
+legend("topright",inset=0.025,legend=c("NonTNBC1"),fill=c(finalcolor1),border=c("blue"),text.font=2,cex=0.75)
+axis(side=2,las=2,tcl=.2)
+mtext("Read Depth",side=2,line=3,cex=.75,font=2)
+
+plotBedgraph(tnbc,chrom,chromstart,chromend,transparency=.50,flip=FALSE,color="#E5001B",linecol="#E5001B")
+labelgenome(chrom,chromstart,chromend,side=1,scipen=20,n=3,line=.18,chromline=.5,scaleline=0.5,scale="Mb")
+legend("topright",inset=0.025,legend=c("TNBC1"),fill=c(finalcolor2),border=c("#E5001B"),text.font=2,cex=0.75)
+axis(side=2,las=2,tcl=.2)
+mtext("Read Depth",side=2,line=3,cex=.75,font=2)
+
+```
+
+</details>
+
+### Bonus : Combien de SNVs (single nucleotide variants) sont communs et différents entre TNBC1 et NonTNBC1 sur le gène ?
+
+Vous aurez besoin, en plus des outils déjà vus dans ce TP, de l'outil <strong class="tool">vcftools</strong> pour ne garder que les SNVs du fichier VCF (qui contient également des INDELs).
+
+<details>
+<summary>Solution pas à pas</summary>
+
+*Étape 1*: 
 
 ```{bash, eval=FALSE}
 vcftools --vcf ENSG00000091831_known.vcf --remove-indels --recode --recode-INFO-all --stdout > ENSG00000091831_known_SNV.vcf
@@ -280,175 +541,7 @@ grep -vc "^#" specificNonTNBC1_known_ENSG00000091831.vcf
 3
 ```
 
-
-## Existe-t-il des variants connus dans la région promotrice de ce gène ?
-
-On définit une région promotrice comme étant les 2 kb précédant le gène.
-
-```{bash, eval=FALSE}
-cut -f1,2 /shared/bank/homo_sapiens/GRCh38/fasta/Homo_sapiens.GRCh38.dna.primary_assembly.fa.fai > my.genome
-bedtools flank -g data/my.genome -i ENSG00000091831_gene.gff3 -l 2000 -r 0 > ENSG00000091831_prom_gene.gff3
-
-srun bedtools intersect -b ENSG00000091831_prom_gene.gff3 -a data/common_all_20180418.vcf -sorted -g data/my.genome -header > ENSG00000091831_prom_gene_known.vcf
-grep -vc "^#" ENSG00000091831_prom_gene_known.vcf
-20
-
-```
-
-## Quels sont les transcrits spécifiques à l'échantillon NonTNBC1 ?
-
-```{bash, eval=FALSE}
-awk '$3=="transcript"' data/TNBC1_denovo_transcripts.gtf | cut -f 1,4-5 | sed "s/chr//" | sort -k1,1 -k2,2n > TNBC1_denovo_transcripts.bed
-awk '$3=="transcript"' data/NonTNBC1_denovo_transcripts.gtf | cut -f 1,4-5 | sed "s/chr//" | sort -k1,1 -k2,2n > NonTNBC1_denovo_transcripts.bed
-
-bedtools intersect -b ENSG00000091831_gene.gff3 -a TNBC1_denovo_transcripts.bed > TNBC1_denovo_transcripts_ENSG00000091831.bed
-bedtools intersect -b ENSG00000091831_gene.gff3 -a NonTNBC1_denovo_transcripts.bed > NonTNBC1_denovo_transcripts_ENSG00000091831.bed
-
-bedtools subtract -a NonTNBC1_denovo_transcripts_ENSG00000091831.bed -b TNBC1_denovo_transcripts_ENSG00000091831.bed -A > specificNonTNBC1_denovo_transcripts_ENSG00000091831.bed
-```
-
-
-## Quel est le miRNA le plus proche de ce gène ?
-
-```{bash, eval=FALSE}
-awk '$3=="miRNA"' data/Homo_sapiens.GRCh38.100.gff3 > Homo_sapiens.GRCh38.100.miRNA.gff3
-srun bedtools closest -a ENSG00000091831_gene.gff3 -b Homo_sapiens.GRCh38.100.miRNA.gff3 -d 
-```
-
-
-## Couverture / Profondeur
-
-### Mapping
-
-Le script suivant, `star.sh`, lance *STAR* sur une liste d'échantillons passés en arguments.
-
-    #!/bin/bash
-    #SBATCH --job-name=star
-    #SBATCH --cpus-per-task=8
-    #SBATCH --mem-per-cpu=4G
-    
-    module load star/2.6
-    
-    ## Homo Sapiens GRCh38
-    gtf="/shared/mfs/data/projects/dubii2020/data/module5/seance4/Homo_sapiens.GRCh38.100.gtf"
-    
-    ## Homo Sapiens GRCh38 STAR index
-    index="/shared/data/bank/homo_sapiens/GRCh38/star/"
-    
-    path="/shared/projects/dubii2020/data/module5/seance4"
-    r1="$path/${1}_1.fastq.gz"
-    r2="$path/${1}_2.fastq.gz"
-    
-    starOpts="--outSAMmultNmax 1 --outFilterMismatchNmax 999 --outFilterMismatchNoverLmax 0.04 --outSAMprimaryFlag OneBestScore --outMultimapperOrder Random --outSAMattributes All"
-    
-    odir="./mapping"
-    prefix=$(basename $r1 | sed -e 's/_1.fastq.gz//')
-    cpus=8
-    
-    mkdir -p ${odir}
-    srun STAR --genomeDir ${index} --readFilesIn ${r1} ${r2} --sjdbGTFfile ${gtf} --runThreadN ${cpus} --runMode alignReads --outSAMtype BAM Unsorted  --readFilesCommand zcat --outFileNamePrefix ${odir}/${prefix} --quantMode GeneCounts --outSAMattrRGline ID:${prefix} SM:${prefix} LB:Illumina PL:Illumina ${starOpts}
-
-
-On peut le lancer de la manière suivante:
-
-    for i in SRR1027171 SRR1027177 ; do sbatch star.sh $i ; done
-    cd mapping
-    srun --cpus-per-task 16 samtools sort -@ 16 SRR1027177Aligned.out.bam > SRR1027177Aligned.out.sorted.bam
-    srun --cpus-per-task 16 samtools sort -@ 16 SRR1027171Aligned.out.bam > SRR1027171Aligned.out.sorted.bam
-    
-    ## Rennomage des fichiers BAM
-    mv SRR1027171Aligned.out.sorted.bam TNBC1.bam
-    mv SRR1027177Aligned.out.sorted.bam NonTNBC1.bam
-    
-
-Les BAM sont disponibles dans le répertoire data.
-
-```{bash, eval=FALSE}
-srun bedtools intersect -a data/TNBC1.bam -b ENSG00000091831_gene.gff3 -sorted -g data/my.genome  > TNBC1_on_ENSG00000091831.bam
-srun bedtools intersect -a data/NonTNBC1.bam -b ENSG00000091831_gene.gff3 -sorted -g data/my.genome  > NonTNBC1_on_ENSG00000091831.bam
-
-# Transformer les BAM en BED
-srun bedtools bamtobed -i TNBC1_on_ENSG00000091831.bam -split > TNBC1_on_ENSG00000091831.bed
-sort -k1,1 -k2,2n TNBC1_on_ENSG00000091831.bed > TNBC1_on_ENSG00000091831_sorted.bed
-srun bedtools bamtobed -i NonTNBC1_on_ENSG00000091831.bam -split > NonTNBC1_on_ENSG00000091831.bed
-sort -k1,1 -k2,2n NonTNBC1_on_ENSG00000091831.bed > NonTNBC1_on_ENSG00000091831_sorted.bed
-
-# Merger les intervalles
-srun bedtools merge -i TNBC1_on_ENSG00000091831_sorted.bed > TNBC1_on_ENSG00000091831_merged.bed
-srun bedtools merge -i NonTNBC1_on_ENSG00000091831_sorted.bed > NonTNBC1_on_ENSG00000091831_merged.bed
-
-# Calculer la couverture
-bedtools coverage -a ENSG00000091831_gene.gff3 -b TNBC1_on_ENSG00000091831_merged.bed -hist
-bedtools coverage -a ENSG00000091831_gene.gff3 -b NonTNBC1_on_ENSG00000091831_merged.bed -hist
-
-bedtools genomecov -ibam TNBC1_on_ENSG00000091831.bam -bga > TNBC1_on_ENSG00000091831.bedgraph
-bedtools genomecov -ibam NonTNBC1_on_ENSG00000091831.bam -bga > NonTNBC1_on_ENSG00000091831.bedgraph
-
-bedtools intersect -a TNBC1.bam -b ENSG00000091831.gff3 > TNBC1_on_ENSG00000091831.bam
-bedtools intersect -a NonTNBC1.bam -b ENSG00000091831.gff3 > NonTNBC1_on_ENSG00000091831.bam
-
-bedtools bamtobed -i TNBC1_on_ENSG00000091831.bam -split > TNBC1_on_ENSG00000091831.bed
-sort -k1,1 -k2,2n TNBC1_on_ENSG00000091831.bed > TNBC1_on_ENSG00000091831_sorted.bed
-bedtools bamtobed -i NonTNBC1_on_ENSG00000091831.bam -split > NonTNBC1_on_ENSG00000091831.bed
-sort -k1,1 -k2,2n NonTNBC1_on_ENSG00000091831.bed > NonTNBC1_on_ENSG00000091831_sorted.bed
-
-# Merger les intervalles
-bedtools merge -i TNBC1_on_ENSG00000091831_sorted.bed > TNBC1_on_ENSG00000091831_merged.bed
-bedtools merge -i NonTNBC1_on_ENSG00000091831_sorted.bed > NonTNBC1_on_ENSG00000091831_merged.bed
-
-# Calculer la couverture
-bedtools coverage -a genes.gff3 -b TNBC1_on_ENSG00000091831_merged.bed -hist
-bedtools coverage -a genes.gff3 -b NonTNBC1_on_ENSG00000091831_merged.bed -hist
-
-bedtools genomecov -ibam TNBC1_on_ENSG00000091831.bam -bga > TNBC1_on_ENSG00000091831.bedgraph
-bedtools genomecov -ibam NonTNBC1_on_ENSG00000091831.bam -bga > NonTNBC1_on_ENSG00000091831.bedgraph
-```
-
-Utilisez la librarie Sushi.
-```{r, eval=TRUE, message=FALSE}
-library(Sushi)
-tnbc <- read.delim("TNBC1_on_ENSG00000091831.bedgraph")
-nontnbc <- read.delim("NonTNBC1_on_ENSG00000091831.bedgraph")
-
-chrom            = "6"
-chromstart = 151656690
-chromend = 152129619
-
-plotBedgraph(nontnbc,chrom,chromstart,chromend,transparency=.50,flip=FALSE,color="blue",linecol="blue")
-plotBedgraph(tnbc,chrom,chromstart,chromend,transparency=.50,flip=FALSE,color="#E5001B",linecol="#E5001B",overlay=TRUE,rescaleoverlay=FALSE)
-labelgenome(chrom,chromstart,chromend,side=1,scipen=20,n=3,line=.18,chromline=.5,scaleline=0.5,scale="Mb")
-
-transparency = 0.5
-col1 = col2rgb("blue")
-finalcolor1 = rgb(col1[1],col1[2],col1[3],alpha=transparency * 255,maxColorValue = 255)
-col2 = col2rgb("#E5001B")
-finalcolor2 = rgb(col2[1],col2[2],col2[3],alpha=transparency * 255,maxColorValue = 255)
-
-legend("topright",inset=0.025,legend=c("NonTNBC1","TNBC1"),fill=c(finalcolor1,finalcolor2),border=c("blue","#E5001B"),text.font=2,cex=0.75)
-axis(side=2,las=2,tcl=.2)
-
-mtext("Read Depth",side=2,line=3,cex=.75,font=2)
-```
-
-Ou pour séparer les deux pistes
-
-```{r}
-par(mfrow=c(2,1))
-plotBedgraph(nontnbc,chrom,chromstart,chromend,transparency=.50,flip=FALSE,color="blue",linecol="blue")
-labelgenome(chrom,chromstart,chromend,side=1,scipen=20,n=3,line=.18,chromline=.5,scaleline=0.5,scale="Mb")
-legend("topright",inset=0.025,legend=c("NonTNBC1"),fill=c(finalcolor1),border=c("blue"),text.font=2,cex=0.75)
-axis(side=2,las=2,tcl=.2)
-mtext("Read Depth",side=2,line=3,cex=.75,font=2)
-
-plotBedgraph(tnbc,chrom,chromstart,chromend,transparency=.50,flip=FALSE,color="#E5001B",linecol="#E5001B")
-labelgenome(chrom,chromstart,chromend,side=1,scipen=20,n=3,line=.18,chromline=.5,scaleline=0.5,scale="Mb")
-legend("topright",inset=0.025,legend=c("TNBC1"),fill=c(finalcolor2),border=c("#E5001B"),text.font=2,cex=0.75)
-axis(side=2,las=2,tcl=.2)
-mtext("Read Depth",side=2,line=3,cex=.75,font=2)
-
-```
-
-
+</details>
 
 
 
