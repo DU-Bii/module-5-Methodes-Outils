@@ -338,15 +338,15 @@ div.tocify {
 <li>son annotation</li>
 <li>les variants humains connus</li>
 </ul>
-<p>Nous allons croiser ces données hétérogènes pour répondre à différentes questions :</p>
+<p>Nous allons croiser ces données hétérogènes en utilisant <em>bedtools</em> pour répondre à différentes questions :</p>
 <ul>
-<li>Quelle est la séquence génomique du gène ENSG00000091831 ? (getfasta)</li>
-<li>Quel est son contenu en GC ? (nuc)</li>
+<li>Quelle est la séquence génomique du gène ENSG00000091831 ? (<code>getfasta</code>)</li>
+<li>Quel est son contenu en GC ? (<code>nuc</code>)</li>
 <li>Combien de variants connus sont présents dans ce gène ? Y a-t-il des variants communs ou spécifiques à un échantillon ? Sont-ils nouveaux ?</li>
-<li>Existe-t-il des variants connus dans la région promotrice de ce gène ? (flank)</li>
-<li>Quels sont les transcrits complets spécifiques à l’échantillon NonTNBC1 ? (subtract)</li>
-<li>Quel est le micro-ARN (miRNA) le plus proche de ce gène ? (closest)</li>
-<li>Calculer et comparer la couverture et profondeur du gène ENSG00000091831 pour les échantillons TNBC1 et NonTNBC1 (genomecov / coverage / intersect bam / bam2bed)</li>
+<li>Existe-t-il des variants connus dans la région promotrice de ce gène ? (<code>flank</code>)</li>
+<li>Quels sont les transcrits complets spécifiques à l’échantillon NonTNBC1 ? (<code>subtract</code>)</li>
+<li>Quel est le micro-ARN (miRNA) le plus proche de ce gène ? (<code>closest</code>)</li>
+<li>Calculer et comparer la couverture et profondeur du gène ENSG00000091831 pour les échantillons TNBC1 et NonTNBC1 (<code>genomecov</code> / <code>coverage</code> / <code>intersect bam</code> / <code>bam2bed</code>)</li>
 </ul>
 <div id="preparation-de-lespace-de-travail-et-recuperation-des-donnees-publiques" class="section level3">
 <h3>Préparation de l’espace de travail et récupération des données publiques</h3>
@@ -411,7 +411,7 @@ srun bedtools getfasta -fi data/Homo_sapiens.GRCh38.dna.toplevel.fa -bed ENSG000
 <div id="combien-de-variants-connus-existe-t-il-dans-ce-gene" class="section level2">
 <h2>Combien de variants connus existe-t-il dans ce gène ?</h2>
 <div class="alert danger">
-Attention, le format de sortie correspond au format du fichier passé par l’option -a !
+Attention, le format de sortie correspond au format du fichier passé par l’option <code>-a</code> !
 </div>
 <pre class="bash"><code>srun bedtools intersect -b ENSG00000091831_gene.gff3 -a data/common_all_20180418.vcf -sorted -g data/my.genome -header &gt; ENSG00000091831_known.vcf
 grep -vc &quot;^#&quot; ENSG00000091831_known.vcf
@@ -493,8 +493,8 @@ srun bedtools closest -a ENSG00000091831_gene.gff3 -b Homo_sapiens.GRCh38.100.mi
 <h2>Couverture / Profondeur</h2>
 <div id="mapping" class="section level3">
 <h3>Mapping</h3>
-<p>Le script suivant lance <em>STAR</em> sur une liste d’échantillons passés en arguments.</p>
-<pre class="bash"><code>#!/bin/bash
+<p>Le script suivant, <code>star.sh</code>, lance <em>STAR</em> sur une liste d’échantillons passés en arguments.</p>
+<pre><code>#!/bin/bash
 #SBATCH --job-name=star
 #SBATCH --cpus-per-task=8
 #SBATCH --mem-per-cpu=4G
@@ -518,9 +518,9 @@ prefix=$(basename $r1 | sed -e 's/_1.fastq.gz//')
 cpus=8
 
 mkdir -p ${odir}
-srun STAR --genomeDir ${index} --readFilesIn ${r1} ${r2} --sjdbGTFfile ${gtf} --runThreadN ${cpus} --runMode alignReads --outSAMtype BAM Unsorted  --readFilesCommand zcat --outFileNamePrefix ${odir}/${prefix} --quantMode GeneCounts --outSAMattrRGline ID:${prefix} SM:${prefix} LB:Illumina PL:Illumina ${starOpts}
-</code></pre>
-<pre class="bash"><code>for i in SRR1027171 SRR1027177 ; do sbatch star.sh $i ; done
+srun STAR --genomeDir ${index} --readFilesIn ${r1} ${r2} --sjdbGTFfile ${gtf} --runThreadN ${cpus} --runMode alignReads --outSAMtype BAM Unsorted  --readFilesCommand zcat --outFileNamePrefix ${odir}/${prefix} --quantMode GeneCounts --outSAMattrRGline ID:${prefix} SM:${prefix} LB:Illumina PL:Illumina ${starOpts}</code></pre>
+<p>On peut le lancer de la manière suivante:</p>
+<pre><code>for i in SRR1027171 SRR1027177 ; do sbatch star.sh $i ; done
 cd mapping
 srun --cpus-per-task 16 samtools sort -@ 16 SRR1027177Aligned.out.bam &gt; SRR1027177Aligned.out.sorted.bam
 srun --cpus-per-task 16 samtools sort -@ 16 SRR1027171Aligned.out.bam &gt; SRR1027171Aligned.out.sorted.bam

@@ -45,15 +45,15 @@ Nous aurons également besoin de données publiques du génome humain :
 * son annotation 
 * les variants humains connus
 
-Nous allons croiser ces données hétérogènes pour répondre à différentes questions :
+Nous allons croiser ces données hétérogènes en utilisant *bedtools* pour répondre à différentes questions :
 
-- Quelle est la séquence génomique du gène ENSG00000091831 ? (getfasta)
-- Quel est son contenu en GC ? (nuc)
+- Quelle est la séquence génomique du gène ENSG00000091831 ? (`getfasta`)
+- Quel est son contenu en GC ? (`nuc`)
 - Combien de variants connus sont présents dans ce gène ? Y a-t-il des variants communs ou spécifiques à un échantillon ? Sont-ils nouveaux ?
-- Existe-t-il des variants connus dans la région promotrice de ce gène ? (flank)
-- Quels sont les transcrits complets spécifiques à l'échantillon NonTNBC1 ? (subtract)
-- Quel est le micro-ARN (miRNA) le plus proche de ce gène ? (closest)
-- Calculer et comparer la couverture et profondeur du gène ENSG00000091831 pour les échantillons TNBC1 et NonTNBC1 (genomecov / coverage / intersect bam / bam2bed)
+- Existe-t-il des variants connus dans la région promotrice de ce gène ? (`flank`)
+- Quels sont les transcrits complets spécifiques à l'échantillon NonTNBC1 ? (`subtract`)
+- Quel est le micro-ARN (miRNA) le plus proche de ce gène ? (`closest`)
+- Calculer et comparer la couverture et profondeur du gène ENSG00000091831 pour les échantillons TNBC1 et NonTNBC1 (`genomecov` / `coverage` / `intersect bam` / `bam2bed`)
 
 ### Préparation de l'espace de travail et récupération des données publiques
 
@@ -134,7 +134,7 @@ bedtools nuc -fi data/Homo_sapiens.GRCh38.dna.toplevel.fa -bed ENSG00000091831_g
 
 ## Combien de variants connus existe-t-il dans ce gène ?
 
-<div class="alert danger">Attention, le format de sortie correspond au format du fichier passé par l'option -a ! </div>
+<div class="alert danger">Attention, le format de sortie correspond au format du fichier passé par l'option `-a` ! </div>
 
 ```{bash, eval=FALSE}
 srun bedtools intersect -b ENSG00000091831_gene.gff3 -a data/common_all_20180418.vcf -sorted -g data/my.genome -header > ENSG00000091831_known.vcf
@@ -233,48 +233,46 @@ srun bedtools closest -a ENSG00000091831_gene.gff3 -b Homo_sapiens.GRCh38.100.mi
 
 ### Mapping
 
-Le script suivant lance *STAR* sur une liste d'échantillons passés en arguments.
+Le script suivant, `star.sh`, lance *STAR* sur une liste d'échantillons passés en arguments.
+
+    #!/bin/bash
+    #SBATCH --job-name=star
+    #SBATCH --cpus-per-task=8
+    #SBATCH --mem-per-cpu=4G
+    
+    module load star/2.6
+    
+    ## Homo Sapiens GRCh38
+    gtf="/shared/mfs/data/projects/dubii2020/data/module5/seance4/Homo_sapiens.GRCh38.100.gtf"
+    
+    ## Homo Sapiens GRCh38 STAR index
+    index="/shared/data/bank/homo_sapiens/GRCh38/star/"
+    
+    path="/shared/projects/dubii2020/data/module5/seance4"
+    r1="$path/${1}_1.fastq.gz"
+    r2="$path/${1}_2.fastq.gz"
+    
+    starOpts="--outSAMmultNmax 1 --outFilterMismatchNmax 999 --outFilterMismatchNoverLmax 0.04 --outSAMprimaryFlag OneBestScore --outMultimapperOrder Random --outSAMattributes All"
+    
+    odir="./mapping"
+    prefix=$(basename $r1 | sed -e 's/_1.fastq.gz//')
+    cpus=8
+    
+    mkdir -p ${odir}
+    srun STAR --genomeDir ${index} --readFilesIn ${r1} ${r2} --sjdbGTFfile ${gtf} --runThreadN ${cpus} --runMode alignReads --outSAMtype BAM Unsorted  --readFilesCommand zcat --outFileNamePrefix ${odir}/${prefix} --quantMode GeneCounts --outSAMattrRGline ID:${prefix} SM:${prefix} LB:Illumina PL:Illumina ${starOpts}
 
 
-```{bash, eval=FALSE}
-#!/bin/bash
-#SBATCH --job-name=star
-#SBATCH --cpus-per-task=8
-#SBATCH --mem-per-cpu=4G
+On peut le lancer de la manière suivante:
 
-module load star/2.6
-
-## Homo Sapiens GRCh38
-gtf="/shared/mfs/data/projects/dubii2020/data/module5/seance4/Homo_sapiens.GRCh38.100.gtf"
-
-## Homo Sapiens GRCh38 STAR index
-index="/shared/data/bank/homo_sapiens/GRCh38/star/"
-
-path="/shared/projects/dubii2020/data/module5/seance4"
-r1="$path/${1}_1.fastq.gz"
-r2="$path/${1}_2.fastq.gz"
-
-starOpts="--outSAMmultNmax 1 --outFilterMismatchNmax 999 --outFilterMismatchNoverLmax 0.04 --outSAMprimaryFlag OneBestScore --outMultimapperOrder Random --outSAMattributes All"
-
-odir="./mapping"
-prefix=$(basename $r1 | sed -e 's/_1.fastq.gz//')
-cpus=8
-
-mkdir -p ${odir}
-srun STAR --genomeDir ${index} --readFilesIn ${r1} ${r2} --sjdbGTFfile ${gtf} --runThreadN ${cpus} --runMode alignReads --outSAMtype BAM Unsorted  --readFilesCommand zcat --outFileNamePrefix ${odir}/${prefix} --quantMode GeneCounts --outSAMattrRGline ID:${prefix} SM:${prefix} LB:Illumina PL:Illumina ${starOpts}
-
-```
-
-```{bash, eval=FALSE}
-for i in SRR1027171 SRR1027177 ; do sbatch star.sh $i ; done
-cd mapping
-srun --cpus-per-task 16 samtools sort -@ 16 SRR1027177Aligned.out.bam > SRR1027177Aligned.out.sorted.bam
-srun --cpus-per-task 16 samtools sort -@ 16 SRR1027171Aligned.out.bam > SRR1027171Aligned.out.sorted.bam
-
-## Rennomage des fichiers BAM
-mv SRR1027171Aligned.out.sorted.bam TNBC1.bam
-mv SRR1027177Aligned.out.sorted.bam NonTNBC1.bam
-```
+    for i in SRR1027171 SRR1027177 ; do sbatch star.sh $i ; done
+    cd mapping
+    srun --cpus-per-task 16 samtools sort -@ 16 SRR1027177Aligned.out.bam > SRR1027177Aligned.out.sorted.bam
+    srun --cpus-per-task 16 samtools sort -@ 16 SRR1027171Aligned.out.bam > SRR1027171Aligned.out.sorted.bam
+    
+    ## Rennomage des fichiers BAM
+    mv SRR1027171Aligned.out.sorted.bam TNBC1.bam
+    mv SRR1027177Aligned.out.sorted.bam NonTNBC1.bam
+    
 
 Les BAM sont disponibles dans le répertoire data.
 
