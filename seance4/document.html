@@ -438,6 +438,7 @@ Il faut utiliser le cluster de calcul pour lancer les outils bioinformatiques ! 
 <div class="alert comment">
 <p><b>Pour les gros fichiers</b> :<br> If you are trying to intersect very large files and are having trouble with excessive memory usage, please presort your data by chromosome and then by start position (e.g., sort -k1,1 -k2,2n in.bed &gt; in.sorted.bed for BED files) and then use the -sorted option. This invokes a memory-efficient algorithm designed for large files. This algorithm has been substantially improved in recent (&gt;=2.18.0) releases.</p>
 </div>
+<p>Notez quel l’option <code>-sorted</code> demande également l’ajout de la l’option <code>-g</code>. Vous trouverez le fichier adéquat nommé <code>my.genome</code> dans le répertoire <code>data</code>.</p>
 <pre class="bash"><code>srun bedtools intersect -b ENSG00000091831_gene.gff3 -a data/common_all_20180418.vcf -sorted -g data/my.genome </code></pre>
 <p><em>Étape 3</em>: Redirigez la sortie dans un ficher VCF <em>valide</em>.</p>
 <pre class="bash"><code>srun bedtools intersect -b ENSG00000091831_gene.gff3 -a data/common_all_20180418.vcf -sorted -g data/my.genome -header &gt; ENSG00000091831_known.vcf</code></pre>
@@ -498,28 +499,36 @@ grep -vc &quot;^#&quot; specificNonTNBC1_known_ENSG00000091831.vcf
 <div id="existe-t-il-des-variants-connus-dans-la-region-promotrice-de-ce-gene" class="section level2">
 <h2>Existe-t-il des variants connus dans la région promotrice de ce gène ?</h2>
 <p>On définit une région promotrice comme étant les 2 kb précédant le gène.</p>
-<pre class="bash"><code>cut -f1,2 /shared/bank/homo_sapiens/GRCh38/fasta/Homo_sapiens.GRCh38.dna.primary_assembly.fa.fai &gt; my.genome
-bedtools flank -g data/my.genome -i ENSG00000091831_gene.gff3 -l 2000 -r 0 &gt; ENSG00000091831_prom_gene.gff3
-
-srun bedtools intersect -b ENSG00000091831_prom_gene.gff3 -a data/common_all_20180418.vcf -sorted -g data/my.genome -header &gt; ENSG00000091831_prom_gene_known.vcf
+<p><em>Étape 1</em>: Extrayez la région de 2 kb en amont de <code>ENSG00000091831</code>.</p>
+<pre class="bash"><code># Il me semble que l'on n'utilise finalement pas cette ligne...
+#cut -f1,2 /shared/bank/homo_sapiens/GRCh38/fasta/Homo_sapiens.GRCh38.dna.primary_assembly.fa.fai &gt; my.genome
+bedtools flank -g data/my.genome -i ENSG00000091831_gene.gff3 -l 2000 -r 0 &gt; ENSG00000091831_prom_gene.gff3</code></pre>
+<p><em>Étape 2</em>: Quels sont les variants connus situés dans cette région? Comptez-les.</p>
+<pre class="bash"><code>srun bedtools intersect -b ENSG00000091831_prom_gene.gff3 -a data/common_all_20180418.vcf -sorted -g data/my.genome -header &gt; ENSG00000091831_prom_gene_known.vcf
 grep -vc &quot;^#&quot; ENSG00000091831_prom_gene_known.vcf
-20
-</code></pre>
+20</code></pre>
 </div>
 <div id="quels-sont-les-transcrits-specifiques-a-lechantillon-nontnbc1" class="section level2">
 <h2>Quels sont les transcrits spécifiques à l’échantillon NonTNBC1 ?</h2>
+<p>Les fichiers de transcrits trouvés dans chacune des conditions sont dans le répertoire <code>data</code>, nommés <code>TNBC1_denovo_transcripts.gtf</code> et <code>NonTNBC1_denovo_transcripts.gtf</code>.</p>
+<p><em>Étape 0</em>: Comparer la façon de nommer les chromosomes dans les différents fichiers d’annotation (transcrits trouvés dans l’analyse, et annotation de référence). Sont-elles identiques?</p>
+<p><em>Étape 1</em>: Pour chacun des fichiers de transcrits trouvés dans l’analyse, extrayez les lignes où le type est <code>transcript</code>. Changez les noms de chromosomes de façon à les rendre identiques à l’annotation de référence. Transformez-les en fichiers en fichier BED. Triez-les. Faites ceci en 2 commandes uniquement, une pour chaque fichier.</p>
+<p><em>Attention: les fichiers BED sont 0-based, pas les GTF. Il y a donc une petite erreur ici !</em></p>
 <pre class="bash"><code>awk '$3==&quot;transcript&quot;' data/TNBC1_denovo_transcripts.gtf | cut -f 1,4-5 | sed &quot;s/chr//&quot; | sort -k1,1 -k2,2n &gt; TNBC1_denovo_transcripts.bed
-awk '$3==&quot;transcript&quot;' data/NonTNBC1_denovo_transcripts.gtf | cut -f 1,4-5 | sed &quot;s/chr//&quot; | sort -k1,1 -k2,2n &gt; NonTNBC1_denovo_transcripts.bed
-
-bedtools intersect -b ENSG00000091831_gene.gff3 -a TNBC1_denovo_transcripts.bed &gt; TNBC1_denovo_transcripts_ENSG00000091831.bed
-bedtools intersect -b ENSG00000091831_gene.gff3 -a NonTNBC1_denovo_transcripts.bed &gt; NonTNBC1_denovo_transcripts_ENSG00000091831.bed
-
-bedtools subtract -a NonTNBC1_denovo_transcripts_ENSG00000091831.bed -b TNBC1_denovo_transcripts_ENSG00000091831.bed -A &gt; specificNonTNBC1_denovo_transcripts_ENSG00000091831.bed</code></pre>
+awk '$3==&quot;transcript&quot;' data/NonTNBC1_denovo_transcripts.gtf | cut -f 1,4-5 | sed &quot;s/chr//&quot; | sort -k1,1 -k2,2n &gt; NonTNBC1_denovo_transcripts.bed</code></pre>
+<p><em>Étape 2</em>: Trouvez les transcrits produits par l’analyse qui chevauchent l’annotation de référence.</p>
+<pre class="bash"><code>bedtools intersect -b ENSG00000091831_gene.gff3 -a TNBC1_denovo_transcripts.bed &gt; TNBC1_denovo_transcripts_ENSG00000091831.bed
+bedtools intersect -b ENSG00000091831_gene.gff3 -a NonTNBC1_denovo_transcripts.bed &gt; NonTNBC1_denovo_transcripts_ENSG00000091831.bed</code></pre>
+<p><em>Étape 3</em>: Trouvez les transcrits qui sont à la fois dans l’annotation de référence, dans Non-TNBC1, mais pas dans TNBC1.</p>
+<p><strong>On ne peut pas utiliser bedtools intersect -v, ici?</strong></p>
+<pre class="bash"><code>bedtools subtract -a NonTNBC1_denovo_transcripts_ENSG00000091831.bed -b TNBC1_denovo_transcripts_ENSG00000091831.bed -A &gt; specificNonTNBC1_denovo_transcripts_ENSG00000091831.bed</code></pre>
 </div>
-<div id="quel-est-le-mirna-le-plus-proche-de-ce-gene" class="section level2">
-<h2>Quel est le miRNA le plus proche de ce gène ?</h2>
-<pre class="bash"><code>awk '$3==&quot;miRNA&quot;' data/Homo_sapiens.GRCh38.100.gff3 &gt; Homo_sapiens.GRCh38.100.miRNA.gff3
-srun bedtools closest -a ENSG00000091831_gene.gff3 -b Homo_sapiens.GRCh38.100.miRNA.gff3 -d </code></pre>
+<div id="quel-est-le-miarn-le-plus-proche-de-ce-gene" class="section level2">
+<h2>Quel est le miARN le plus proche de ce gène ?</h2>
+<p><em>Étape 1</em>: Extrayez les lignes se rapportant à des miRNAs dans le fichier d’annotation de référence.</p>
+<pre class="bash"><code>awk '$3==&quot;miRNA&quot;' data/Homo_sapiens.GRCh38.100.gff3 &gt; Homo_sapiens.GRCh38.100.miRNA.gff3</code></pre>
+<p><em>Étape 2</em>: Utilisez <code>bedtools closest</code> pour répondre à la question. Quelle est la distance entre le gène et le miARN?</p>
+<pre class="bash"><code>srun bedtools closest -a ENSG00000091831_gene.gff3 -b Homo_sapiens.GRCh38.100.miRNA.gff3 -d </code></pre>
 </div>
 <div id="couverture-profondeur" class="section level2">
 <h2>Couverture / Profondeur</h2>

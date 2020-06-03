@@ -209,6 +209,8 @@ srun bedtools intersect -b ENSG00000091831_gene.gff3 -a data/common_all_20180418
 <b>Pour les gros fichiers</b> :<br>
 If you are trying to intersect very large files and are having trouble with excessive memory usage, please presort your data by chromosome and then by start position (e.g., sort -k1,1 -k2,2n in.bed > in.sorted.bed for BED files) and then use the -sorted option. This invokes a memory-efficient algorithm designed for large files. This algorithm has been substantially improved in recent (>=2.18.0) releases.
 </div>
+Notez quel l'option `-sorted` demande également l'ajout de la l'option `-g`.
+Vous trouverez le fichier adéquat nommé `my.genome` dans le répertoire `data`.
 
 ```{bash, eval=FALSE}
 srun bedtools intersect -b ENSG00000091831_gene.gff3 -a data/common_all_20180418.vcf -sorted -g data/my.genome 
@@ -318,33 +320,72 @@ grep -vc "^#" specificNonTNBC1_known_ENSG00000091831.vcf
 
 On définit une région promotrice comme étant les 2 kb précédant le gène.
 
-```{bash, eval=FALSE}
-cut -f1,2 /shared/bank/homo_sapiens/GRCh38/fasta/Homo_sapiens.GRCh38.dna.primary_assembly.fa.fai > my.genome
-bedtools flank -g data/my.genome -i ENSG00000091831_gene.gff3 -l 2000 -r 0 > ENSG00000091831_prom_gene.gff3
+*Étape 1*: Extrayez la région de 2 kb en amont de `ENSG00000091831`.
 
+```{bash, eval=FALSE}
+# Il me semble que l'on n'utilise finalement pas cette ligne...
+#cut -f1,2 /shared/bank/homo_sapiens/GRCh38/fasta/Homo_sapiens.GRCh38.dna.primary_assembly.fa.fai > my.genome
+bedtools flank -g data/my.genome -i ENSG00000091831_gene.gff3 -l 2000 -r 0 > ENSG00000091831_prom_gene.gff3
+```
+
+*Étape 2*: Quels sont les variants connus situés dans cette région?
+Comptez-les.
+
+```{bash, eval=FALSE}
 srun bedtools intersect -b ENSG00000091831_prom_gene.gff3 -a data/common_all_20180418.vcf -sorted -g data/my.genome -header > ENSG00000091831_prom_gene_known.vcf
 grep -vc "^#" ENSG00000091831_prom_gene_known.vcf
 20
-
 ```
 
+
 ## Quels sont les transcrits spécifiques à l'échantillon NonTNBC1 ?
+
+Les fichiers de transcrits trouvés dans chacune des conditions sont dans le répertoire `data`, nommés `TNBC1_denovo_transcripts.gtf` et `NonTNBC1_denovo_transcripts.gtf`.
+
+*Étape 0*: Comparer la façon de nommer les chromosomes dans les différents fichiers d'annotation (transcrits trouvés dans l'analyse, et annotation de référence).
+Sont-elles identiques?
+
+*Étape 1*: Pour chacun des fichiers de transcrits trouvés dans l'analyse, extrayez les lignes où le type est `transcript`.
+Changez les noms de chromosomes de façon à les rendre identiques à l'annotation de référence.
+Transformez-les en fichiers en fichier BED.
+Triez-les.
+Faites ceci en 2 commandes uniquement, une pour chaque fichier.
+
+*Attention: les fichiers BED sont 0-based, pas les GTF.  Il y a donc une petite erreur ici !*
 
 ```{bash, eval=FALSE}
 awk '$3=="transcript"' data/TNBC1_denovo_transcripts.gtf | cut -f 1,4-5 | sed "s/chr//" | sort -k1,1 -k2,2n > TNBC1_denovo_transcripts.bed
 awk '$3=="transcript"' data/NonTNBC1_denovo_transcripts.gtf | cut -f 1,4-5 | sed "s/chr//" | sort -k1,1 -k2,2n > NonTNBC1_denovo_transcripts.bed
+```
 
+*Étape 2*: Trouvez les transcrits produits par l'analyse qui chevauchent l'annotation de référence.
+
+```{bash, eval=FALSE}
 bedtools intersect -b ENSG00000091831_gene.gff3 -a TNBC1_denovo_transcripts.bed > TNBC1_denovo_transcripts_ENSG00000091831.bed
 bedtools intersect -b ENSG00000091831_gene.gff3 -a NonTNBC1_denovo_transcripts.bed > NonTNBC1_denovo_transcripts_ENSG00000091831.bed
+```
 
+*Étape 3*: Trouvez les transcrits qui sont à la fois dans l'annotation de référence, dans Non-TNBC1, mais pas dans TNBC1.
+
+**On ne peut pas utiliser bedtools intersect -v, ici?**
+
+```{bash, eval=FALSE}
 bedtools subtract -a NonTNBC1_denovo_transcripts_ENSG00000091831.bed -b TNBC1_denovo_transcripts_ENSG00000091831.bed -A > specificNonTNBC1_denovo_transcripts_ENSG00000091831.bed
 ```
 
 
-## Quel est le miRNA le plus proche de ce gène ?
+## Quel est le miARN le plus proche de ce gène ?
+
+*Étape 1*: Extrayez les lignes se rapportant à des miRNAs dans le fichier d'annotation de référence.
 
 ```{bash, eval=FALSE}
 awk '$3=="miRNA"' data/Homo_sapiens.GRCh38.100.gff3 > Homo_sapiens.GRCh38.100.miRNA.gff3
+```
+
+*Étape 2*: Utilisez `bedtools closest` pour répondre à la question.
+Quelle est la distance entre le gène et le miARN?
+
+```{bash, eval=FALSE}
 srun bedtools closest -a ENSG00000091831_gene.gff3 -b Homo_sapiens.GRCh38.100.miRNA.gff3 -d 
 ```
 
@@ -480,16 +521,6 @@ axis(side=2,las=2,tcl=.2)
 mtext("Read Depth",side=2,line=3,cex=.75,font=2)
 
 ```
-
-
-
-
-
-
-
-
-
-
 
 
 
