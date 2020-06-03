@@ -99,7 +99,7 @@ En cas de blocage ou de question, n'hésitez pas à partager vos questions sur l
 | Cours | [[pdf](seance3/presentation-dubii_04-06-2020.pdf)]
 | TP Msconvert | [[pdf](seance3/MSconvert-dubii.pdf)]  |
 | Présentation Workflow4metabolomics | [[pdf](seance3/DUBii2020_W4M.pdf)] |
-| Support Galaxy Training  | [[pdf](seance3/DUBii2020_W4M.pdf)] |
+| Support Galaxy Training  | [[pdf](seance3/DUBii2020_GTNsuppmat.pdf)] |
 
 
 
