@@ -540,14 +540,27 @@ srun bedtools merge -i TNBC1_on_ENSG00000091831_sorted.bed > TNBC1_on_ENSG000000
 srun bedtools merge -i NonTNBC1_on_ENSG00000091831_sorted.bed > NonTNBC1_on_ENSG00000091831_merged.bed
 ```
 
-*Étape 4*: Calculez la couverture sur le gène ENSG00000091831
+*Étape 4*: Trouvez les régions de plus d'un kilo-base du gène non-couvertes avec `bedtools subtract`
 
 ```{bash, eval=FALSE}
-srun bedtools coverage -a ENSG00000091831_gene.gff3 -b TNBC1_on_ENSG00000091831_merged.bed -hist
-srun bedtools coverage -a ENSG00000091831_gene.gff3 -b NonTNBC1_on_ENSG00000091831_merged.bed -hist
+srun bedtools subtract -a ENSG00000091831_gene.gff3 -b TNBC1_on_ENSG00000091831_merged.bed | awk '($5 - $4 >= 1000)' > TNBC1_not_covered.gff3
+srun bedtools subtract -a ENSG00000091831_gene.gff3 -b NonTNBC1_on_ENSG00000091831_merged.bed | awk '($5 - $4 >= 1000)' > NonTNBC1_not_covered.gff3
 ```
 
-*Étape 5*: Calculez la profondeur à chaque position sur le gène ENSG00000091831
+*Étape 5*: Quelles sont les régions de 1 kb couvertes par Non-TNBC1 et non-couvertes dans l'autre cas?
+
+```{bash, eval=FALSE}
+srun bedtools intersect -b NonTNBC1_not_covered.gff3 -a TNBC1_not_covered.gff3 -v > TNBC1_not_covered_NonTNBC1_covered.gff3
+```
+
+*Étape 6*: Calculez la couverture sur le gène ENSG00000091831
+
+```{bash, eval=FALSE}
+srun bedtools coverage -a ENSG00000091831_gene.gff3 -b TNBC1_on_ENSG00000091831_sorted.bed -hist -sorted -g data/my.genome
+srun bedtools coverage -a ENSG00000091831_gene.gff3 -b NonTNBC1_on_ENSG00000091831_sorted.bed -hist -sorted -g data/my.genome
+```
+
+*Étape 7*: Calculez la profondeur à chaque position sur le gène ENSG00000091831
 
 ```{bash, eval=FALSE}
 srun bedtools genomecov -ibam TNBC1_on_ENSG00000091831.bam -bga > TNBC1_on_ENSG00000091831.bedgraph

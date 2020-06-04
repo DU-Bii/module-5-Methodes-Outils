@@ -627,10 +627,13 @@ srun sort -k1,1 -k2,2n NonTNBC1_on_ENSG00000091831.bed &gt; NonTNBC1_on_ENSG0000
 <p><em>Étape 3</em>: Fusionnez les fichiers BED pour garder uniquement les extrémités des zones couvertes, avec la commande <code>bedtools merge</code>.</p>
 <pre class="bash"><code>srun bedtools merge -i TNBC1_on_ENSG00000091831_sorted.bed &gt; TNBC1_on_ENSG00000091831_merged.bed
 srun bedtools merge -i NonTNBC1_on_ENSG00000091831_sorted.bed &gt; NonTNBC1_on_ENSG00000091831_merged.bed</code></pre>
-<p><em>Étape 4</em>: Calculez la couverture sur le gène ENSG00000091831</p>
-<pre class="bash"><code>srun bedtools coverage -a ENSG00000091831_gene.gff3 -b TNBC1_on_ENSG00000091831_merged.bed -hist
-srun bedtools coverage -a ENSG00000091831_gene.gff3 -b NonTNBC1_on_ENSG00000091831_merged.bed -hist</code></pre>
-<p><em>Étape 5</em>: Calculez la profondeur à chaque position sur le gène ENSG00000091831</p>
+<p><em>Étape 4</em>: Trouvez les régions de plus d’un kilo-base du gène non-couvertes avec <code>bedtools subtract</code></p>
+<pre class="bash"><code>srun bedtools subtract -a ENSG00000091831_gene.gff3 -b TNBC1_on_ENSG00000091831_merged.bed | awk '($5 - $4 &gt;= 1000)'
+srun bedtools subtract -a ENSG00000091831_gene.gff3 -b NonTNBC1_on_ENSG00000091831_merged.bed | awk '($5 - $4 &gt;= 1000)'</code></pre>
+<p><em>Étape 5</em>: Calculez la couverture sur le gène ENSG00000091831</p>
+<pre class="bash"><code>srun bedtools coverage -a ENSG00000091831_gene.gff3 -b TNBC1_on_ENSG00000091831_sorted.bed -hist -sorted -g data/my.genome
+srun bedtools coverage -a ENSG00000091831_gene.gff3 -b NonTNBC1_on_ENSG00000091831_sorted.bed -hist -sorted -g data/my.genome</code></pre>
+<p><em>Étape 6</em>: Calculez la profondeur à chaque position sur le gène ENSG00000091831</p>
 <pre class="bash"><code>srun bedtools genomecov -ibam TNBC1_on_ENSG00000091831.bam -bga &gt; TNBC1_on_ENSG00000091831.bedgraph
 srun bedtools genomecov -ibam NonTNBC1_on_ENSG00000091831.bam -bga &gt; NonTNBC1_on_ENSG00000091831.bedgraph</code></pre>
 <p>Le fichier <code>BEDgraph</code> est le format dédié pour stocker la profondeur sur des intervalles donnés. Ce type de fichier est souvent utilisé par les Genome Browsers. </details></p>
