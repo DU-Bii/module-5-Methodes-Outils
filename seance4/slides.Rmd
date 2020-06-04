@@ -31,7 +31,7 @@ bib <- ReadBib(file.name)
 # Programme
 
 
-- Présentation des intervenants
+- Présentation des intervenants, organisation
 
 - Rappel sur les formats de fichiers
 
