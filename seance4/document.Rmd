@@ -553,18 +553,21 @@ srun bedtools subtract -a ENSG00000091831_gene.gff3 -b NonTNBC1_on_ENSG000000918
 srun bedtools intersect -b NonTNBC1_not_covered.gff3 -a TNBC1_not_covered.gff3 -v > TNBC1_not_covered_NonTNBC1_covered.gff3
 ```
 
-*Étape 6*: Calculez la couverture sur le gène ENSG00000091831
+*Étape 6*: Calculez la couverture sur le gène ENSG00000091831 avec `bedtools coverage`.
+Que signifie la sortie?
 
 ```{bash, eval=FALSE}
 srun bedtools coverage -a ENSG00000091831_gene.gff3 -b TNBC1_on_ENSG00000091831_sorted.bed -hist -sorted -g data/my.genome
 srun bedtools coverage -a ENSG00000091831_gene.gff3 -b NonTNBC1_on_ENSG00000091831_sorted.bed -hist -sorted -g data/my.genome
 ```
 
-*Étape 7*: Calculez la profondeur à chaque position sur le gène ENSG00000091831
+*Étape 7*: Calculez la profondeur à chaque position sur le gène ENSG00000091831 avec `bedtools genomecov`.
+Utilisez l'option `-bga`.
+D'après vous, faut-il utiliser l'option `-split`?
 
 ```{bash, eval=FALSE}
-srun bedtools genomecov -ibam TNBC1_on_ENSG00000091831.bam -bga > TNBC1_on_ENSG00000091831.bedgraph
-srun bedtools genomecov -ibam NonTNBC1_on_ENSG00000091831.bam -bga > NonTNBC1_on_ENSG00000091831.bedgraph
+srun bedtools genomecov -ibam TNBC1_on_ENSG00000091831.bam -bga -split > TNBC1_on_ENSG00000091831.bedgraph
+srun bedtools genomecov -ibam NonTNBC1_on_ENSG00000091831.bam -bga -split > NonTNBC1_on_ENSG00000091831.bedgraph
 ```
 
 Le fichier `BEDgraph` est le format dédié pour stocker la profondeur sur des intervalles donnés. Ce type de fichier est souvent utilisé par les Genome Browsers.
@@ -625,6 +628,10 @@ axis(side=2,las=2,tcl=.2)
 mtext("Read Depth",side=2,line=3,cex=.75,font=2)
 
 ```
+
+Comparez avec l'annotation du gène: http://www.ensembl.org/Homo_sapiens/Gene/Summary?g=ENSG00000091831;r=6:151656691-152129619
+
+Quels exons sont les plus exprimés?
 
 </details>
 
