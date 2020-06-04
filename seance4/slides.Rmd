@@ -349,7 +349,7 @@ knitr::include_graphics("images/croisement.jpg")
 
 --
 
-Ce <a href="">document</a> vous permettra de suivre pas à pas le TP associé à la suite BEDtools
+Ce <a href="https://du-bii.github.io/module-5-Methodes-Outils/seance4/document.html">document</a> vous permettra de suivre pas à pas le TP associé à la suite BEDtools
 
 ```{r, out.width = "30%", echo=FALSE, fig.align="center"}
 knitr::include_graphics("images/Charge-mentale-1__1_.jpg")
