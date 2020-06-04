@@ -44,13 +44,13 @@ Pour chaque échantillon, vous aurez accès aux **alignements**, aux **transcrit
 
 Vous aurez également à disposition des données publiques du génome humain :
 
-* le génome humain
-* son annotation 
-* les variants humains connus
+* le génome humain: `data/Homo_sapiens.GRCh38.dna.toplevel.fa`
+* son annotation: `data/Homo_sapiens.GRCh38.100.gff3`
+* les variants humains connus: `data/common_all_20180418.vcf`
 
 Vous allez croiser ces données hétérogènes en utilisant <strong class="tool">bedtools</strong> pour répondre à ces différentes questions :
 
-- Quelle est la séquence génomique du gène ENSG00000091831 ? ( `getfasta` )
+- Quelle est la séquence génomique du gène ENSG00000091831 ? (`getfasta`)
 - Quel est son contenu en GC ? (`nuc`)
 - Combien de variants connus sont présents dans ce gène ?
 - Combien de SNVs (single nucleotide variants) sont communs et différents entre TNBC1 et NonTNBC1 sur le gène ?
@@ -77,6 +77,8 @@ srun --cpus-per-task 8 fasterq-dump -S -p SRR1027177 --outdir . --threads 8
 ## Le génome humain au format FASTA et son index
 ln -s /shared/data/bank/homo_sapiens/GRCh38/fasta/Homo_sapiens.GRCh38.dna.toplevel.fa .
 ln -s /shared/data/bank/homo_sapiens/GRCh38/fasta/Homo_sapiens.GRCh38.dna.toplevel.fa.fai .
+## Taille des chromosomes
+cut -f1,2 /shared/bank/homo_sapiens/GRCh38/fasta/Homo_sapiens.GRCh38.dna.primary_assembly.fa.fai > my.genome
 
 ## L'annotation du génome humain au format GFF3
 wget ftp://ftp.ensembl.org/pub/release-100/gff3/homo_sapiens/Homo_sapiens.GRCh38.100.gff3.gz
@@ -101,6 +103,7 @@ mv GSM1261016_IP2-50_denovo_transcripts.gtf TNBC1_denovo_transcripts.gtf
 wget https://ftp.ncbi.nlm.nih.gov/geo/samples/GSM1261nnn/GSM1261022/suppl/GSM1261022%5FIP2%2D42%5Fdenovo%5Ftranscripts%2Egtf%2Egz
 gzip -d GSM1261022_IP2-42_denovo_transcripts.gtf.gz
 mv GSM1261022_IP2-42_denovo_transcripts.gtf NonTNBC1_denovo_transcripts.gtf
+
 ```
 
 ## Quelle est la séquence génomique du gène ENSG00000091831 ?
@@ -171,7 +174,7 @@ Attention, le header du FASTA généré correspond aux coordonnées génomiques 
 
 ## Quel est son contenu en GC ?
 
-La documentation sur le site web de bedtools est désespérément vide. En effet, l'outil calcule seulement des statistiques de base sur le contenu en nucléotides. Rien de compliqué.
+La documentation sur le site web de `bedtools nuc` est désespérément vide. En effet, l'outil calcule seulement des statistiques de base sur le contenu en nucléotides. Rien de compliqué.
 
 <details>
 <summary>Solution pas à pas</summary>
@@ -201,8 +204,6 @@ bedtools nuc -fi data/Homo_sapiens.GRCh38.dna.toplevel.fa -bed ENSG00000091831_g
 ## Combien de variants connus sont présents dans ce gène ?
 
 Cet exercice a pour but de générér un fichier VCF contenant les variants connus qui intersectent le gène ENSG00000091831. Ensuite il suffit de compter le nombre de lignes du fichier VCF de sortie contenant les variants pour répondre à la question.
-
-Le fichier de variants connus est : `data/common_all_20180418.vcf`.
 
 <details>
 <summary>Solution pas à pas</summary>
@@ -303,7 +304,6 @@ srun bedtools intersect -b ENSG00000091831_gene.gff3 -a NonTNBC1_SNV.vcf -sorted
 *Étape 4*: Comptez le nombre de variants sur ce gène.
 Vérifiez que tous les variants sont bien sur le gène.
 
-
 ```{bash, eval=FALSE}
 grep -vc "^#" TNBC1_ENSG00000091831.vcf
 15
@@ -393,7 +393,7 @@ Les fichiers de transcrits trouvés dans chacune des conditions sont dans le ré
 Sont-elles identiques?
 
 ```{bash, eval=FALSE}
-grep -v "^#" data/Homo_sapiens.GRCh38.100.gff3 |head -n 1
+grep -v "^#" data/Homo_sapiens.GRCh38.100.gff3 | head -n 1
 1	Ensembl	chromosome	1	248956422	.	.	.	ID=chromosome:1;Alias=CM000663.2,chr1,NC_000001.11
 
 head -n 1 data/TNBC1_denovo_transcripts.gtf
@@ -430,12 +430,10 @@ bedtools intersect -a NonTNBC1_denovo_transcripts_only.gff3 -b ENSG00000091831_g
 
 *Étape 3*: Trouvez les transcrits qui sont à la fois dans l'annotation de référence, dans Non-TNBC1, mais pas dans TNBC1.
 
-**On ne peut pas utiliser bedtools intersect -v, ici?**
-
 ```{bash, eval=FALSE}
 bedtools subtract -a NonTNBC1_denovo_transcripts_ENSG00000091831.gff3 -b TNBC1_denovo_transcripts_ENSG00000091831.gff3 > specificNonTNBC1_denovo_transcripts_ENSG00000091831.gff3
 
-ou
+# Autre possibilité, avec bedtools intersect -v
 
 bedtools intersect -a NonTNBC1_denovo_transcripts_ENSG00000091831.gff3 -b TNBC1_denovo_transcripts_ENSG00000091831.gff3 -v > specificNonTNBC1_denovo_transcripts_ENSG00000091831.gff3
 ```
@@ -526,7 +524,7 @@ srun bedtools intersect -a data/TNBC1.bam -b ENSG00000091831_gene.gff3 -sorted -
 srun bedtools intersect -a data/NonTNBC1.bam -b ENSG00000091831_gene.gff3 -sorted -g data/my.genome  > NonTNBC1_on_ENSG00000091831.bam
 ```
 
-*Étape 2*: Tansformez les BAM en BED pour plus facilement manipuler les intervalles
+*Étape 2*: Tansformez les BAM en BED pour plus facilement manipuler les intervalles, avec la commande `bedtools bamtobed`.
 
 ```{bash, eval=FALSE}
 srun bedtools bamtobed -i TNBC1_on_ENSG00000091831.bam -split > TNBC1_on_ENSG00000091831.bed
@@ -535,10 +533,9 @@ srun bedtools bamtobed -i NonTNBC1_on_ENSG00000091831.bam -split > NonTNBC1_on_E
 sort -k1,1 -k2,2n NonTNBC1_on_ENSG00000091831.bed > NonTNBC1_on_ENSG00000091831_sorted.bed
 ```
 
-*Étape 3*: Mergez les fichiers BED pour garder uniquement les extrémités des zones couvertes
+*Étape 3*: Fusionnez les fichiers BED pour garder uniquement les extrémités des zones couvertes, avec la commande `bedtools merge`.
 
 ```{bash, eval=FALSE}
-# Merger les intervalles
 srun bedtools merge -i TNBC1_on_ENSG00000091831_sorted.bed > TNBC1_on_ENSG00000091831_merged.bed
 srun bedtools merge -i NonTNBC1_on_ENSG00000091831_sorted.bed > NonTNBC1_on_ENSG00000091831_merged.bed
 ```
@@ -546,7 +543,6 @@ srun bedtools merge -i NonTNBC1_on_ENSG00000091831_sorted.bed > NonTNBC1_on_ENSG
 *Étape 4*: Calculez la couverture sur le gène ENSG00000091831
 
 ```{bash, eval=FALSE}
-# Calculer la couverture
 bedtools coverage -a ENSG00000091831_gene.gff3 -b TNBC1_on_ENSG00000091831_merged.bed -hist
 bedtools coverage -a ENSG00000091831_gene.gff3 -b NonTNBC1_on_ENSG00000091831_merged.bed -hist
 ```
