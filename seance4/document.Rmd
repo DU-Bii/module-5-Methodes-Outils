@@ -561,6 +561,15 @@ Le fichier `BEDgraph` est le format dédié pour stocker la profondeur sur des i
 
 <summary>Exemple de représentation des couvertures sous R avec la librairie `Sushi`</summary>
 
+Pour installer la librairie :
+
+```{r, eval=FALSE}
+if (!requireNamespace("BiocManager", quietly = TRUE))
+    install.packages("BiocManager")
+
+BiocManager::install("Sushi")
+```
+
 ```{r, eval=TRUE, message=FALSE}
 library(Sushi)
 tnbc <- read.delim("TNBC1_on_ENSG00000091831.bedgraph")
