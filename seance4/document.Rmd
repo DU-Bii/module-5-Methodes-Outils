@@ -424,18 +424,18 @@ awk '$3=="transcript"' TNBC1_denovo_transcripts.gff3 | awk -v OFS='\t' '{sub(/ch
 *Étape 2*: Trouvez les transcrits produits par l'analyse qui chevauchent l'annotation de référence.
 
 ```{bash, eval=FALSE}
-bedtools intersect -a TNBC1_denovo_transcripts_only.gff3 -b ENSG00000091831_gene.gff3 > TNBC1_denovo_transcripts_ENSG00000091831.gff3
-bedtools intersect -a NonTNBC1_denovo_transcripts_only.gff3 -b ENSG00000091831_gene.gff3 > NonTNBC1_denovo_transcripts_ENSG00000091831.gff3
+srun bedtools intersect -a TNBC1_denovo_transcripts_only.gff3 -b ENSG00000091831_gene.gff3 > TNBC1_denovo_transcripts_ENSG00000091831.gff3
+srun bedtools intersect -a NonTNBC1_denovo_transcripts_only.gff3 -b ENSG00000091831_gene.gff3 > NonTNBC1_denovo_transcripts_ENSG00000091831.gff3
 ```
 
 *Étape 3*: Trouvez les transcrits qui sont à la fois dans l'annotation de référence, dans Non-TNBC1, mais pas dans TNBC1.
 
 ```{bash, eval=FALSE}
-bedtools subtract -a NonTNBC1_denovo_transcripts_ENSG00000091831.gff3 -b TNBC1_denovo_transcripts_ENSG00000091831.gff3 > specificNonTNBC1_denovo_transcripts_ENSG00000091831.gff3
+srun bedtools subtract -a NonTNBC1_denovo_transcripts_ENSG00000091831.gff3 -b TNBC1_denovo_transcripts_ENSG00000091831.gff3 > specificNonTNBC1_denovo_transcripts_ENSG00000091831.gff3
 
 # Autre possibilité, avec bedtools intersect -v
 
-bedtools intersect -a NonTNBC1_denovo_transcripts_ENSG00000091831.gff3 -b TNBC1_denovo_transcripts_ENSG00000091831.gff3 -v > specificNonTNBC1_denovo_transcripts_ENSG00000091831.gff3
+srun bedtools intersect -a NonTNBC1_denovo_transcripts_ENSG00000091831.gff3 -b TNBC1_denovo_transcripts_ENSG00000091831.gff3 -v > specificNonTNBC1_denovo_transcripts_ENSG00000091831.gff3
 ```
 
 </details>
@@ -528,9 +528,9 @@ srun bedtools intersect -a data/NonTNBC1.bam -b ENSG00000091831_gene.gff3 -sorte
 
 ```{bash, eval=FALSE}
 srun bedtools bamtobed -i TNBC1_on_ENSG00000091831.bam -split > TNBC1_on_ENSG00000091831.bed
-sort -k1,1 -k2,2n TNBC1_on_ENSG00000091831.bed > TNBC1_on_ENSG00000091831_sorted.bed
+srun sort -k1,1 -k2,2n TNBC1_on_ENSG00000091831.bed > TNBC1_on_ENSG00000091831_sorted.bed
 srun bedtools bamtobed -i NonTNBC1_on_ENSG00000091831.bam -split > NonTNBC1_on_ENSG00000091831.bed
-sort -k1,1 -k2,2n NonTNBC1_on_ENSG00000091831.bed > NonTNBC1_on_ENSG00000091831_sorted.bed
+srun sort -k1,1 -k2,2n NonTNBC1_on_ENSG00000091831.bed > NonTNBC1_on_ENSG00000091831_sorted.bed
 ```
 
 *Étape 3*: Fusionnez les fichiers BED pour garder uniquement les extrémités des zones couvertes, avec la commande `bedtools merge`.
@@ -543,15 +543,15 @@ srun bedtools merge -i NonTNBC1_on_ENSG00000091831_sorted.bed > NonTNBC1_on_ENSG
 *Étape 4*: Calculez la couverture sur le gène ENSG00000091831
 
 ```{bash, eval=FALSE}
-bedtools coverage -a ENSG00000091831_gene.gff3 -b TNBC1_on_ENSG00000091831_merged.bed -hist
-bedtools coverage -a ENSG00000091831_gene.gff3 -b NonTNBC1_on_ENSG00000091831_merged.bed -hist
+srun bedtools coverage -a ENSG00000091831_gene.gff3 -b TNBC1_on_ENSG00000091831_merged.bed -hist
+srun bedtools coverage -a ENSG00000091831_gene.gff3 -b NonTNBC1_on_ENSG00000091831_merged.bed -hist
 ```
 
 *Étape 5*: Calculez la profondeur à chaque position sur le gène ENSG00000091831
 
 ```{bash, eval=FALSE}
-bedtools genomecov -ibam TNBC1_on_ENSG00000091831.bam -bga > TNBC1_on_ENSG00000091831.bedgraph
-bedtools genomecov -ibam NonTNBC1_on_ENSG00000091831.bam -bga > NonTNBC1_on_ENSG00000091831.bedgraph
+srun bedtools genomecov -ibam TNBC1_on_ENSG00000091831.bam -bga > TNBC1_on_ENSG00000091831.bedgraph
+srun bedtools genomecov -ibam NonTNBC1_on_ENSG00000091831.bam -bga > NonTNBC1_on_ENSG00000091831.bedgraph
 ```
 
 Le fichier `BEDgraph` est le format dédié pour stocker la profondeur sur des intervalles donnés. Ce type de fichier est souvent utilisé par les Genome Browsers.
