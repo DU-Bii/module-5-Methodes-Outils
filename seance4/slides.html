@@ -27,7 +27,7 @@ class: center, middle, inverse, title-slide
 # Programme
 
 
-- Introduction
+- Présentation des intervenants
 
 - Rappel sur les formats de fichiers
 
@@ -58,10 +58,10 @@ VCF  | ?
 Format  | Contenu
 ------------- | -------------
 FASTA  | Information de séquence
-FASTQ  | Séquence et qualité d'un read
-SAM/BAM  | Alignement des reads sur une référence
+FASTQ  | Séquence et qualité de lectures provenant d'un séquençage
+SAM/BAM  | Alignement des lectures sur une référence
 BED/GTF/GFF  | Coordonnées et annotations génomiques
-VCF  | Positions des variants génomiques entre des reads et une référence 
+VCF  | Coordonnées et annotations des variants génomiques 
 
 ---
 
@@ -95,7 +95,7 @@ GATTTGGGGTTCAAAGCAGTATCGATCAAATAGTAAATCCATTTGTTCAACTCACAGTTT
 
 - _Sequence Alignment Map_
 
-- Contient les alignements des reads sur le génome
+- Contient les informations des alignements des lectures sur le génome
 
 - 2 sections
   - le header
@@ -230,7 +230,7 @@ chr1	Cufflinks	transcript	62948	63887	1000	+	.	gene_id "ENSG00000240361"; transc
 
 - _Variant Calling Format_
 
-- En migration vers _gVCF_
+- En migration vers _gVCF_ ()
 
 - Header décrivant le format et l'obtention du fichier
 
