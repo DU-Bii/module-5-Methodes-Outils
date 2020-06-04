@@ -35,7 +35,7 @@ bib <- ReadBib(file.name)
 
 - Rappel sur les formats de fichiers
 
-- <strong class="tool">Bedtools</strong> `r Cite(bib, hyperlink = "to.bib", "quinlan2010bedtools")` et ses fonctionnalités
+- <strong class="tool">Bedtools</strong> `r Cite(bib, hyperlink = "to.bib", "quinlan2010bedtools")`
 
 - TP en mode distanciation sociale
 
