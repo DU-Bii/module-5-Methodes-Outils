@@ -31,11 +31,11 @@ bib <- ReadBib(file.name)
 # Programme
 
 
-- Introduction
+- Présentation des intervenants, organisation
 
 - Rappel sur les formats de fichiers
 
-- <strong class="tool">Bedtools</strong> `r Cite(bib, hyperlink = "to.bib", "quinlan2010bedtools")` et ses fonctionnalités
+- <strong class="tool">Bedtools</strong> `r Cite(bib, hyperlink = "to.bib", "quinlan2010bedtools")`
 
 - TP en mode distanciation sociale
 
@@ -62,10 +62,10 @@ VCF  | ?
 Format  | Contenu
 ------------- | -------------
 FASTA  | Information de séquence
-FASTQ  | Séquence et qualité d'un read
-SAM/BAM  | Alignement des reads sur une référence
+FASTQ  | Séquence et qualité de lectures provenant d'un séquençage
+SAM/BAM  | Alignement des lectures sur une référence
 BED/GTF/GFF  | Coordonnées et annotations génomiques
-VCF  | Positions des variants génomiques entre des reads et une référence 
+VCF  | Coordonnées et annotations des variants génomiques 
 
 ---
 
@@ -99,7 +99,7 @@ GATTTGGGGTTCAAAGCAGTATCGATCAAATAGTAAATCCATTTGTTCAACTCACAGTTT
 
 - _Sequence Alignment Map_
 
-- Contient les alignements des reads sur le génome
+- Contient les informations des alignements des lectures sur le génome
 
 - 2 sections
   - le header
@@ -228,6 +228,26 @@ chr1	Cufflinks	transcript	62948	63887	1000	+	.	gene_id "ENSG00000240361"; transc
 
 ---
 
+## VCF
+
+- _Variant Calling Format_
+
+- En migration vers _gVCF_ ()
+
+- Header décrivant le format et l'obtention du fichier
+
+- Une ligne par variant (SNV, INSERTION, DELETION...)
+
+---
+
+## VCF
+
+```{r, out.width = "100%", echo=FALSE, fig.align="center"}
+knitr::include_graphics("images/VCF_format.png")
+```
+
+---
+
 ## Système de coordonnées
 
 
@@ -329,7 +349,7 @@ knitr::include_graphics("images/croisement.jpg")
 
 --
 
-Ce <a href="">document</a> vous permettra de suivre pas à pas le TP associé à la suite BEDtools
+Ce <a href="https://du-bii.github.io/module-5-Methodes-Outils/seance4/document.html">document</a> vous permettra de suivre pas à pas le TP associé à la suite BEDtools
 
 ```{r, out.width = "30%", echo=FALSE, fig.align="center"}
 knitr::include_graphics("images/Charge-mentale-1__1_.jpg")
