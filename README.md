@@ -139,22 +139,23 @@ Sur votre **machine locale** :
 - Download and install (Git)[https://git-scm.com/downloads] (si il n’est pas déjà installé).
 
 Configuer les informations qui seront asociés à vos "commits" sous Git : 
-- Configurer son nom d'utilisateur en local [Setting your username in Git](https://help.github.com/en/github/using-git/setting-your-username-in-git). Indiquer votre Nom, Prénom.
-- Configurer son mail [Setting your commit email address](https://help.github.com/en/github/setting-up-and-managing-your-github-user-account/setting-your-commit-email-address). Utiliser la même adresse que celle utilisée pour créer le compte github 
+- Configurer son nom d'utilisateur en local : [Setting your username in Git](https://help.github.com/en/github/using-git/setting-your-username-in-git). Indiquer votre Nom, Prénom.
+- Configurer son mail : [Setting your commit email address](https://help.github.com/en/github/setting-up-and-managing-your-github-user-account/setting-your-commit-email-address). Utiliser la même adresse que celle utilisée pour créer le compte github 
 
 Les deux étapes suivantes permettent de se connecter de façon sécurisée depuis la ligne de commande à GitHub :
-- [Génerer une clef ssh](https://help.github.com/en/github/authenticating-to-github/generating-a-new-ssh-key-and-adding-it-to-the-ssh-agent) Vous n'êtes pas obligé de mettre une "passphrase". Si vous en mettez une, bien la noter, elle vous sera demandée à chaque connexion de l'outil git à github.
-- [Ajouter cette clef à votre compte github](https://help.github.com/en/github/authenticating-to-github/adding-a-new-ssh-key-to-your-github-account)
+- Génerer une clef ssh:[Generating a new SSH key and adding it to the ssh-agent](https://help.github.com/en/github/authenticating-to-github/generating-a-new-ssh-key-and-adding-it-to-the-ssh-agent) Vous n'êtes pas obligé de mettre une "passphrase". Si vous en mettez une, bien la noter, elle vous sera demandée à chaque connexion de l'outil git à github.
+- Ajouter cette clef à votre compte github :[Adding a new SSH key to your GitHub account](https://help.github.com/en/github/authenticating-to-github/adding-a-new-ssh-key-to-your-github-account)
 
 - [Tester que tout est bien configuré](https://help.github.com/en/github/authenticating-to-github/testing-your-ssh-connection)
 
 Configurer de la même façon l’utilisation de github et git **sur votre compte ifb** :
 - Se connecter par ssh sur le cluster de l'IFB
-- Configurer son nom d'utilisateur [Setting your username in Git](https://help.github.com/en/github/using-git/setting-your-username-in-git)
--  Configurer son mail [Setting your commit email address](https://help.github.com/en/github/setting-up-and-managing-your-github-user-account/setting-your-commit-email-address). Utiliser la même adresse que celle utilisée pour créer le compte github 
+- Configurer son nom d'utilisateur : [Setting your username in Git](https://help.github.com/en/github/using-git/setting-your-username-in-git)
+-  Configurer son mail : [Setting your commit email address](https://help.github.com/en/github/setting-up-and-managing-your-github-user-account/setting-your-commit-email-address). Utiliser la même adresse que celle utilisée pour créer le compte github 
 Les deux étapes suivantes permettent de se connecter de façon sécurisée depuis la ligne de commande à GitHub :
-- [Génerer une clef ssh](https://help.github.com/en/github/authenticating-to-github/generating-a-new-ssh-key-and-adding-it-to-the-ssh-agent) Vous n'êtes pas obligé de mettre une "passphrase". Si vous en mettez une, bien la noter, elle vous sera demandée à chaque connexion de l'outil git à github.
-- [Ajouter cette clef à votre compte github](https://help.github.com/en/github/authenticating-to-github/adding-a-new-ssh-key-to-your-github-account)
+- Génerer une clef ssh:[Generating a new SSH key and adding it to the ssh-agent](https://help.github.com/en/github/authenticating-to-github/generating-a-new-ssh-key-and-adding-it-to-the-ssh-agent) Vous n'êtes pas obligé de mettre une "passphrase". Si vous en mettez une, bien la noter, elle vous sera demandée à chaque connexion de l'outil git à github.
+- Ajouter cette clef à votre compte github :[Adding a new SSH key to your GitHub account](https://help.github.com/en/github/authenticating-to-github/adding-a-new-ssh-key-to-your-github-account)
+
 
 - [Tester que tout est bien configuré](https://help.github.com/en/github/authenticating-to-github/testing-your-ssh-connection)
 
