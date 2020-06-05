@@ -12,6 +12,9 @@ output:
       toc: true
       toc_depth: 3
       toc_float: true
+#output:
+#  pdf_document
+    
 ---
 
 ## Introduction
@@ -22,9 +25,9 @@ Des données RNAseq ont été générés, entre autres, à partir d'échantillon
 
 Pour rappel, voici un design de l'étude :
 
-<center>
-![](https://www.ncbi.nlm.nih.gov/pmc/articles/PMC3278922/bin/srep00264-f1.jpg)
-</center>
+```{r, out.width = "70%", echo=FALSE, fig.align="center"}
+knitr::include_graphics("images/desin_publi.jpg")
+```
 
 L'analyse différentielle a ressorti le gène `ENSG00000091831` comme étant le plus différentiellement exprimé.
 
