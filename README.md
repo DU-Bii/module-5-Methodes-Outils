@@ -127,7 +127,7 @@ En cas de blocage ou de question, n'hésitez pas à partager vos questions sur l
 Lors du TP nous allons utiliser le logiciel de gestion de version Git et l'interface web GitHub.
 Vous devez donc absolument les avoir configuré sur **votre ordinateur** et **sur votre compte sur le cluster de l'IFB**.
 
-Voici les étapes à suivre pour configuer cela. Nous nous reposons sur l'aide de Githib pour ces étapes. Elle explique les étapes à suivre selon votre système d'exploitation (Linxu, MaxOS, Windows).
+Voici les étapes à suivre pour configuer cela. Nous nous reposons sur l'aide de Github pour ces étapes. Elle explique les étapes à suivre selon votre système d'exploitation (Linxu, MaxOS, Windows).
 
 
 
@@ -164,8 +164,9 @@ Les deux étapes suivantes permettent de se connecter de façon sécurisée depu
 Vous devez, pour votre ordinateur et votre compte sur l'IFB, aller jusqu'au test de connexion à Github (commande ssh -T git@github.com) qui doit être concluant :
 
 ``
->ssh -T git@github.com  
->Hi USER! You've successfully authenticated, but GitHub does not provide shell access.qui doit être concluant   
+ssh -T git@github.com  
+
+Hi USER! You've successfully authenticated, but GitHub does not provide shell access.qui doit être concluant   
 ``
 
 En ca de soucis, n'hésitez pas à nous solliciter sur Slack.
