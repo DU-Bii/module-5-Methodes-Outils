@@ -161,12 +161,14 @@ Les deux étapes suivantes permettent de se connecter de façon sécurisée depu
 
 
 
-Vous devez, pour votre ordinateur et votre compte sur l'IFB, aller jusqu'au test de connexion à Github (commande ssh -T git@github.com) qui doit être concluant :
+Vous devez, pour votre ordinateur et votre compte sur l'IFB, aller jusqu'au test de connexion à Github (commande ``ssh -T git@github.com``) qui doit être concluant :
 
 ``
+
 ssh -T git@github.com  
 
 Hi USER! You've successfully authenticated, but GitHub does not provide shell access.qui doit être concluant   
+
 ``
 
 En ca de soucis, n'hésitez pas à nous solliciter sur Slack.
