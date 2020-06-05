@@ -150,7 +150,7 @@ Les deux étapes suivantes permettent de se connecter de façon sécurisée depu
 
 ##### Sur votre **compte ifb** :
 
-Configurer de la même façon l’utilisation de  git et GitHub :
+Configurer de la même façon l’utilisation de  Git et GitHub :
 - Se connecter par ssh sur le cluster de l'IFB
 - Configurer son nom d'utilisateur : [Setting your username in Git](https://help.github.com/en/github/using-git/setting-your-username-in-git)
 -  Configurer son mail : [Setting your commit email address](https://help.github.com/en/github/setting-up-and-managing-your-github-user-account/setting-your-commit-email-address). Utiliser la même adresse que celle utilisée pour créer le compte github 
@@ -163,15 +163,14 @@ Les deux étapes suivantes permettent de se connecter de façon sécurisée depu
 
 
 
+
+
+##### Vérification finale :
 Vous devez, pour votre ordinateur et votre compte sur l'IFB, aller jusqu'au test de connexion à Github (commande ``ssh -T git@github.com``) qui doit être concluant :
 
-``
+``ssh -T git@github.com  ``
+``Hi USER! You've successfully authenticated, but GitHub does not provide shell access``
 
-ssh -T git@github.com  
-
-Hi USER! You've successfully authenticated, but GitHub does not provide shell access.qui doit être concluant   
-
-``
 
 En ca de soucis, n'hésitez pas à nous solliciter sur Slack.
 
