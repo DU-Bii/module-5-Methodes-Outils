@@ -115,6 +115,7 @@ En cas de blocage ou de question, n'hésitez pas à partager vos questions sur l
 |--------------------------------------------------|--------|
 | Slides | [[html](seance4/slides.html)]
 | TP | [[html](seance4/document.html)]  |
+| TP | [[pdf](seance4/document.pdf)] |
 
 ### [Séance 5](https://github.com/DU-Bii/module-5-Methodes-Outils/tree/master/seance5)
 
