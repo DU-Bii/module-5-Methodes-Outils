@@ -131,10 +131,10 @@ Voici les étapes à suivre pour configuer cela. Nous nous reposons sur l'aide d
 
 
 
-SUr GitHub :
+##### Sur **GitHub** :
 - Créer un compte sur [GitHub](https://www.github.com) avec votre adresse professionnelle.
 
-Sur votre **machine locale** :
+##### Sur votre **machine locale** :
 
 - Download and install (Git)[https://git-scm.com/downloads] (si il n’est pas déjà installé).
 
@@ -148,7 +148,9 @@ Les deux étapes suivantes permettent de se connecter de façon sécurisée depu
 
 - [Tester que tout est bien configuré](https://help.github.com/en/github/authenticating-to-github/testing-your-ssh-connection)
 
-Configurer de la même façon l’utilisation de github et git **sur votre compte ifb** :
+##### Sur votre **compte ifb** :
+
+Configurer de la même façon l’utilisation de  git et GitHub :
 - Se connecter par ssh sur le cluster de l'IFB
 - Configurer son nom d'utilisateur : [Setting your username in Git](https://help.github.com/en/github/using-git/setting-your-username-in-git)
 -  Configurer son mail : [Setting your commit email address](https://help.github.com/en/github/setting-up-and-managing-your-github-user-account/setting-your-commit-email-address). Utiliser la même adresse que celle utilisée pour créer le compte github 
