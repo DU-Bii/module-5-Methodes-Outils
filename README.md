@@ -115,3 +115,71 @@ En cas de blocage ou de question, n'hésitez pas à partager vos questions sur l
 |--------------------------------------------------|--------|
 | Slides | [[html](seance4/slides.html)]
 | TP | [[html](seance4/document.html)]  |
+
+### [Séance 5](https://github.com/DU-Bii/module-5-Methodes-Outils/tree/master/seance5)
+
+- Date : 11 juin 2020
+- Horaires : 14h00 - 17h00
+- Intervenants : Valentin Loux, Cédric Midoux, Olivier Rué , hélène Chiapello
+- Titre : Bonnes pratiques en bioinformatique : (essayer) d'aller vers plus de reproductibilité
+
+#### Pré-requis :
+Lors du TP nous allons utiliser le logiciel de gestion de version Git et l'interface web GitHub.
+Vous devez donc absolument les avoir configuré sur **votre ordinateur** et **sur votre compte sur le cluster de l'IFB**.
+
+Voici les étapes à suivre pour configuer cela. Nous nous reposons sur l'aide de Github pour ces étapes. Elle explique les étapes à suivre selon votre système d'exploitation (Linxu, MaxOS, Windows).
+
+
+
+##### Sur **GitHub** :
+- Créer un compte sur [GitHub](https://www.github.com) avec votre adresse professionnelle.
+
+##### Sur votre **machine locale** :
+
+- Download and install (Git)[https://git-scm.com/downloads] (si il n’est pas déjà installé).
+
+Configuer les informations qui seront asociés à vos "commits" sous Git : 
+- Configurer son nom d'utilisateur en local : [Setting your username in Git](https://help.github.com/en/github/using-git/setting-your-username-in-git). Indiquer votre Nom, Prénom.
+- Configurer son mail : [Setting your commit email address](https://help.github.com/en/github/setting-up-and-managing-your-github-user-account/setting-your-commit-email-address). Utiliser la même adresse que celle utilisée pour créer le compte github 
+
+Les deux étapes suivantes permettent de se connecter de façon sécurisée depuis la ligne de commande à GitHub :
+- Génerer une clef ssh:[Generating a new SSH key and adding it to the ssh-agent](https://help.github.com/en/github/authenticating-to-github/generating-a-new-ssh-key-and-adding-it-to-the-ssh-agent) Vous n'êtes pas obligé de mettre une "passphrase". Si vous en mettez une, bien la noter, elle vous sera demandée à chaque connexion de l'outil git à github.
+- Ajouter cette clef à votre compte github :[Adding a new SSH key to your GitHub account](https://help.github.com/en/github/authenticating-to-github/adding-a-new-ssh-key-to-your-github-account)
+
+- [Tester que tout est bien configuré](https://help.github.com/en/github/authenticating-to-github/testing-your-ssh-connection)
+
+##### Sur votre **compte ifb** :
+
+Configurer de la même façon l’utilisation de  Git et GitHub :
+- Se connecter par ssh sur le cluster de l'IFB
+- Configurer son nom d'utilisateur : [Setting your username in Git](https://help.github.com/en/github/using-git/setting-your-username-in-git)
+-  Configurer son mail : [Setting your commit email address](https://help.github.com/en/github/setting-up-and-managing-your-github-user-account/setting-your-commit-email-address). Utiliser la même adresse que celle utilisée pour créer le compte github 
+Les deux étapes suivantes permettent de se connecter de façon sécurisée depuis la ligne de commande à GitHub :
+- Génerer une clef ssh:[Generating a new SSH key and adding it to the ssh-agent](https://help.github.com/en/github/authenticating-to-github/generating-a-new-ssh-key-and-adding-it-to-the-ssh-agent) Vous n'êtes pas obligé de mettre une "passphrase". Si vous en mettez une, bien la noter, elle vous sera demandée à chaque connexion de l'outil git à github.
+- Ajouter cette clef à votre compte github :[Adding a new SSH key to your GitHub account](https://help.github.com/en/github/authenticating-to-github/adding-a-new-ssh-key-to-your-github-account)
+
+
+- [Tester que tout est bien configuré](https://help.github.com/en/github/authenticating-to-github/testing-your-ssh-connection)
+
+
+
+
+
+##### Vérification finale :
+Vous devez, pour votre ordinateur et votre compte sur l'IFB, aller jusqu'au test de connexion à Github (commande ``ssh -T git@github.com``) qui doit être concluant :
+
+``ssh -T git@github.com  ``
+
+``Hi USER! You've successfully authenticated, but GitHub does not provide shell access``
+
+
+En ca de soucis, n'hésitez pas à nous solliciter sur Slack.
+
+
+
+| Supports | Formats |
+|--------------------------------------------------|--------|
+| Slides ||
+| TP | |
+
+
