@@ -1,0 +1,773 @@
+---
+title: "Bonnes pratiques en bioinformatique : (essayer) d'aller vers plus de reproductibilité"
+author: "Valentin Loux - Cédric Midoux  - Olivier Rué "
+subtitle: "DUBii - Module 5"
+css: css/styles.css
+date: "2020/06/11"
+output:
+    #html_document:
+    #  self_contained: true
+    #  number_sections: TRUE
+    #  code_folding: "show"
+    #  toc: true
+    #  toc_depth: 2
+    #  toc_float: true
+    xaringan::moon_reader:
+      nature:
+        ratio: '16:9'
+
+---
+
+```{r setup, include=FALSE}
+options(htmltools.dir.version = FALSE)
+library(RefManageR)
+BibOptions(check.entries = FALSE, bib.style = "authoryear", style = "markdown",
+           dashed = TRUE)
+file.name <- "biblio.bib"
+bib <- ReadBib(file.name)
+```
+
+# Programme de l'après-midi
+<!--  14-17h -->
+
+- Intro : Reproductibilité, science ouverte <!-- 25 mn) -->
+
+- Partie 1 : Organiser son espace de travail  <!-- 5 mn -->
+
+- Partie 2 : Des langages à faible balisage pour faciliter la traçabilité et la prise de note <!-- 30 mn -->
+
+- Partie 3 : Versionner ses documents <!-- 45 mn -->
+  - TP
+
+<!-- 15h45 Pause -->
+
+- Partie 4 : Utilisation de documents computationels -- Notebook <!-- 45 mn -->
+  - TP
+
+- Conclusion et pour aller + loin <!-- 15 mn -->
+
+---
+# Tout le monde a déjà eu cette experience
+
+--
+.pull-left[
+```{r, out.width = "100%", echo=FALSE, fig.align="center", fig.cap= "Un Papier interessant"}
+knitr::include_graphics("images/monnet-loux-plosone-2010.png")
+```
+]
+
+--
+.pull-right[
+```{r, out.width = "100%", echo=FALSE, fig.align="center", fig.cap= "Un materiel et méthode décevant"}
+knitr::include_graphics("images/monnet-loux-plosone-mat-met.png")
+```
+]
+
+--
+
+
+---
+# Crise de la reproductibilité
+
+- Problème général ( "Reproducibility crisis")
+  - Remis en avant par les science sociales ( pyschologie )
+  - Etendu à l'ensemble des disciplines
+  - … mais un problème qui n'est pas nouveau
+
+
+  
+---
+# Et en bioinfo ?
+
+Un problème ancien :
+
+- En 2009, moins de la moitié des experiences de transcriptomique parues dans Nature Genetics n'ont pu être reproduites
+- Sur 50 articles citant BWA en 2011, 31 ne citent ni version, ni paramètres. 26 ne donnent pas accès aux données sous-jacentes
+- Selon un sondage mené auprès de plus de 1500 biologistes
+  - 70% ont déjà éprouvé des difficultés à reporduire une analyse (Baker 2016)
+
+- [Ten Years Reproducibility Challenge](https://github.com/ReScience/ten-years) refaire ses analyses d'il y a 10 ans …
+
+---
+# Quelles sont les difficultés ?
+
+
+- Problèmes d'accès aux données
+- Problèmes d'accès aux outils
+- Problèmes de paramètrage de l'analyse
+  - version des outil
+  - paramètrage de l'analyse
+
+- Problème d'accès aux ressources necessaires
+
+
+
+
+
+---
+
+# Replication ≠ Reproductibilité
+
+- La replication indépendant d'analyse est à la base de la méthode scientifique
+
+- En complément de **réplication** indépendante ( experimentation, échantillonage, analyse, …), la **reproduction** d'analyse est indispensable à l'évaluation et à la compréhension de la démarche employée
+
+- Il existe une ambiguité en anglais entre réplication (*replication*) et reproduction (*reproducibility*). Derrière la *reproducibility crisis* on mélange les deux :
+  - Impossibilité de répliquer des résultats de façon indépendante (psychologie, medecine, biologie…)
+  - Impossibilité de reproduire des analyses à partir des mêmes données de départ
+
+- Chacun peut déjà, par l'utilisation d'outils conviviaux, améliorer la reproductibilité de ses travaux
+
+
+Source : `r Citep(bib, "allard")` 
+<!-- https://laviedesidees.fr/La-crise-de-la-replicabilite.html -->
+
+---
+# En pratique, qu'est ce qu'être reproductible ?
+
+
+```{r, out.width = "80%", echo=FALSE, fig.align="left",fig.cap="https://github.com/karthik/rstudio2019/blob/master/reproducible-data-analysis.pdff"}
+knitr::include_graphics("images/reproducible-data-analysis.png")
+```
+
+---
+# En prtaique, qu'est ce qu'être reproductible (2) ?
+
+  Avoir accès :
+  - aux pièces (les **données**)
+  - aux outils ( les **logciels**, )
+  - au mode d'emploi : **paramètres**, **workflows d'analyse**
+  
+  Mais aussi :
+  - à la description des pièces, de la façon dont elles ont été produites (**méta-données**)
+  - à la docupmentation technique (**choix techniques explicites**)
+  - au savoir faire du monteur (**formation**)
+  - Eventuellement à un atelier équipé pour le montage (**ressources informatiques**)
+  
+
+<!--
+On a besoin du mode d'emploi mais également de la desciption des pièces, de la façon dont elles été construites et des outils necessaires à la construction, du nombre de paramètres; etc.
+Citer papier Nature
+--> 
+
+
+
+---
+# FAIR : un pré-requis la reprouctibilité
+.pull-left[
+```{r, out.width = "50%", echo=FALSE, fig.align="left", fig.cap= "Findale Accessible Inetroprable Reusable "}
+knitr::include_graphics("images/fair.png")
+```
+]
+.pull-right[
+Principes autour des données au sens large :
+- **F**acile à trouver : pour les humains et les ordinateurs :
+  - id unique et perennes
+  - métadonnées riches
+- **A**ccessibles à ** long terme**
+  - entrepôt "perenne"
+  - licence d'utilisation explicite ( FAIR ≠ ouvert)
+- **I**nteroperables : faciles à combiner avec d'autres jeux de données
+  - formats ouverts et documnentés
+  - vocabulaire standardisé, ontologies (données et méta-données)
+- **R**éutilisables :
+  - réutilisables par soi, par d'autres
+  - réutilisables par des machines
+
+]
+
+`r Citep(bib, "Wilkinson2016")` 
+
+---
+
+# Le spectre de la reproductibilité
+
+```{r, out.width = "100%", echo=FALSE, fig.align="center", fig.cap= "Spectre de la reproductibilité,"}
+knitr::include_graphics("images/reproducibility-spectrum.png")
+```
+Source : `r Citep(bib, "piazzi")` 
+
+---
+# L'outillage
+
+
+Aller de façon prgamatique vers une documentation accrue de ce que l'on fait (comment, pourquoi)
+
+- Rendre accessible ses données à soir, aux partenaires, à tous) :
+  - Data Managemlent Plan (Opidor)
+  - Dépôt internationaux (ENA, NCBI)
+  - DataVerse
+- Définir les outils utilisés :
+  - conda, bioconda
+  - singularity, docker
+  - Machine Virtuelle
+- Décrire son workflow d'analyse, le rendre portable : 
+  - Galaxy
+  - Snakemake, Nextflow
+- Gérer les versions de ses codes, les publier :
+  - git
+  - github / gitlab
+- Tracer son analyse dans des documents partageables et réutilisables :
+    - Rmd
+    - Jupyter Notebooks
+
+---
+# Objectifs du TP
+Se décomplexifier, désacraliser  la reproductibilté !
+
+Vous fournir des outils, des pistes pour rendre vos projets :
+- transparents
+- robustes
+- réutilisables
+- partageables
+
+Bref, *plus* reproductibles.
+
+
+Parties pratiques sur la versionning des documents (Git et GitHub) et les docs computationnels.
+
+---
+class: inverse, center, middle
+# Partie 1 : Organiser son espace de travail 
+
+---
+# Partie 1 : Organiser son espace de travail 
+.pull-left[
+![](https://journals.plos.org/ploscompbiol/article/figure/image?size=large&id=info:doi/10.1371/journal.pcbi.1000424.g001)
+Source : `r Citep(bib, "noble")`  
+
+]
+
+.pull-right[
+Séparer 
+- données
+- code
+- scripts
+- resultats
+]
+
+---
+# Organiser son espace de travail (2)
+
+![](images/wilson-box1.png)
+
+Source : `r Citep(bib, "Wilson")` 
+
+
+---
+class: inverse, center, middle
+# Partie 2 : Des langages à faible balisage pour faciliter la traçabilité et la prise de note
+
+---
+# Partie 2 : Des langages à faible balisage pour faciliter la traçabilité et la prise de note
+
+*Comment mettre en forme et structurer simplement un document texte ?*  
+
+--
+&rarr; avec un balisage faible tel que *Markdown* 
+
+--
+
+.pull-left[
+- Permet :
+  - Organiser les titres de sections
+  - Italique / gras / souligné
+  - Générer des listes
+  - Ajouter des tableaux
+  - Insertion d'image et de blocs de code
+
+- Texte codé en UTF-8 (assure une pérennité, lisibilité et portabilité) facilement versionnable.
+- Les langages de balisage permettent de mettre en forme convenablement le fichier pour un meilleur confort de lecture.
+
+]
+
+--
+
+.pull-right[
+_Exemple illustrant la simplification du balisage :_
+
+- HTML
+
+```{bash, eval=FALSE}
+  <ul>
+    <li>item1</li>
+    <li>item2</li>
+  </ul>
+```
+
+- Markdown
+
+```{bash, eval=FALSE}
+  - item1
+  - item2
+```
+  
+]
+
+---
+# Partie 2 : Markdown - exemples de commande 
+
+````
+# Titre H1
+## Sous-titre H2
+### Sous-titre H3
+
+*italique*, **gras** et `code`
+
+> Citations
+
+```
+bloc de code
+```
+
+* liste
+  * item
+  * item
+  
+[lien](https://fr.wikipedia.org)
+![](https://migale.inrae.fr/sites/default/files/migale.png) #lien vers une image en ligne ou dans l'espace de travail
+````
+
+Gardez ce [mémo](https://guides.github.com/pdfs/markdown-cheatsheet-online.pdf) à porté de main !
+
+---
+class: inverse, center, middle
+# Partie 3 : Versionner ses documents 
+
+---
+# Partie 3 : Versionner ses documents 
+
+- Les documents évoluent, il est nécéssaire de suivre les versions 
+  - On trace toutes les modifications faites
+  - On garde chaque version des documents du dossier de travail
+  - C’est un peu comme copier-coller son dossier de travail … mais en beaucoup plus précis et pratique !
+  - `git` est un standard dans la gestion des versions distribuée  
+
+
+--
+
+- **Repository** = Dossier / Projet 
+- **Commit** = Enregistrement d’un ensemble de fichier à un instant T (= photo) 
+- **Branche** = Ensemble chainé de commits, par défaut la branche principale s’appelle « master » (cette notion n’est pas primordiale pour débuter) 
+
+Voici un [aide mémoire git](https://github.github.com/training-kit/downloads/fr/github-git-cheat-sheet.pdf)
+
+---
+# Retours sur les clés SSH
+
+* Protocole pour la sécurisation des transferts de données.
+
+* Méthode de chiffrement assymétrique qui fonctionne avec une paire de clé :
+  * une clé *publique* qui sert à chiffrer (et que vous pouvez partager à l'extérieur)
+  * une clé *privée* qui sert à déchiffrer (et que vous gardez précieusement secrète)
+
+* Permet d'établir un tunnel sécurisé entre deux machines
+
+---
+class: center, middle
+![](https://user.oc-static.com/files/145001_146000/145173.png)
+---
+class: center, middle
+![](https://user.oc-static.com/files/145001_146000/145174.png)
+---
+class: center, middle
+![](https://user.oc-static.com/files/145001_146000/145175.png)
+---
+class: center, middle
+![](https://user.oc-static.com/files/145001_146000/145176.png)
+---
+class: center, middle
+![](https://user.oc-static.com/files/145001_146000/145177.png)
+
+---
+# Retours sur les clés SSH
+
+* Protocole pour la sécurisation des transferts de données.
+
+* Méthode de chiffrement assymétrique qui fonctionne avec une paire de clé :
+  * une clé *publique* qui sert à chiffrer (et que vous pouvez partager à l'extérieur)
+  * une clé *privée* qui sert à déchiffrer (et que vous gardez précieusement secrète)
+
+* Permet d'établir un tunnel sécurisé entre deux machines
+
+*** 
+* On utilise `ssh-keygen -t rsa` pour générer la paire de clé
+* Puis `ssh-copy-id -i id_rsa.pub <login>@<server>` pour envoyer la clé publique
+* Maintenant on peut se connecter de manière sécurisée via `ssh <login>@<server>` sans renseigner de clé
+* Pour GitHub, on renseigne les clés publiques via l'interface graphique
+
+---
+# TP : Utilisation de Git  
+
+## 1. Initialiser le dépôt (en local)
+
+```
+mkdir testRepo
+cd testRepo
+git init
+```
+
+--
+## 2. Ajouter un document (en local)
+
+```
+touch firstFile
+emacs firstFile
+
+git status
+```
+
+---
+# TP : Utilisation de Git  
+
+## 3. Versionner un document (en local)
+
+```
+git add firstFile
+git commit firstFile
+
+git status
+```
+
+--
+
+## 4. Workflow de modification (en local)
+
+```
+emacs firstFile
+
+git status
+git diff
+
+git commit -m "modification"
+
+```
+
+---
+# TP : Utilisation de GitHub
+
+## 5. Initialisation du dépôt distant (Github)
+
+- Créer un dépôt distant sur Github
+
+## 6. Lier le dépôt local et disatnt
+```
+git remote add origin git@github.com:vloux/myFirstRepo.git
+git remote -v
+
+```
+## 7. Pousser les modifications locales sur le dépôt distant
+
+```
+git push origin master
+
+```
+
+---
+# TP : Utilisation de GitHub
+
+## 8. Verification sur Github des infos
+
+
+---
+# TP : Utilisation de GitHub
+
+## 9. Modification du dépôt par l'interface
+
+- ajouter un `README.md` (avec markdown)
+
+---
+# TP : Utilisation de Git et GitHub
+
+## 8. Récupérer sur le repo local des infos de la branche distante
+
+```
+git fetch origin master
+
+git merge origin master
+```
+
+équivalent à :
+ 
+```
+git pull origin master
+```
+
+
+---
+# TP : Utilisation de Git et GitHub
+
+Nommer des versions (tags)
+
+```
+git tag version1 -m "Initial version"
+ 
+git tag
+ 
+git push origin master --tags
+
+```
+
+---
+# TP : utilisation de Git et GitHub
+
+Comparer à une version précédente
+
+```
+git log
+
+git diff [CommintNumber] aNewFile
+
+```
+
+
+---
+# En résumé 
+
+- `git clone` : cloner un dépot distant
+- `git init` : initialiser le versionning sur un dépot local
+- `git commit` : enregister l'état d'un dépôt
+- `git status` : afficher l'état des documents du dépôt
+- `git diff` : comparer l'état actuel au dernier commit, ou deux commits entre eux ou deux branches 
+
+et bien d'autres encore (``blame``, revert`,…)
+
+[CheatSheet](https://github.github.com/training-kit/downloads/github-git-cheat-sheet.pdf)
+
+---
+# Pour apprendre progressivement et/ou se simplifier la vie
+
+- Github Desktop
+- Les intégration aux différents IDE (RStudio and co)
+
+---
+class: center, middle
+
+![coffee-break](https://www.nicepng.com/png/full/66-667402_coffee-break-logo-png.png)
+
+---
+class: inverse, center, middle
+# Partie 4 : Documents computationels - Notebook
+
+---
+# Partie 4 : Documents computationels - Notebook
+
+- Il faut se donner les moyens pour qu’autrui puisse inspecter nos analyses
+- Expliciter pour augmenter les chances de trouver les erreurs et de les éliminer
+  - Inspecter pour justifier et comprendre
+  - Refaire pour vérifier, corriger et réutiliser
+
+.center[![lab repro](https://blog.f1000.com/wp-content/uploads/2014/04/reproducibility-small-480x324.jpg)] 
+
+---
+# Partie 4 : Documents computationels - Notebook
+
+- Regrouper dans *un unique document*: 
+  - Les informations, le code, calculs et les résultats 
+  - Pour assurer leur cohérence et améliorer la traçabilité. 
+  - Exportable (ex : html) pour une meilleure portabilité et lisibilité.
+
+.center[![russo2016](https://www.researchgate.net/profile/Dario_Righelli/publication/306538473/figure/fig2/AS:391153263366144@1470269613039/This-figure-explains-the-basic-idea-of-Reproducible-Research-The-raw-data-needs-to-be_W640.jpg)]
+
+`r Citep(bib, "russo")`
+
+Encore un joli [mémo](https://www.rstudio.org/links/r_markdown_cheat_sheet) pour R markdown. 
+
+Si vous travaillez principalement avec Python, il est possible de faire des notebook avec Jupyter.
+
+---
+# TP : Rédaction d'un notebook avec RStudio
+
+1. Connectez vous au RStudio de l'IFB (https://rstudio.cluster.france-bioinformatique.fr/).
+2. Clonez le projet :
+  - New Project (en haut à droite)
+  - Version Control
+  - Git
+  - Repository URL (clone with SSH : `git@github.com: ...`)
+3. Explorez le dépot depuis ce 3e device remote 
+4. Créez un document R Markdown :
+  - File 
+  - New file
+  - R Markdown
+
+**Dans ce document on a** :
+- Une entête générale
+- Du texte, mis en forme avec markdown
+- Du code R dans des chunks
+- Des résultats et outputs 
+
+---
+
+# TP : Rédaction d'un notebook avec RStudio 
+* Grace à l'onglet git de Rstudio, vous pouvez suivre l'état des fichiers, commit, diff, push/pull, ...
+
+* Chaque chunk peut être exécuté individuellement grâce à la flèche verte.  
+Les options assosiées à chaque chunks sont disponible avec la roue crantée.
+
+5. Modifier le document (en plusieurs commit)
+  - ajoutez un chunk `knitr::kable(head(iris))` pour visualiser un table
+  - ajoutez un chunk `plot(cars)` pour un plot
+  - ajoutez des commentaires
+  - puis commitez les modifications.
+6. Lorsque vous êtes satisfait de votre raport, générez la version HTML en cliquant sur Knit. Commitez, pushez, ...
+7. Visualisez les modifications côté GitHub.
+
+**Votre rapport est disponible, versionné et partageable !**
+
+---
+# TP : Partager un document html avec GitHub Pages
+
+* Dans les options du repo, dans le chapitre "GitHub Pages", activer la source correspondant à la branch master.
+* la page est disponible à l'adresse [https://[user].github.io/[repo]/[page].html](https://cedricmidoux.github.io/cookies/notebook.html)
+
+Suivant l'interlocuteur, partagez le `.Rmd` ou le `.html`
+
+---
+# Conclusion : 
+
+La reprouctibilité, comme la "FAIRisation" sont des processus.
+
+Des bonnes pratiques appuyées par des outils qui les facilitent
+
+- Organiser ses analyses
+- Décruire correctement ses données et ses processus d'analyse (PGD, FAIR)
+- Tracer ses analyses à l'aide de documents computationnels (Rmd, Jupyter Notebooks, …) :
+  - Transparents 
+  - Accessibles
+  - Partageables
+- Versionner ses documents computationnels (GitHub, GitLab, …)
+  - Traçabilité
+  - Accessibilité
+
+---
+# Aller plus loin - travailler en commun avec Git et Github :
+
+.center[![Github Flow](images/github-flow.png)] 
+
+
+- Branche : version parallèle à la version principale
+- Pull Request : demande de fusion des modifications d'une brache vers la branche principale
+
+[Un exemple de PR](https://github.com/galaxyproject/training-material/pull/1354) 
+
+
+---
+# Pour aller + loin - Fixer et partager son environnement :
+
+.pull-left[
+- Conda et  Bioconda 
+  - gestion des dépendances, versions
+  - Possibilité de créer un environnement par analyse
+  - Exporter son environnement dans un fichier ``env.yml`` et le versionner
+  - ``conda env export > environment.yml``
+  
+- Containers,  machines virtuelles
+  - Docker, Singularity, VM virtualbox
+  - Pour les outils non "condaoisables", les environnements complexes
+  - Les images Singularity sont déployables sur les infrastructures type IFB et s'éxecutent "presque" comme un executable
+]
+
+.pull-right[
+.center[![Conda](https://conda.io/en/latest/_images/conda_logo.svg)]
+.center[![Singularity](https://sylabs.io/assets/images/logos/singularity.png)]
+
+
+]
+
+---
+# Pour aller plus loin - Fixer et partager son environnement (2) 
+.center[![Singularity](https://ars.els-cdn.com/content/image/1-s2.0-S2405471218301406-gr1.jpg)]
+
+`r Citep(bib, "Bjorn2018")` 
+
+---
+# Pour aller + loin - gestionnaires de workflows
+
+SnakeMake, NextFlow pour :
+- Définir de façon "simple" et modulaire des workflows d'analyse :
+  - Parallelisables : les étapes indépendantes peuvent être jouées en parallèle.
+  - Qui assurent la reprise sur erreur : si on refait une analyse, change un paramètre, seul ce qui doit être rejoué est relancé.
+  - Portables : un même script peut être joué en local, sur des  clusters différents en changeant le fichier de configuration.
+  - Partageables : un fichier texte versionné
+  - Peut gérer pour vous le versionning et l'installation des outils avec Conda
+
+
+
+---
+# Pour aller + loin - exemple de Snakefile
+
+**Bash**
+
+```
+ for sample in `ls *.fastq.gz` do
+  fastqc ${sample}
+done
+```
+
+--
+
+**Snakefile**
+
+```
+SAMPLES, = glob_wildcards("./{smp}.fastq.gz")
+
+rule final: 
+  input:expand("fastqc/{smp}/{smp}_fastqc.zip",smp=SAMPLES)
+rule fastqc:
+  input: "{smp}.fastq.gz"
+  output: "fastqc/{smp}/{smp}_fastqc.zip"
+  message: """Quality check"""
+  shell: """fastqc {input} --outdir fastqc/{wildcards.smp}"""
+```
+
+---
+# Pour aller + loin - FAIRifier ses données
+Dépots dans les dépôts publics :
+- Dans les dépôts thématiques  
+    - données brutes 
+    - données analysées
+    - /!\ méta-données
+- dans les dépots généralistes (dataverse , figshare, …)
+  - fichiers tabulés; "autres" données. ce qu'on mettrait en suypplementary material.
+  - (éventuels) leins vers les fichiers de données
+
+- Publier un data-paper ?
+
+
+
+---
+# Pour aller + loin :
+- jusqu'où aller dans la reproductibilité ?
+  - Mat et Met électroniques :
+    - galaxy Pages
+    - Gigascience, GigaDB
+- Quel est le rapport coût / bénéfice ?
+  
+
+
+
+---
+
+# Ressources
+
+- [FUN MOOC Recherche Reproductible](https://www.fun-mooc.fr/courses/course-v1:inria+41016+self-paced/about)
+- [FAIR Bioinfo](https://github.com/thomasdenecker/FAIR_Bioinfo)
+- [Cours Git et Github](https://guides.github.com)
+- [Github pages](https://pages.github.com)
+- [Rmd the definitive Guide](https://bookdown.org/yihui/rmarkdown/)
+- [Snakemake](https://snakemake.readthedocs.io/en/stable/)
+- [NextFlow](https://www.nextflow.io) et [nf-core](https://nf-co.re)
+- 
+
+- Les mémo présentés dans ce cours :
+  - [markdown](https://guides.github.com/pdfs/markdown-cheatsheet-online.pdf)
+  - [git](https://github.github.com/training-kit/downloads/fr/github-git-cheat-sheet.pdf)
+  - [R markdown](https://www.rstudio.org/links/r_markdown_cheat_sheet)
+
+---
+
+# References
+
+```{r, results='asis', echo=FALSE}
+PrintBibliography(bib)
+```
