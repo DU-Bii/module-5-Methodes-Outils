@@ -919,7 +919,7 @@ rule fastqc:
 ---
 # Pour aller + loin - FAIRifier ses données
 Dépots dans les dépôts publics :
-- Dans les dépôts thématiques  
+- Dans les dépôts thématiques internationaux (européens !)  
     - données brutes 
     - données analysées
     - /!\ méta-données
@@ -933,12 +933,21 @@ Dépots dans les dépôts publics :
 
 ---
 # Pour aller + loin :
+.pull-left[
 - jusqu'où aller dans la reproductibilité ?
   - Mat et Met électroniques :
-    - galaxy Pages
-    - Gigascience, GigaDB
-- Quel est le rapport coût / bénéfice ?
-  
+    - Galaxy Pages
+    - Gigascience, GigaDB : 
+      - "GigaScience aims to revolutionize publishing by promoting reproducibility of analyses and data dissemination, organization, understanding, and use. "
+
+]
+.pull-right[
+```{r, out.width = "80%", echo=FALSE, fig.align="center", fig.cap= "Live Mat et Met https://usegalaxy.org/u/aun1/p/windshield-splatter"}
+knitr::include_graphics("images/galaxy-pages.png")
+```
+
+Au final, toujours se poser la question du rapport coût / bénéfice.
+]
 
 
 
