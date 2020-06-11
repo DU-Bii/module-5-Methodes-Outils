@@ -450,7 +450,7 @@ git commit -m "modification"
 
 - Créer un dépôt distant sur Github
 
-## 6. Lier le dépôt local et disatnt
+## 6. Lier le dépôt local et distant
 ```
 git remote add origin git@github.com:vloux/myFirstRepo.git
 git remote -v
@@ -539,6 +539,28 @@ et bien d'autres encore (``blame``, revert`,…)
 
 - Github Desktop
 - Les intégration aux différents IDE (RStudio and co)
+
+.center[
+.pull-left[![github_desktop](https://desktop.github.com/images/desktop-icon.svg)]
+.pull-right[![rstudio](https://upload.wikimedia.org/wikipedia/fr/4/4e/RStudio_Logo.png)]
+]
+
+---
+```{r, out.width = "80%", echo=FALSE, fig.align="center", fig.cap= "Cloner un dépot"}
+knitr::include_graphics("images/github_desktop_1.png")
+```
+---
+```{r, out.width = "80%", echo=FALSE, fig.align="center", fig.cap= "Suivre les changements"}
+knitr::include_graphics("images/github_desktop_2.png")
+```
+---
+```{r, out.width = "80%", echo=FALSE, fig.align="center", fig.cap= "Parcourir l'historique des modifications"}
+knitr::include_graphics("images/github_desktop_3.png")
+```
+---
+```{r, out.width = "80%", echo=FALSE, fig.align="center", fig.cap= "Intéragir avec le Repository"}
+knitr::include_graphics("images/github_desktop_4.png")
+```
 
 ---
 class: center, middle
