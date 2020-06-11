@@ -180,7 +180,7 @@ En ca de soucis, n'hésitez pas à nous solliciter sur Slack.
 
 | Supports | Formats |
 |--------------------------------------------------|--------|
-| Support |[html](https://du-bii.github.io/module-5-Methodes-Outils/seance5/slides.html#1) [pdf](seance5/slides.pdf)|
+| Support |[[html](https://du-bii.github.io/module-5-Methodes-Outils/seance5/slides.html#1)] [[pdf](seance5/slides.pdf)]|
 
 
 
