@@ -69,16 +69,25 @@ class: center, middle, inverse, title-slide
 - Problème général ( "Reproducibility crisis")
   - Remis en avant par les science sociales ( pyschologie )
   - Etendu à l'ensemble des disciplines
-  - … mais un problème qui n'est pas nouveau
 
+Mais un problème qui n'est pas nouveau :
+  - Experiences de la pompe à vide au XVIIe siècle (von Guericke et Boyle) 
 
+&lt;div class="figure" style="text-align: center"&gt;
+&lt;img src="images/Magdeburger-Halbkugeln.jpg" alt="Experiences des hemisphères de Magdebourg" width="50%" /&gt;
+&lt;p class="caption"&gt;Experiences des hemisphères de Magdebourg&lt;/p&gt;
+&lt;/div&gt;
+
+???
+Au XVIIe, experience de la pompe à vide par Otto van Guericke étaient basées sur des demonstrations spectaculaires, dans les cours d'europe qui lui assuraient notoriété. L'experience des hemisphères de Magdebourg qui consitait à essayer de fauire séparer des hémisphères de cuivre dans lésquel il avait fait lme vide, par des attelages de chevaux était très appréciée. Cela reposait sur un outillage et un savoir afire secret. Impossible à reproduire
+Plus atrd, Boyle, sur le m^me sujet, consignait tout par écrit et avait recours à des témoins de bonne réputation (des gentlemen, à la base de la Royal Society) pour certifier ses expoeriences. c'est le début des publication scientifiques.
   
 ---
 # Et en bioinfo ?
 
-Un problème ancien :
+Un problème vieux comme la bioinformatique :
 
-- En 2009, moins de la moitié des experiences de transcriptomique parues dans Nature Genetics n'ont pu être reproduites
+- En 2009, moins de la moitié des experiences de transcriptomique parues dans Nature Genetics n'ont pu être reproduites 
 - Sur 50 articles citant BWA en 2011, 31 ne citent ni version, ni paramètres. 26 ne donnent pas accès aux données sous-jacentes
 - Selon un sondage mené auprès de plus de 1500 biologistes
   - 70% ont déjà éprouvé des difficultés à reporduire une analyse (Baker 2016)
@@ -89,14 +98,20 @@ Un problème ancien :
 # Quelles sont les difficultés ?
 
 
-- Problèmes d'accès aux données
-- Problèmes d'accès aux outils
-- Problèmes de paramètrage de l'analyse
+- Problèmes **d'accès aux données** :
+  - "data available upon request"
+  - méta-données iexsitantes ou insuffisantes
+- Problèmes **d'accès aux outils** :
+  - outils anciens ou obsolètes
+  - difficultés à installer
+- Problèmes de **paramètrage de l'analyse**
   - version des outil
-  - paramètrage de l'analyse
+  - paramètres des outils
+  - enchainement des outils
 
-- Problème d'accès aux ressources necessaires
-
+- Problème d'accès aux **ressources necessaires**
+  - calcul
+  - stockage
 
 
 
@@ -116,7 +131,7 @@ Un problème ancien :
 - Chacun peut déjà, par l'utilisation d'outils conviviaux, améliorer la reproductibilité de ses travaux
 
 
-Source : &lt;a name=cite-allard&gt;&lt;/a&gt;([Allard, 2018](https://laviedesidees.fr/La-crise-de-la-replicabilite.html)) 
+Source : ([Allard, 2018](https://laviedesidees.fr/La-crise-de-la-replicabilite.html)) 
 &lt;!-- https://laviedesidees.fr/La-crise-de-la-replicabilite.html --&gt;
 
 ---
@@ -129,7 +144,7 @@ Source : &lt;a name=cite-allard&gt;&lt;/a&gt;([Allard, 2018](https://laviedeside
 &lt;/div&gt;
 
 ---
-# En prtaique, qu'est ce qu'être reproductible (2) ?
+# En pratique, qu'est ce qu'être reproductible (2) ?
 
   Avoir accès :
   - aux pièces (les **données**)
@@ -143,15 +158,10 @@ Source : &lt;a name=cite-allard&gt;&lt;/a&gt;([Allard, 2018](https://laviedeside
   - Eventuellement à un atelier équipé pour le montage (**ressources informatiques**)
   
 
-&lt;!--
-On a besoin du mode d'emploi mais également de la desciption des pièces, de la façon dont elles été construites et des outils necessaires à la construction, du nombre de paramètres; etc.
-Citer papier Nature
---&gt; 
-
 
 
 ---
-# FAIR : un pré-requis la reprouctibilité
+# FAIR : un pré-requis la reproductibilité
 .pull-left[
 &lt;div class="figure" style="text-align: left"&gt;
 &lt;img src="images/fair.png" alt="Findale Accessible Inetroprable Reusable " width="50%" /&gt;
@@ -175,11 +185,7 @@ Principes autour des données au sens large :
 
 ]
 
-&lt;a name=cite-Wilkinson2016&gt;&lt;/a&gt;([Wilkinson, Dumontier, Aalbersberg, Appleton, Axton, Baak, Blomberg, Boiten, da
-Silva Santos, Bourne, Bouwman, Brookes, Clark, Crosas, Dillo, Dumon, Edmunds, Evelo, Finkers, Gonzalez-Beltran, Gray, Groth, Goble, Grethe, Heringa, Hoen, Hooft, Kuhn, Kok, Kok, Lusher, Martone, Mons, Packer, Persson, Rocca-Serra, Roos, van
-Schaik, Sansone, Schultes, Sengstag, Slater, Strawn, Swertz, Thompson, van der
-Lei, van
-Mulligen, Velterop, Waagmeester, Wittenburg, Wolstencroft, Zhao, and Mons, 2016](https://doi.org/10.1038/sdata.2016.18)) 
+([Wilkinson, Dumontier, Aalbersberg, et al., 2016](https://doi.org/10.1038/sdata.2016.18)) 
 
 ---
 
@@ -189,7 +195,7 @@ Mulligen, Velterop, Waagmeester, Wittenburg, Wolstencroft, Zhao, and Mons, 2016]
 &lt;img src="images/reproducibility-spectrum.png" alt="Spectre de la reproductibilité," width="100%" /&gt;
 &lt;p class="caption"&gt;Spectre de la reproductibilité,&lt;/p&gt;
 &lt;/div&gt;
-Source : &lt;a name=cite-piazzi&gt;&lt;/a&gt;([Piazzi, Cerqueira, Manso, and Duque, 2018](#bib-piazzi)) 
+Source : ([Piazzi, Cerqueira, Manso, et al., 2018](#bib-piazzi)) 
 
 ---
 # L'outillage
@@ -217,7 +223,7 @@ Aller de façon prgamatique vers une documentation accrue de ce que l'on fait (c
 
 ---
 # Objectifs du TP
-Se décomplexifier, désacraliser  la reproductibilté !
+Décomplexifier les problème, se décomplexifier, désacraliser  la reproductibilté !
 
 Vous fournir des outils, des pistes pour rendre vos projets :
 - transparents
@@ -238,7 +244,7 @@ class: inverse, center, middle
 # Partie 1 : Organiser son espace de travail 
 .pull-left[
 ![](https://journals.plos.org/ploscompbiol/article/figure/image?size=large&amp;id=info:doi/10.1371/journal.pcbi.1000424.g001)
-Source : &lt;a name=cite-noble&gt;&lt;/a&gt;([Noble, 2009](https://doi.org/10.1371/journal.pcbi.1000424))  
+Source : ([Noble, 2009](https://doi.org/10.1371/journal.pcbi.1000424))  
 
 ]
 
@@ -255,7 +261,7 @@ Séparer
 
 ![](images/wilson-box1.png)
 
-Source : &lt;a name=cite-Wilson&gt;&lt;/a&gt;([Wilson, Bryan, Cranston, Kitzes, Nederbragt, and Teal, 2017](https://doi.org/10.1371/journal.pcbi.1005510)) 
+Source : ([Wilson, Bryan, Cranston, et al., 2017](https://doi.org/10.1371/journal.pcbi.1005510)) 
 
 
 ---
@@ -341,23 +347,45 @@ class: inverse, center, middle
 # Partie 3 : Versionner ses documents 
 
 ---
+&lt;div class="figure" style="text-align: center"&gt;
+&lt;img src="images/phd101212s.gif" alt="Piled Higher and Deeper by Jorge Cham. phdcomics" width="40%" /&gt;
+&lt;p class="caption"&gt;Piled Higher and Deeper by Jorge Cham. phdcomics&lt;/p&gt;
+&lt;/div&gt;
+
+---
 # Partie 3 : Versionner ses documents 
 
+.pull-left[
 - Les documents évoluent, il est nécéssaire de suivre les versions 
   - On trace toutes les modifications faites
   - On garde chaque version des documents du dossier de travail
   - C’est un peu comme copier-coller son dossier de travail … mais en beaucoup plus précis et pratique !
   - `git` est un standard dans la gestion des versions distribuée  
+]
+
+.pull-right[
+![](images/commits.png)
+]
 
 
---
-
-- **Repository** = Dossier / Projet 
+Voici un [aide mémoire git](https://github.github.com/training-kit/downloads/fr/github-git-cheat-sheet.pdf)
+---
+# Vocabulaire
+.pull-left[
+Quelques mots à connaitre :
+- **Repository** / **Dépôt** = Dossier / Projet 
 - **Commit** = Enregistrement d’un ensemble de fichier à un instant T (= photo) 
 - **Branche** = Ensemble chainé de commits, par défaut la branche principale s’appelle « master » (cette notion n’est pas primordiale pour débuter) 
 
-Voici un [aide mémoire git](https://github.github.com/training-kit/downloads/fr/github-git-cheat-sheet.pdf)
 
+
+- **Git** : logiciel *open-souce*  de gestion de vesion de document. 
+- **Github** : site web permettant de centraliser en ligne ses dépôts git et facilitant la collaboration sur les porjets.
+]
+
+.pull-right[
+&lt;img src="images/git-github.png" width="100%" style="display: block; margin: auto 0 auto auto;" /&gt;
+]
 ---
 # Retours sur les clés SSH
 
@@ -411,18 +439,46 @@ class: center, middle
 mkdir testRepo
 cd testRepo
 git init
+
 ```
 
 --
+```
+vloux@jj-1404-port196 ~/tmp&gt; mkdir testRepo
+vloux@jj-1404-port196 ~/tmp&gt; cd testRepo
+vloux@jj-1404-port196 ~/tmp&gt; git init
+Initialized empty Git repository in /Users/vloux/tmp/testRepo/.git/
+```
+
+
+---
+# TP : Utilisation de Git  
+
 ## 2. Ajouter un document (en local)
 
 ```
 touch firstFile
-emacs firstFile
+echo 'my first line' &gt; firstFile
 
 git status
 ```
 
+--
+```
+vloux@jj-1404-port196 ~/t/testRepo&gt; touch firstFile
+vloux@jj-1404-port196 ~/t/testRepo&gt; echo 'my first line' &gt; firstFile
+
+vloux@jj-1404-port196 ~/t/testRepo&gt;   git status
+On branch master
+
+No commits yet
+
+Untracked files:
+  (use "git add &lt;file&gt;..." to include in what will be committed)
+	firstFile
+
+nothing added to commit but untracked files present (use "git add" to track)
+```
 ---
 # TP : Utilisation de Git  
 
@@ -436,44 +492,112 @@ git status
 ```
 
 --
+```
+vloux@jj-1404-port196 ~/t/testRepo&gt; git add firstFile
+vloux@jj-1404-port196 ~/t/testRepo&gt; git commit firstFile
+[master (root-commit) 53e1cbc] first commit
+ 1 file changed, 1 insertion(+)
+ create mode 100644 firstFile
+vloux@jj-1404-port196 ~/t/testRepo&gt; git status
+On branch master
+nothing to commit, working tree clean
+```
+---
+# TP : Utilisation de Git  
 
 ## 4. Workflow de modification (en local)
-
+.pull-left[
 ```
-emacs firstFile
+echo 'second modif' &gt;&gt; firstFile
 
 git status
 git diff
 
-git commit -m "modification"
+git commit -m "ajout de la deuxième ligne" firstFile
 
 ```
-
+]
+--
+.pull-right[
+```
+vloux@jj-1404-port196 ~/t/testRepo&gt; git status
+On branch master
+Changes not staged for commit:
+  (use "git add &lt;file&gt;..." to update what will be committed)
+  (use "git restore &lt;file&gt;..." to discard changes in working directory)
+	modified:   firstFile
+vloux@jj-1404-port196 ~/t/testRepo&gt; git diff
+diff --git a/firstFile b/firstFile
+index b1a9f66..d491802 100644
+--- a/firstFile
++++ b/firstFile
+@@ -1 +1,2 @@
+ my first line
++second modif
+vloux@jj-1404-port196 ~/t/testRepo&gt; git commit -m "ajout de la deuxième ligne" firstFile
+On branch master
+[master b3a2b4c] ajout de la deuxième ligne
+ 1 file changed, 1 insertion(+)
+```
+]
 ---
 # TP : Utilisation de GitHub
 
 ## 5. Initialisation du dépôt distant (Github)
 
-- Créer un dépôt distant sur Github
+- Créer un dépôt distant sur Github (1)
 
-## 6. Lier le dépôt local et disatnt
+![](images/github-newrepo.png)
+---
+## 5. Initialisation du dépôt distant (Github)
+
+- Créer un dépôt distant sur Github (2)
+- Noter l'adresse du dépôt dans l'écran suivant.
+&lt;img src="images/github-create-repo.png" width="50%" style="display: block; margin: auto 0 auto auto;" /&gt;
+
+---
+# TP : Utilisation de GitHub
+## 6. Lier le dépôt local et distant
 ```
 git remote add origin git@github.com:vloux/myFirstRepo.git
 git remote -v
 
 ```
+--
+```
+vloux@jj-1404-port196 ~/t/testRepo&gt; git remote add origin git@github.com:vloux/tesRepository.git
+vloux@jj-1404-port196 ~/t/testRepo&gt; git remote -v
+origin	git@github.com:vloux/tesRepository.git (fetch)
+origin	git@github.com:vloux/tesRepository.git (push)
+
+```
+---
+# TP : Utilisation de GitHub
 ## 7. Pousser les modifications locales sur le dépôt distant
 
 ```
-git push origin master
-
+git push origin master --set-upstream origin master
 ```
-
+--
+```
+vloux@jj-1404-port196 ~/t/testRepo&gt; git push  --set-upstream origin master
+Enumerating objects: 6, done.
+Counting objects: 100% (6/6), done.
+Delta compression using up to 8 threads
+Compressing objects: 100% (2/2), done.
+Writing objects: 100% (6/6), 492 bytes | 492.00 KiB/s, done.
+Total 6 (delta 0), reused 0 (delta 0)
+To github.com:vloux/tesRepository.git
+ * [new branch]      master -&gt; master
+```
 ---
 # TP : Utilisation de GitHub
 
 ## 8. Verification sur Github des infos
 
+- Connectez vous sur l'interface de Github :
+  - trouvez votre dépôt
+  - verifiez que vous trouvez bien le fichier que vous avez modifié, les commits
 
 ---
 # TP : Utilisation de GitHub
@@ -481,24 +605,46 @@ git push origin master
 ## 9. Modification du dépôt par l'interface
 
 - ajouter un `README.md` (avec markdown)
+- le commiter depuis l'interface
+- l'éditer
+
+- commiter la modification
 
 ---
 # TP : Utilisation de Git et GitHub
 
 ## 8. Récupérer sur le repo local des infos de la branche distante
 
+.pull-left[
 ```
-git fetch origin master
-
-git merge origin master
+git fetch
+git merge
 ```
-
 équivalent à :
  
 ```
-git pull origin master
+git pull
 ```
-
+]
+.pull-right[
+--
+```
+vloux@jj-1404-port196 ~/t/testRepo&gt; git fetch
+remote: Enumerating objects: 7, done.
+remote: Counting objects: 100% (7/7), done.
+remote: Compressing objects: 100% (4/4), done.
+remote: Total 6 (delta 0), reused 0 (delta 0), pack-reused 0
+Unpacking objects: 100% (6/6), done.
+From github.com:vloux/tesRepository
+   b3a2b4c..c61dab3  master     -&gt; origin/master
+vloux@jj-1404-port196 ~/t/testRepo&gt; git merge
+Updating b3a2b4c..c61dab3
+Fast-forward
+ README.md | 1 +
+ 1 file changed, 1 insertion(+)
+ create mode 100644 README.md
+```
+]
 
 ---
 # TP : Utilisation de Git et GitHub
@@ -508,12 +654,21 @@ Nommer des versions (tags)
 ```
 git tag version1 -m "Initial version"
  
-git tag
- 
-git push origin master --tags
+git push  --tags
 
 ```
-
+--
+```
+vloux@jj-1404-port196 ~/t/testRepo&gt; git tag version1 -m "Initial version"
+version1
+vloux@jj-1404-port196 ~/t/testRepo&gt;  git push  --tags
+Enumerating objects: 1, done.
+Counting objects: 100% (1/1), done.
+Writing objects: 100% (1/1), 171 bytes | 171.00 KiB/s, done.
+Total 1 (delta 0), reused 0 (delta 0)
+To github.com:vloux/tesRepository.git
+ * [new tag]         version1 -&gt; version1
+```
 ---
 # TP : utilisation de Git et GitHub
 
@@ -522,11 +677,21 @@ Comparer à une version précédente
 ```
 git log
 
-git diff [CommintNumber] aNewFile
+git diff [CommitNumber] aNewFile
 
 ```
 
-
+--
+```
+vloux@jj-1404-port196 ~/t/testRepo&gt; git diff 53e1cbcc5cab26f6c1550acd159ca30ad2acfeec firstFile
+diff --git a/firstFile b/firstFile
+index b1a9f66..d491802 100644
+--- a/firstFile
++++ b/firstFile
+@@ -1 +1,2 @@
+ my first line
++second modif
+```
 ---
 # En résumé 
 
@@ -575,7 +740,7 @@ class: inverse, center, middle
 
 .center[![russo2016](https://www.researchgate.net/profile/Dario_Righelli/publication/306538473/figure/fig2/AS:391153263366144@1470269613039/This-figure-explains-the-basic-idea-of-Reproducible-Research-The-raw-data-needs-to-be_W640.jpg)]
 
-&lt;a name=cite-russo&gt;&lt;/a&gt;([Russo, Righelli, and Angelini, 2016](https://doi.org/10.1007/978-3-319-44332-4_19))
+([Russo, Righelli, and Angelini, 2016](https://doi.org/10.1007/978-3-319-44332-4_19))
 
 Encore un joli [mémo](https://www.rstudio.org/links/r_markdown_cheat_sheet) pour R markdown. 
 
@@ -684,8 +849,7 @@ Des bonnes pratiques appuyées par des outils qui les facilitent
 # Pour aller plus loin - Fixer et partager son environnement (2) 
 .center[![Singularity](https://ars.els-cdn.com/content/image/1-s2.0-S2405471218301406-gr1.jpg)]
 
-&lt;a name=cite-Bjorn2018&gt;&lt;/a&gt;([Grüning, Chilton, Köster, Dale, Soranzo, van den
-Beek, Goecks, Backofen, Nekrutenko, and Taylor, 2018](https://doi.org/10.1016/j.cels.2018.03.014)) 
+([Grüning, Chilton, Köster, et al., 2018](https://doi.org/10.1016/j.cels.2018.03.014)) 
 
 ---
 # Pour aller + loin - gestionnaires de workflows

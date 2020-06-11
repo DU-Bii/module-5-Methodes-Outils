@@ -72,16 +72,24 @@ knitr::include_graphics("images/monnet-loux-plosone-mat-met.png")
 - Problème général ( "Reproducibility crisis")
   - Remis en avant par les science sociales ( pyschologie )
   - Etendu à l'ensemble des disciplines
-  - … mais un problème qui n'est pas nouveau
 
+Mais un problème qui n'est pas nouveau :
+  - Experiences de la pompe à vide au XVIIe siècle (von Guericke et Boyle) 
 
+```{r, out.width = "50%", echo=FALSE, fig.align="center",fig.cap="Experiences des hemisphères de Magdebourg"}
+knitr::include_graphics("images/Magdeburger-Halbkugeln.jpg")
+```
+
+???
+Au XVIIe, experience de la pompe à vide par Otto van Guericke étaient basées sur des demonstrations spectaculaires, dans les cours d'europe qui lui assuraient notoriété. L'experience des hemisphères de Magdebourg qui consitait à essayer de fauire séparer des hémisphères de cuivre dans lésquel il avait fait lme vide, par des attelages de chevaux était très appréciée. Cela reposait sur un outillage et un savoir afire secret. Impossible à reproduire
+Plus atrd, Boyle, sur le m^me sujet, consignait tout par écrit et avait recours à des témoins de bonne réputation (des gentlemen, à la base de la Royal Society) pour certifier ses expoeriences. c'est le début des publication scientifiques.
   
 ---
 # Et en bioinfo ?
 
-Un problème ancien :
+Un problème vieux comme la bioinformatique :
 
-- En 2009, moins de la moitié des experiences de transcriptomique parues dans Nature Genetics n'ont pu être reproduites
+- En 2009, moins de la moitié des experiences de transcriptomique parues dans Nature Genetics n'ont pu être reproduites 
 - Sur 50 articles citant BWA en 2011, 31 ne citent ni version, ni paramètres. 26 ne donnent pas accès aux données sous-jacentes
 - Selon un sondage mené auprès de plus de 1500 biologistes
   - 70% ont déjà éprouvé des difficultés à reporduire une analyse (Baker 2016)
@@ -92,14 +100,20 @@ Un problème ancien :
 # Quelles sont les difficultés ?
 
 
-- Problèmes d'accès aux données
-- Problèmes d'accès aux outils
-- Problèmes de paramètrage de l'analyse
+- Problèmes **d'accès aux données** :
+  - "data available upon request"
+  - méta-données iexsitantes ou insuffisantes
+- Problèmes **d'accès aux outils** :
+  - outils anciens ou obsolètes
+  - difficultés à installer
+- Problèmes de **paramètrage de l'analyse**
   - version des outil
-  - paramètrage de l'analyse
+  - paramètres des outils
+  - enchainement des outils
 
-- Problème d'accès aux ressources necessaires
-
+- Problème d'accès aux **ressources necessaires**
+  - calcul
+  - stockage
 
 
 
@@ -131,7 +145,7 @@ knitr::include_graphics("images/reproducible-data-analysis.png")
 ```
 
 ---
-# En prtaique, qu'est ce qu'être reproductible (2) ?
+# En pratique, qu'est ce qu'être reproductible (2) ?
 
   Avoir accès :
   - aux pièces (les **données**)
@@ -145,15 +159,10 @@ knitr::include_graphics("images/reproducible-data-analysis.png")
   - Eventuellement à un atelier équipé pour le montage (**ressources informatiques**)
   
 
-<!--
-On a besoin du mode d'emploi mais également de la desciption des pièces, de la façon dont elles été construites et des outils necessaires à la construction, du nombre de paramètres; etc.
-Citer papier Nature
---> 
-
 
 
 ---
-# FAIR : un pré-requis la reprouctibilité
+# FAIR : un pré-requis la reproductibilité
 .pull-left[
 ```{r, out.width = "50%", echo=FALSE, fig.align="left", fig.cap= "Findale Accessible Inetroprable Reusable "}
 knitr::include_graphics("images/fair.png")
@@ -213,7 +222,7 @@ Aller de façon prgamatique vers une documentation accrue de ce que l'on fait (c
 
 ---
 # Objectifs du TP
-Se décomplexifier, désacraliser  la reproductibilté !
+Décomplexifier les problème, se décomplexifier, désacraliser  la reproductibilté !
 
 Vous fournir des outils, des pistes pour rendre vos projets :
 - transparents
@@ -335,23 +344,46 @@ class: inverse, center, middle
 # Partie 3 : Versionner ses documents 
 
 ---
+```{r, out.width="40%", echo=FALSE, fig.align="center", fig.cap= "Piled Higher and Deeper by Jorge Cham. phdcomics"}
+knitr::include_graphics("images/phd101212s.gif")
+```
+
+---
 # Partie 3 : Versionner ses documents 
 
+.pull-left[
 - Les documents évoluent, il est nécéssaire de suivre les versions 
   - On trace toutes les modifications faites
   - On garde chaque version des documents du dossier de travail
   - C’est un peu comme copier-coller son dossier de travail … mais en beaucoup plus précis et pratique !
   - `git` est un standard dans la gestion des versions distribuée  
+]
+
+.pull-right[
+![](images/commits.png)
+]
 
 
---
-
-- **Repository** = Dossier / Projet 
+Voici un [aide mémoire git](https://github.github.com/training-kit/downloads/fr/github-git-cheat-sheet.pdf)
+---
+# Vocabulaire
+.pull-left[
+Quelques mots à connaitre :
+- **Repository** / **Dépôt** = Dossier / Projet 
 - **Commit** = Enregistrement d’un ensemble de fichier à un instant T (= photo) 
 - **Branche** = Ensemble chainé de commits, par défaut la branche principale s’appelle « master » (cette notion n’est pas primordiale pour débuter) 
 
-Voici un [aide mémoire git](https://github.github.com/training-kit/downloads/fr/github-git-cheat-sheet.pdf)
 
+
+- **Git** : logiciel *open-souce*  de gestion de vesion de document. 
+- **Github** : site web permettant de centraliser en ligne ses dépôts git et facilitant la collaboration sur les porjets.
+]
+
+.pull-right[
+```{r, out.width = "100%", echo=FALSE, fig.align="right"}
+knitr::include_graphics("images/git-github.png")
+```
+]
 ---
 # Retours sur les clés SSH
 
@@ -405,18 +437,46 @@ class: center, middle
 mkdir testRepo
 cd testRepo
 git init
+
 ```
 
 --
+```
+vloux@jj-1404-port196 ~/tmp> mkdir testRepo
+vloux@jj-1404-port196 ~/tmp> cd testRepo
+vloux@jj-1404-port196 ~/tmp> git init
+Initialized empty Git repository in /Users/vloux/tmp/testRepo/.git/
+```
+
+
+---
+# TP : Utilisation de Git  
+
 ## 2. Ajouter un document (en local)
 
 ```
 touch firstFile
-emacs firstFile
+echo 'my first line' > firstFile
 
 git status
 ```
 
+--
+```
+vloux@jj-1404-port196 ~/t/testRepo> touch firstFile
+vloux@jj-1404-port196 ~/t/testRepo> echo 'my first line' > firstFile
+
+vloux@jj-1404-port196 ~/t/testRepo>   git status
+On branch master
+
+No commits yet
+
+Untracked files:
+  (use "git add <file>..." to include in what will be committed)
+	firstFile
+
+nothing added to commit but untracked files present (use "git add" to track)
+```
 ---
 # TP : Utilisation de Git  
 
@@ -430,44 +490,114 @@ git status
 ```
 
 --
+```
+vloux@jj-1404-port196 ~/t/testRepo> git add firstFile
+vloux@jj-1404-port196 ~/t/testRepo> git commit firstFile
+[master (root-commit) 53e1cbc] first commit
+ 1 file changed, 1 insertion(+)
+ create mode 100644 firstFile
+vloux@jj-1404-port196 ~/t/testRepo> git status
+On branch master
+nothing to commit, working tree clean
+```
+---
+# TP : Utilisation de Git  
 
 ## 4. Workflow de modification (en local)
-
+.pull-left[
 ```
-emacs firstFile
+echo 'second modif' >> firstFile
 
 git status
 git diff
 
-git commit -m "modification"
+git commit -m "ajout de la deuxième ligne" firstFile
 
 ```
-
+]
+--
+.pull-right[
+```
+vloux@jj-1404-port196 ~/t/testRepo> git status
+On branch master
+Changes not staged for commit:
+  (use "git add <file>..." to update what will be committed)
+  (use "git restore <file>..." to discard changes in working directory)
+	modified:   firstFile
+vloux@jj-1404-port196 ~/t/testRepo> git diff
+diff --git a/firstFile b/firstFile
+index b1a9f66..d491802 100644
+--- a/firstFile
++++ b/firstFile
+@@ -1 +1,2 @@
+ my first line
++second modif
+vloux@jj-1404-port196 ~/t/testRepo> git commit -m "ajout de la deuxième ligne" firstFile
+On branch master
+[master b3a2b4c] ajout de la deuxième ligne
+ 1 file changed, 1 insertion(+)
+```
+]
 ---
 # TP : Utilisation de GitHub
 
 ## 5. Initialisation du dépôt distant (Github)
 
-- Créer un dépôt distant sur Github
+- Créer un dépôt distant sur Github (1)
 
-## 6. Lier le dépôt local et disatnt
+![](images/github-newrepo.png)
+---
+## 5. Initialisation du dépôt distant (Github)
+
+- Créer un dépôt distant sur Github (2)
+- Noter l'adresse du dépôt dans l'écran suivant.
+```{r, out.width = "50%", echo=FALSE, fig.align="right"}
+knitr::include_graphics("images/github-create-repo.png")
+```
+
+---
+# TP : Utilisation de GitHub
+## 6. Lier le dépôt local et distant
 ```
 git remote add origin git@github.com:vloux/myFirstRepo.git
 git remote -v
 
 ```
+--
+```
+vloux@jj-1404-port196 ~/t/testRepo> git remote add origin git@github.com:vloux/tesRepository.git
+vloux@jj-1404-port196 ~/t/testRepo> git remote -v
+origin	git@github.com:vloux/tesRepository.git (fetch)
+origin	git@github.com:vloux/tesRepository.git (push)
+
+```
+---
+# TP : Utilisation de GitHub
 ## 7. Pousser les modifications locales sur le dépôt distant
 
 ```
-git push origin master
-
+git push origin master --set-upstream origin master
 ```
-
+--
+```
+vloux@jj-1404-port196 ~/t/testRepo> git push  --set-upstream origin master
+Enumerating objects: 6, done.
+Counting objects: 100% (6/6), done.
+Delta compression using up to 8 threads
+Compressing objects: 100% (2/2), done.
+Writing objects: 100% (6/6), 492 bytes | 492.00 KiB/s, done.
+Total 6 (delta 0), reused 0 (delta 0)
+To github.com:vloux/tesRepository.git
+ * [new branch]      master -> master
+```
 ---
 # TP : Utilisation de GitHub
 
 ## 8. Verification sur Github des infos
 
+- Connectez vous sur l'interface de Github :
+  - trouvez votre dépôt
+  - verifiez que vous trouvez bien le fichier que vous avez modifié, les commits
 
 ---
 # TP : Utilisation de GitHub
@@ -475,24 +605,46 @@ git push origin master
 ## 9. Modification du dépôt par l'interface
 
 - ajouter un `README.md` (avec markdown)
+- le commiter depuis l'interface
+- l'éditer
+
+- commiter la modification
 
 ---
 # TP : Utilisation de Git et GitHub
 
 ## 8. Récupérer sur le repo local des infos de la branche distante
 
+.pull-left[
 ```
-git fetch origin master
-
-git merge origin master
+git fetch
+git merge
 ```
-
 équivalent à :
  
 ```
-git pull origin master
+git pull
 ```
-
+]
+.pull-right[
+--
+```
+vloux@jj-1404-port196 ~/t/testRepo> git fetch
+remote: Enumerating objects: 7, done.
+remote: Counting objects: 100% (7/7), done.
+remote: Compressing objects: 100% (4/4), done.
+remote: Total 6 (delta 0), reused 0 (delta 0), pack-reused 0
+Unpacking objects: 100% (6/6), done.
+From github.com:vloux/tesRepository
+   b3a2b4c..c61dab3  master     -> origin/master
+vloux@jj-1404-port196 ~/t/testRepo> git merge
+Updating b3a2b4c..c61dab3
+Fast-forward
+ README.md | 1 +
+ 1 file changed, 1 insertion(+)
+ create mode 100644 README.md
+```
+]
 
 ---
 # TP : Utilisation de Git et GitHub
@@ -502,12 +654,21 @@ Nommer des versions (tags)
 ```
 git tag version1 -m "Initial version"
  
-git tag
- 
-git push origin master --tags
+git push  --tags
 
 ```
-
+--
+```
+vloux@jj-1404-port196 ~/t/testRepo> git tag version1 -m "Initial version"
+version1
+vloux@jj-1404-port196 ~/t/testRepo>  git push  --tags
+Enumerating objects: 1, done.
+Counting objects: 100% (1/1), done.
+Writing objects: 100% (1/1), 171 bytes | 171.00 KiB/s, done.
+Total 1 (delta 0), reused 0 (delta 0)
+To github.com:vloux/tesRepository.git
+ * [new tag]         version1 -> version1
+```
 ---
 # TP : utilisation de Git et GitHub
 
@@ -516,11 +677,21 @@ Comparer à une version précédente
 ```
 git log
 
-git diff [CommintNumber] aNewFile
+git diff [CommitNumber] aNewFile
 
 ```
 
-
+--
+```
+vloux@jj-1404-port196 ~/t/testRepo> git diff 53e1cbcc5cab26f6c1550acd159ca30ad2acfeec firstFile
+diff --git a/firstFile b/firstFile
+index b1a9f66..d491802 100644
+--- a/firstFile
++++ b/firstFile
+@@ -1 +1,2 @@
+ my first line
++second modif
+```
 ---
 # En résumé 
 
