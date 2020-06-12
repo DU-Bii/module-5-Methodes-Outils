@@ -92,7 +92,7 @@ Un problème vieux comme la bioinformatique :
 - En 2009, moins de la moitié des experiences de transcriptomique parues dans Nature Genetics n'ont pu être reproduites 
 - Sur 50 articles citant BWA en 2011, 31 ne citent ni version, ni paramètres. 26 ne donnent pas accès aux données sous-jacentes
 - Selon un sondage mené auprès de plus de 1500 biologistes
-  - 70% ont déjà éprouvé des difficultés à reporduire une analyse (Baker 2016)
+  - 70% ont déjà éprouvé des difficultés à reproduire une analyse `r Citep(bib, "Baker2016")`
 
 - [Ten Years Reproducibility Challenge](https://github.com/ReScience/ten-years) refaire ses analyses d'il y a 10 ans …
 
