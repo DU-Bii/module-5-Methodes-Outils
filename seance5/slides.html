@@ -90,7 +90,7 @@ Un problème vieux comme la bioinformatique :
 - En 2009, moins de la moitié des experiences de transcriptomique parues dans Nature Genetics n'ont pu être reproduites 
 - Sur 50 articles citant BWA en 2011, 31 ne citent ni version, ni paramètres. 26 ne donnent pas accès aux données sous-jacentes
 - Selon un sondage mené auprès de plus de 1500 biologistes
-  - 70% ont déjà éprouvé des difficultés à reproduire une analyse &lt;a name=cite-Baker2016&gt;&lt;/a&gt;([Baker, 2016](https://doi.org/10.1038/533452a))
+  - 70% ont déjà éprouvé des difficultés à reproduire une analyse ([Baker, 2016](https://doi.org/10.1038/533452a))
 
 - [Ten Years Reproducibility Challenge](https://github.com/ReScience/ten-years) refaire ses analyses d'il y a 10 ans …
 
@@ -131,7 +131,7 @@ Un problème vieux comme la bioinformatique :
 - Chacun peut déjà, par l'utilisation d'outils conviviaux, améliorer la reproductibilité de ses travaux
 
 
-Source : &lt;a name=cite-allard&gt;&lt;/a&gt;([Allard, 2018](https://laviedesidees.fr/La-crise-de-la-replicabilite.html)) 
+Source : ([Allard, 2018](https://laviedesidees.fr/La-crise-de-la-replicabilite.html)) 
 &lt;!-- https://laviedesidees.fr/La-crise-de-la-replicabilite.html --&gt;
 
 ---
@@ -185,11 +185,7 @@ Principes autour des données au sens large :
 
 ]
 
-&lt;a name=cite-Wilkinson2016&gt;&lt;/a&gt;([Wilkinson, Dumontier, Aalbersberg, Appleton, Axton, Baak, Blomberg, Boiten, da
-Silva Santos, Bourne, Bouwman, Brookes, Clark, Crosas, Dillo, Dumon, Edmunds, Evelo, Finkers, Gonzalez-Beltran, Gray, Groth, Goble, Grethe, Heringa, Hoen, Hooft, Kuhn, Kok, Kok, Lusher, Martone, Mons, Packer, Persson, Rocca-Serra, Roos, van
-Schaik, Sansone, Schultes, Sengstag, Slater, Strawn, Swertz, Thompson, van der
-Lei, van
-Mulligen, Velterop, Waagmeester, Wittenburg, Wolstencroft, Zhao, and Mons, 2016](https://doi.org/10.1038/sdata.2016.18)) 
+([Wilkinson, Dumontier, Aalbersberg, et al., 2016](https://doi.org/10.1038/sdata.2016.18)) 
 
 ---
 
@@ -199,7 +195,7 @@ Mulligen, Velterop, Waagmeester, Wittenburg, Wolstencroft, Zhao, and Mons, 2016]
 &lt;img src="images/reproducibility-spectrum.png" alt="Spectre de la reproductibilité," width="100%" /&gt;
 &lt;p class="caption"&gt;Spectre de la reproductibilité,&lt;/p&gt;
 &lt;/div&gt;
-Source : &lt;a name=cite-piazzi&gt;&lt;/a&gt;([Piazzi, Cerqueira, Manso, and Duque, 2018](#bib-piazzi)) 
+Source : ([Piazzi, Cerqueira, Manso, et al., 2018](#bib-piazzi)) 
 
 ---
 # L'outillage
@@ -248,7 +244,7 @@ class: inverse, center, middle
 # Partie 1 : Organiser son espace de travail 
 .pull-left[
 ![](https://journals.plos.org/ploscompbiol/article/figure/image?size=large&amp;id=info:doi/10.1371/journal.pcbi.1000424.g001)
-Source : &lt;a name=cite-noble&gt;&lt;/a&gt;([Noble, 2009](https://doi.org/10.1371/journal.pcbi.1000424))  
+Source : ([Noble, 2009](https://doi.org/10.1371/journal.pcbi.1000424))  
 
 ]
 
@@ -265,7 +261,7 @@ Séparer
 
 ![](images/wilson-box1.png)
 
-Source : &lt;a name=cite-Wilson&gt;&lt;/a&gt;([Wilson, Bryan, Cranston, Kitzes, Nederbragt, and Teal, 2017](https://doi.org/10.1371/journal.pcbi.1005510)) 
+Source : ([Wilson, Bryan, Cranston, et al., 2017](https://doi.org/10.1371/journal.pcbi.1005510)) 
 
 
 ---
@@ -461,7 +457,6 @@ Initialized empty Git repository in /Users/vloux/tmp/testRepo/.git/
 ## 2. Ajouter un document (en local)
 
 ```
-touch firstFile
 echo 'my first line' &gt; firstFile
 
 git status
@@ -469,7 +464,6 @@ git status
 
 --
 ```
-vloux@jj-1404-port196 ~/t/testRepo&gt; touch firstFile
 vloux@jj-1404-port196 ~/t/testRepo&gt; echo 'my first line' &gt; firstFile
 
 vloux@jj-1404-port196 ~/t/testRepo&gt;   git status
@@ -512,7 +506,7 @@ nothing to commit, working tree clean
 ## 4. Workflow de modification (en local)
 .pull-left[
 ```
-echo 'second modif' &gt;&gt; firstFile
+echo 'seconde modif' &gt;&gt; firstFile
 
 git status
 git diff
@@ -555,47 +549,58 @@ On branch master
 ---
 ## 5. Initialisation du dépôt distant (Github)
 
-- Créer un dépôt distant sur Github (2)
+.pull-left[
+- Créer le dépôt distant sur Github
 - Noter l'adresse du dépôt dans l'écran suivant.
-&lt;img src="images/github-create-repo.png" width="50%" style="display: block; margin: auto 0 auto auto;" /&gt;
-
-&lt;&lt;&lt;&lt;&lt;&lt;&lt; HEAD
+&lt;img src="images/github-create-repo.png" width="100%" style="display: block; margin: auto 0 auto auto;" /&gt;
+]
+--
+.pull-right[
+&lt;img src="images/github-createrepo-2.png" width="100%" style="display: block; margin: auto 0 auto auto;" /&gt;
+]
 ---
 # TP : Utilisation de GitHub
-=======
-&gt;&gt;&gt;&gt;&gt;&gt;&gt; eab47476211b45bbcd21f929dc95a681f8aca75d
 ## 6. Lier le dépôt local et distant
+
+- La commande `git remote` permet de lier notre dépôt à un dépôt distant, ici `test.git`
+- Par convention, on appelle ce dépôt `origin`
+
+
+
 ```
-git remote add origin git@github.com:vloux/myFirstRepo.git
+git remote add origin git@github.com:vloux/test.git
 git remote -v
 
 ```
 --
 ```
-vloux@jj-1404-port196 ~/t/testRepo&gt; git remote add origin git@github.com:vloux/tesRepository.git
+vloux@jj-1404-port196 ~/t/testRepo&gt; git remote add origin git@github.com:vloux/test.git
 vloux@jj-1404-port196 ~/t/testRepo&gt; git remote -v
-origin	git@github.com:vloux/tesRepository.git (fetch)
-origin	git@github.com:vloux/tesRepository.git (push)
+origin	git@github.com:vloux/test.git (fetch)
+origin	git@github.com:vloux/test.git (push)
 
 ```
 ---
 # TP : Utilisation de GitHub
 ## 7. Pousser les modifications locales sur le dépôt distant
 
+LA commande `push`pousse les modifications de la branche `master` (la branche par défaut locale) sur la branche `origin`(le nom de la branche distante). Le paramètre `-u` permet de créer la branche de reférence distante et de lier les branches disatntes et locales (et ainsi de se passer des arguments `origin` `master` par la suite)
+
 ```
-git push origin master --set-upstream origin master
+git push origin master -u 
 ```
 --
 ```
-vloux@jj-1404-port196 ~/t/testRepo&gt; git push  --set-upstream origin master
+vloux@jj-1404-port196 ~/t/testRepo&gt; git push  origin master -u
 Enumerating objects: 6, done.
 Counting objects: 100% (6/6), done.
 Delta compression using up to 8 threads
 Compressing objects: 100% (2/2), done.
-Writing objects: 100% (6/6), 492 bytes | 492.00 KiB/s, done.
+Writing objects: 100% (6/6), 489 bytes | 489.00 KiB/s, done.
 Total 6 (delta 0), reused 0 (delta 0)
-To github.com:vloux/tesRepository.git
+To github.com:vloux/test.git
  * [new branch]      master -&gt; master
+Branch 'master' set up to track remote branch 'master' from 'origin'
 ```
 ---
 # TP : Utilisation de GitHub
@@ -633,8 +638,11 @@ git merge
 git pull
 ```
 ]
-.pull-right[
+
 --
+
+.pull-right[
+
 ```
 vloux@jj-1404-port196 ~/t/testRepo&gt; git fetch
 remote: Enumerating objects: 7, done.
@@ -642,7 +650,7 @@ remote: Counting objects: 100% (7/7), done.
 remote: Compressing objects: 100% (4/4), done.
 remote: Total 6 (delta 0), reused 0 (delta 0), pack-reused 0
 Unpacking objects: 100% (6/6), done.
-From github.com:vloux/tesRepository
+From github.com:vloux/test
    b3a2b4c..c61dab3  master     -&gt; origin/master
 vloux@jj-1404-port196 ~/t/testRepo&gt; git merge
 Updating b3a2b4c..c61dab3
@@ -699,6 +707,22 @@ index b1a9f66..d491802 100644
  my first line
 +second modif
 ```
+
+
+---
+# TP : utilisation de Git et GitHub. 
+## Cloner un dépôt existant
+
+- Dans le cas d'un dépôt distant existant, on peut directement le cloner en local. Il est lié au dépot distant et les modifications peuvenat ainis être récupérées ( `pull`) ou poussées ( `push`) sans avoir besoin de d'abord configurer les liens avec le dépôt distant.
+
+```
+git clone git@github.com:vloux/test.git
+
+git remote -v
+
+
+```
+
 ---
 # En résumé 
 
@@ -715,6 +739,9 @@ et bien d'autres encore (``blame``, revert`,…)
 ---
 # Pour apprendre progressivement et/ou se simplifier la vie
 
+- Partir de d^pots que l'on crée sur Github et clone en local.
+
+Utiliser une interface conviviale :
 - Github Desktop
 - Les intégration aux différents IDE (RStudio and co)
 
@@ -773,7 +800,7 @@ class: inverse, center, middle
 
 .center[![russo2016](https://www.researchgate.net/profile/Dario_Righelli/publication/306538473/figure/fig2/AS:391153263366144@1470269613039/This-figure-explains-the-basic-idea-of-Reproducible-Research-The-raw-data-needs-to-be_W640.jpg)]
 
-&lt;a name=cite-russo&gt;&lt;/a&gt;([Russo, Righelli, and Angelini, 2016](https://doi.org/10.1007/978-3-319-44332-4_19))
+([Russo, Righelli, and Angelini, 2016](https://doi.org/10.1007/978-3-319-44332-4_19))
 
 Encore un joli [mémo](https://www.rstudio.org/links/r_markdown_cheat_sheet) pour R markdown. 
 
@@ -882,8 +909,7 @@ Des bonnes pratiques appuyées par des outils qui les facilitent
 # Pour aller plus loin - Fixer et partager son environnement (2) 
 .center[![Singularity](https://ars.els-cdn.com/content/image/1-s2.0-S2405471218301406-gr1.jpg)]
 
-&lt;a name=cite-Bjorn2018&gt;&lt;/a&gt;([Grüning, Chilton, Köster, Dale, Soranzo, van den
-Beek, Goecks, Backofen, Nekrutenko, and Taylor, 2018](https://doi.org/10.1016/j.cels.2018.03.014)) 
+([Grüning, Chilton, Köster, et al., 2018](https://doi.org/10.1016/j.cels.2018.03.014)) 
 
 ---
 # Pour aller + loin - gestionnaires de workflows
@@ -983,52 +1009,37 @@ Au final, toujours se poser la question du rapport coût / bénéfice.
 
 # References
 
-&lt;a name=bib-allard&gt;&lt;/a&gt;[Allard, A.](#cite-allard) (2018). _La crise de
-la réplicabilité_. URL:
+&lt;a name=bib-allard&gt;&lt;/a&gt;[Allard, A.](#cite-allard) (2018). _La crise de la réplicabilité_. URL:
 [https://laviedesidees.fr/La-crise-de-la-replicabilite.html](https://laviedesidees.fr/La-crise-de-la-replicabilite.html).
 
-&lt;a name=bib-Baker2016&gt;&lt;/a&gt;[Baker, M.](#cite-Baker2016) (2016). "1, 500
-scientists lift the lid on reproducibility". In: _Nature_ 533.7604, pp.
-452-454. DOI: [10.1038/533452a](https://doi.org/10.1038%2F533452a).
-URL:
+&lt;a name=bib-Baker2016&gt;&lt;/a&gt;[Baker, M.](#cite-Baker2016) (2016). "1, 500 scientists lift the lid on reproducibility". In: _Nature_
+533.7604, pp. 452-454. DOI: [10.1038/533452a](https://doi.org/10.1038%2F533452a). URL:
 [https://doi.org/10.1038/533452a](https://doi.org/10.1038/533452a).
 
-&lt;a name=bib-Bjorn2018&gt;&lt;/a&gt;[Grüning, B, J. Chilton, J. Köster, et
-al.](#cite-Bjorn2018) (2018). "Practical Computational Reproducibility
-in the Life Sciences". In: _Cell Systems_ 6.6, pp. 631-635. DOI:
-[10.1016/j.cels.2018.03.014](https://doi.org/10.1016%2Fj.cels.2018.03.014).
-URL:
+&lt;a name=bib-Bjorn2018&gt;&lt;/a&gt;[Grüning, B, J. Chilton, J. Köster, et al.](#cite-Bjorn2018) (2018). "Practical Computational
+Reproducibility in the Life Sciences". In: _Cell Systems_ 6.6, pp. 631-635. DOI:
+[10.1016/j.cels.2018.03.014](https://doi.org/10.1016%2Fj.cels.2018.03.014). URL:
 [https://doi.org/10.1016/j.cels.2018.03.014](https://doi.org/10.1016/j.cels.2018.03.014).
 
-&lt;a name=bib-noble&gt;&lt;/a&gt;[Noble, W. S.](#cite-noble) (2009). "A Quick
-Guide to Organizing Computational Biology Projects". In: _PLOS
-Computational Biology_ 5.7, pp. 1-5. DOI:
-[10.1371/journal.pcbi.1000424](https://doi.org/10.1371%2Fjournal.pcbi.1000424).
-URL:
+&lt;a name=bib-noble&gt;&lt;/a&gt;[Noble, W. S.](#cite-noble) (2009). "A Quick Guide to Organizing Computational Biology Projects". In: _PLOS
+Computational Biology_ 5.7, pp. 1-5. DOI: [10.1371/journal.pcbi.1000424](https://doi.org/10.1371%2Fjournal.pcbi.1000424). URL:
 [https://doi.org/10.1371/journal.pcbi.1000424](https://doi.org/10.1371/journal.pcbi.1000424).
 
-&lt;a name=bib-piazzi&gt;&lt;/a&gt;[Piazzi, A. C, A. S. Cerqueira, L. R. Manso, et
-al.](#cite-piazzi) (2018). "Reproducible research platform for electric
-power quality algorithms" , pp. 1-6.
+&lt;a name=bib-piazzi&gt;&lt;/a&gt;[Piazzi, A. C, A. S. Cerqueira, L. R. Manso, et al.](#cite-piazzi) (2018). "Reproducible research platform for
+electric power quality algorithms" , pp. 1-6.
 
-&lt;a name=bib-russo&gt;&lt;/a&gt;[Russo, F., D. Righelli, and C.
-Angelini](#cite-russo) (2016). "Advantages and Limits in the Adoption
-of Reproducible Research and R-Tools for the Analysis of Omic Data".
-In: Vol. 9874. , pp. 245-258. DOI:
+&lt;a name=bib-russo&gt;&lt;/a&gt;[Russo, F., D. Righelli, and C. Angelini](#cite-russo) (2016). "Advantages and Limits in the Adoption of
+Reproducible Research and R-Tools for the Analysis of Omic Data". In: Vol. 9874. , pp. 245-258. DOI:
 [10.1007/978-3-319-44332-4_19](https://doi.org/10.1007%2F978-3-319-44332-4_19).
 
-&lt;a name=bib-Wilkinson2016&gt;&lt;/a&gt;[Wilkinson, M. D, M. Dumontier, I. J.
-Aalbersberg, et al.](#cite-Wilkinson2016) (2016). "The FAIR Guiding
-Principles for scientific data management and stewardship". In:
-_Scientific Data_ 3.1. DOI:
+&lt;a name=bib-Wilkinson2016&gt;&lt;/a&gt;[Wilkinson, M. D, M. Dumontier, I. J. Aalbersberg, et al.](#cite-Wilkinson2016) (2016). "The FAIR
+Guiding Principles for scientific data management and stewardship". In: _Scientific Data_ 3.1. DOI:
 [10.1038/sdata.2016.18](https://doi.org/10.1038%2Fsdata.2016.18). URL:
 [https://doi.org/10.1038/sdata.2016.18](https://doi.org/10.1038/sdata.2016.18).
 
-&lt;a name=bib-Wilson&gt;&lt;/a&gt;[Wilson, G, J. Bryan, K. Cranston, et
-al.](#cite-Wilson) (2017). "Good enough practices in scientific
+&lt;a name=bib-Wilson&gt;&lt;/a&gt;[Wilson, G, J. Bryan, K. Cranston, et al.](#cite-Wilson) (2017). "Good enough practices in scientific
 computing". In: _PLOS Computational Biology_ 13, pp. 1-20. DOI:
-[10.1371/journal.pcbi.1005510](https://doi.org/10.1371%2Fjournal.pcbi.1005510).
-URL:
+[10.1371/journal.pcbi.1005510](https://doi.org/10.1371%2Fjournal.pcbi.1005510). URL:
 [https://doi.org/10.1371/journal.pcbi.1005510](https://doi.org/10.1371/journal.pcbi.1005510).
     </textarea>
 <style data-target="print-only">@media screen {.remark-slide-container{display:block;}.remark-slide-scaler{box-shadow:none;}}</style>
