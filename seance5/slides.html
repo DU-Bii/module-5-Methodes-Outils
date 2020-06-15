@@ -3,7 +3,6 @@
   <head>
     <title>Bonnes pratiques en bioinformatique : (essayer) d’aller vers plus de reproductibilité</title>
     <meta charset="utf-8" />
-    <meta name="author" content="Valentin Loux - Cédric Midoux - Olivier Rué" />
     <link href="slides_files/remark-css/default.css" rel="stylesheet" />
     <link href="slides_files/remark-css/default-fonts.css" rel="stylesheet" />
     <link rel="stylesheet" href="css/styles.css" type="text/css" />
@@ -14,7 +13,11 @@ class: center, middle, inverse, title-slide
 
 # Bonnes pratiques en bioinformatique : (essayer) d’aller vers plus de reproductibilité
 ## DUBii - Module 5
-### Valentin Loux - Cédric Midoux - Olivier Rué
+### Valentin Loux - Cédric Midoux - Olivier Rué <br/>
+<h4>
+Plateforme bioinformatique Migale
+</h4>
+<br/>(valentin.loux|cedric.midoux|olivier.rue)<span class="citation">@inrae.fr</span>
 ### 2020/06/11
 
 ---
@@ -254,6 +257,9 @@ Séparer
 - code
 - scripts
 - résultats
+
+- Avoir un copie de sauvegarde de ses données
+- Mettre le repertoire et les fichiers de données en lecture seule
 ]
 
 ---
@@ -484,7 +490,7 @@ nothing added to commit but untracked files present (use "git add" to track)
 
 ```
 git add firstFile
-git commit firstFile
+git commit firstFile -m "Premier commit"
 
 git status
 ```
@@ -492,8 +498,8 @@ git status
 --
 ```
 vloux@jj-1404-port196 ~/t/testRepo&gt; git add firstFile
-vloux@jj-1404-port196 ~/t/testRepo&gt; git commit firstFile
-[master (root-commit) 53e1cbc] first commit
+vloux@jj-1404-port196 ~/t/testRepo&gt; git commit firstFile -m "Premier commit"
+[master (root-commit) 53e1cbc] Premier commit
  1 file changed, 1 insertion(+)
  create mode 100644 firstFile
 vloux@jj-1404-port196 ~/t/testRepo&gt; git status
@@ -1008,7 +1014,6 @@ Au final, toujours se poser la question du rapport coût / bénéfice.
 ---
 
 # References
-
 &lt;a name=bib-allard&gt;&lt;/a&gt;[Allard, A.](#cite-allard) (2018). _La crise de la réplicabilité_. URL:
 [https://laviedesidees.fr/La-crise-de-la-replicabilite.html](https://laviedesidees.fr/La-crise-de-la-replicabilite.html).
 
