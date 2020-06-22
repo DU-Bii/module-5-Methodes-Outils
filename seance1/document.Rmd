@@ -163,7 +163,7 @@ total 1,9M
 ```{bash, eval=FALSE, class="large"}
 module load fastp
 cd ~/M5
-srun --cpus-per-task 8 fastp -i FASTQ/SRR8082143_1.fastq.gz --in1 FASTQ/SRR8082143_1.fastq.gz --in2 FASTQ/SRR8082143_2.fastq.gz -l 100 --out1 CLEANING/SRR8082143_1.cleaned_filtered.fastq.gz --out2 CLEANING/SRR8082143_2.cleaned_filtered.fastq.gz --unpaired1 CLEANING/SRR8082143_singles.fastq.gz --unpaired2 CLEANING/SRR8082143_singles.fastq.gz -w 1 -j CLEANING/fastp.json -h CLEANING/fastp.html -t 8
+srun --cpus-per-task 8 fastp --in1 FASTQ/SRR8082143_1.fastq.gz --in2 FASTQ/SRR8082143_2.fastq.gz -l 100 --out1 CLEANING/SRR8082143_1.cleaned_filtered.fastq.gz --out2 CLEANING/SRR8082143_2.cleaned_filtered.fastq.gz --unpaired1 CLEANING/SRR8082143_singles.fastq.gz --unpaired2 CLEANING/SRR8082143_singles.fastq.gz -w 1 -j CLEANING/fastp.json -h CLEANING/fastp.html -t 8
 ```
 ```{bash, eval=FALSE}
 ls -ltrh ~/M5/CLEANING/
