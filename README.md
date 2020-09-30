@@ -2,7 +2,7 @@
 
 ## Responsables du Module
 * Olivier Kirsh - Université Paris-Diderot - olivier.kirsh@univ-paris-diderot.fr
-* Olivier Rué - INRA - olivier.rue@inrae.fr
+* Olivier Rué - INRAE - olivier.rue@inrae.fr
 
 ## Intervenants
 * Claude Thermes - Institut de Biologie Intégrative de la Cellule - Claude.THERMES@i2bc.paris-saclay.fr
