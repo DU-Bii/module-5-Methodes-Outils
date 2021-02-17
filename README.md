@@ -23,7 +23,7 @@ Calendrier du DU-Bii : <https://du-bii.github.io/accueil/img/planning_DUBii_2020
 
 ### [Séance 1](https://github.com/DU-Bii/module-5-Methodes-Outils/tree/master/seance1)
 
-- Date : 9 mars 2020
+- Date : 8 mars 2021
 - Horaires : 10h00 - 17h30
 - Intervenants : Olivier Rué et Valentin Loux
 - Titre : First steps with NGS data
