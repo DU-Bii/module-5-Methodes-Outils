@@ -1,6 +1,8 @@
-# [DU-Bii](https://du-bii.github.io/accueil) - module 5 - Méthodes et outils bioinformatiques pour l'analyse des données à haut débit
+# [DU-Bii](https://du-bii.github.io/accueil) - modules 4 & 5 - Production de données, Méthodes et outils bioinformatiques pour l'analyse des données à haut débit
 
-## Responsables du Module
+## Responsables des Modules 4 & 5
+* Bertrand Cosson - Université Paris-Diderot - bertrand.cosson@univ-paris-diderot.fr
+* Valent Loux - INRAE - valentin.loux@inrae.fr
 * Olivier Kirsh - Université Paris-Diderot - olivier.kirsh@univ-paris-diderot.fr
 * Olivier Rué - INRAE - olivier.rue@inrae.fr
 
@@ -15,9 +17,9 @@
 * Thibaut Léger - Institut Jacques Monod - thibaut.leger@ijm.fr
 * Matthias Zytnicki - INRAE - matthias.zytnicki@inrae.fr
 
-## Calendrier 2020
+## Calendrier 2021
 
-Calendrier du DU-Bii : <https://du-bii.github.io/accueil/img/planning_DUBii_2020.png>
+Calendrier du DU-Bii : <!--<https://du-bii.github.io/accueil/img/planning_DUBii_2020.png>-->
 
 ## Synopsis
 
