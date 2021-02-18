@@ -21,11 +21,11 @@ Calendrier du DU-Bii : <https://du-bii.github.io/accueil/img/planning_DUBii_2020
 
 ## Synopsis
 
-### [Séance 1](https://github.com/DU-Bii/module-5-Methodes-Outils/tree/master/seance1)
+### [Séance 1 - First steps with NGS data](https://github.com/DU-Bii/module-5-Methodes-Outils/tree/master/seance1)
 
 - Date : 8 mars 2021
-- Horaires : 10h00 - 17h30
-- Intervenants : Olivier Rué et Valentin Loux
+- Horaires : 10h00 - 13h00 ; 14h30 - 17h30
+- Intervenants : Claude Thermes, Olivier Rué et Valentin Loux
 - Titre : First steps with NGS data
 
 
@@ -37,27 +37,25 @@ Calendrier du DU-Bii : <https://du-bii.github.io/accueil/img/planning_DUBii_2020
 | First steps with NGS data | [[pdf](seance1/seance1.pdf)] [[html](seance1/slides.html)] |
 | Correction TP | [[html](seance1//document.html)] |
 
-### [Séance 2](https://github.com/DU-Bii/module-5-Methodes-Outils/tree/master/seance2)
+### [Séance 2 - Protéomique](https://github.com/DU-Bii/module-5-Methodes-Outils/tree/master/seance2)
 
-- Date : 11 mars 2020
-- Horaires : 9h30 - 17h00
-- Intervenants : Nicolas Servant et Marc Deloger
-- Titre : RNAseq data analysis
+- Date : 10 mars 2021
+- Horaires : 9h30 - 12h30
+- Intervenants : Thibaut Léger
+- Titre : 
 
+### [Séance 3 - Bonnes pratiques]()
 
-| Supports | Formats |
-|--------------------------------------------------|--------|
-| State of the art | [[pdf](seance2/DUBii_State_of_the_art_of_what_can_be_done_with_RNA-seq_20200311.pdf)]
-| RNAseq processing | [[pdf](seance2/processing/RNAseq_processing.pdf)] [[html](seance2/processing/RNAseq_processing.html)]  |
-| what2do_with_count_table_diffan | [[pdf](seance2/R/what2do_with_count_table_diffan.pdf)] [[html](seance2/R/what2do_with_count_table_diffan.html)] |
+- Date : 10 mars 2021
+- Horaires : 14h30 - 17h30
+- Intervenants : Valentin Loux et Olivier Rué
+- Titre :
 
-lien vers le rapport *MultiQC* sur le serveur IFB `/shared/projects/dubii2020/data/rnaseq/rawdata/multiqc_report.html`
+### [Séance 4 - Métabolomics](https://github.com/DU-Bii/module-5-Methodes-Outils/tree/master/seance3)
 
-### [Séance 3](https://github.com/DU-Bii/module-5-Methodes-Outils/tree/master/seance3)
-
-- Date : 4 juin  2020
-- Horaires : 09h30 - 12h30 - 14h00-16h30
-- Intervenants : Mélanie Pétéra, Binta Diémé.
+- Date : 22 mars 2021
+- Horaires : 09h30 - 12h30 ; 14h00 - 16h30
+- Intervenants : Mélanie Pétéra, Binta Diémé
 - Titre : Metabolomics
 
 
@@ -103,10 +101,32 @@ En cas de blocage ou de question, n'hésitez pas à partager vos questions sur l
 
 
 
-### [Séance 4](https://github.com/DU-Bii/module-5-Methodes-Outils/tree/master/seance4)
 
-- Date : 5 juin 2020
-- Horaires : 9h30 - 17h00
+
+
+
+### [Séance 5 - RNAseq](https://github.com/DU-Bii/module-5-Methodes-Outils/tree/master/seance3)
+
+- Date : 24 mars 2021
+- Horaires : 10h00 - 13h00 ; 14h30 - 17h30
+- Intervenants : Nicolas Servant et Marc Deloger
+- Titre : RNAseq data analysis
+
+| Supports | Formats |
+|--------------------------------------------------|--------|
+| State of the art | [[pdf](seance2/DUBii_State_of_the_art_of_what_can_be_done_with_RNA-seq_20200311.pdf)]
+| RNAseq processing | [[pdf](seance2/processing/RNAseq_processing.pdf)] [[html](seance2/processing/RNAseq_processing.html)]  |
+| what2do_with_count_table_diffan | [[pdf](seance2/R/what2do_with_count_table_diffan.pdf)] [[html](seance2/R/what2do_with_count_table_diffan.html)] |
+
+<!--
+lien vers le rapport *MultiQC* sur le serveur IFB `/shared/projects/dubii2020/data/rnaseq/rawdata/multiqc_report.html`
+-->
+
+
+### [Séance 6 - Croisement de données](https://github.com/DU-Bii/module-5-Methodes-Outils/tree/master/seance4)
+
+- Date : 25 mars 2021
+- Horaires : 13h30 - 16h30
 - Intervenants : Olivier Rué et Matthias Zytnicki
 - Titre : Croisement de données
 
@@ -117,6 +137,7 @@ En cas de blocage ou de question, n'hésitez pas à partager vos questions sur l
 | TP | [[html](seance4/document.html)]  |
 | TP | [[pdf](seance4/document_pdf.pdf)] |
 
+<!--
 ### [Séance 5](https://github.com/DU-Bii/module-5-Methodes-Outils/tree/master/seance5)
 
 - Date : 11 juin 2020
@@ -182,5 +203,5 @@ En ca de soucis, n'hésitez pas à nous solliciter sur Slack.
 |--------------------------------------------------|--------|
 | Support |[[html](https://du-bii.github.io/module-5-Methodes-Outils/seance5/slides.html#1)] [[pdf](seance5/slides.pdf)]|
 
-
+-->
 
