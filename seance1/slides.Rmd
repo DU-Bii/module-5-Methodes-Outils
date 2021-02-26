@@ -20,6 +20,8 @@ output:
 ```{r setup, include=FALSE}
 options(htmltools.dir.version = FALSE)
 library(RefManageR)
+library(icon)
+#download_fontawesome()
 BibOptions(check.entries = FALSE, bib.style = "authoryear", style = "markdown",
            dashed = TRUE)
 file.name <- "biblio.bib"
@@ -41,37 +43,14 @@ bib <- ReadBib(file.name)
 Total : 2h 35
 -->
 ---
+class: tp
 <img src="images/TP.png" class="handson">
-# Preparation of your working directory
+# Hands-on: Preparation of your working directory
 
 ## Instruction
 
-- Go in your home directory
-- Create a directory called M5 (i.e Module5) and move in
-- Create this directory structure:
-```{bash, eval=FALSE}
-tree ~/M5
-[orue@clust-slurm-client M5]$ tree .
-.
-├── CLEANING
-├── FASTQ
-├── MAPPING
-└── QC
-
-4 directories, 0 files
-```
-
----
-<img src="images/TP.png" class="handson">
-## Correction
-
-```{bash, eval=FALSE}
-mkdir -p ~/M5/FASTQ
-mkdir -p ~/M5/CLEANING
-mkdir -p ~/M5/MAPPING
-mkdir -p ~/M5/QC
-cd ~/M5
-```
+- Switch to <a href="">TP document</a>
+- Exercice 1
 
 ---
 class: heading-slide, middle, center
@@ -92,9 +71,8 @@ class: heading-slide, middle, center
 - The same information may be represented in different formats
 - The content depends on technologies
 
-<div class="alert comment">Understanding data formats, what information is encoded in each, and when it
-is appropriate to use one format over another is an essential skill of a bioinfor-
-matician.</div>
+<div class="alert comment">`r fontawesome("exclamation-circle", style = "solid")` Understanding data formats, what information is encoded in each, and when it
+is appropriate to use one format over another is an essential skill of a bioinformatician.</div>
 
 ---
 
@@ -131,7 +109,7 @@ Deposit of sequencing (raw) and processed (analyzed) datas are (most of the time
 Once a year the journal Nucleic Acids Research publishes its so-called “database issue”. Each
 article of this issue of the journal will provide an overview of generic and specific
 databases written by the maintainers of that resource.
-- View the NAR: 2019 Database Issue.
+- The 2021 Nucleic Acids Research database issue and the online molecular biology database collection
 
 ```{r, fig.align="center", out.width="50%", fig.cap= "NAR 2019 database issue overview" , echo=FALSE}
 knitr::include_graphics("images/NAR_db.png")
@@ -140,10 +118,13 @@ knitr::include_graphics("images/NAR_db.png")
 
 ---
 class: heading-slide, middle, center
-# Getting raw data
+# Retrieving NGS data
 
 ---
-# Getting raw data
+# Retrieving NGS data
+
+- Very easy when it concerns only a few files, can be done directly from the website
+- Much more tricky for tens, hundreds, thousands...
 
 ## Sequencing data
 
@@ -151,11 +132,11 @@ class: heading-slide, middle, center
 - ENA: enaBrowserTools (command line, python, R)
 - NCBI: sra-toolkit (command line, python, R)
 
-Common command lines (wget) are most of the time also available
+Common command lines (wget) are most of the time also available.
 
 ---
 <img src="images/TP.png" class="handson">
-# Hands-on: Getting raw data 
+# Hands-on: Retrieving raw data 
 
 ## Instruction
 
@@ -348,9 +329,11 @@ Command: seq       common transformation of FASTA/Q
 
 # FASTQ Header informations
 
-Information is often encoded in the “free” text section of a FASTQ file.
+Information is often encoded in the "free" text section of a FASTQ file.
+
 
 <code>@EAS139:136:FC706VJ:2:2104:15343:197393 1:Y:18:ATCACG</code> contains the following information:
+
 
 - <code>EAS139</code>: the unique instrument name
 - <code>136</code>: the run id
@@ -368,9 +351,15 @@ This information is specific to a particular instrument/vendor and may change wi
 versions or releases of that instrument.
 
 ---
+
+
 class: heading-slide, middle, center
+
 # Quality control
+
 ---
+
+
 
 ## Why QC'ing your reads ?
 
@@ -385,7 +374,8 @@ class: heading-slide, middle, center
 - Are there (un)expected techincal biases
 - Arte ther (un)expected biological biases
 
-<div class="alert comment">`r icon::fa("exclamation-circle")` Quality control without context leads to misinterpretation</div>
+<div class="alert comment">`r fontawesome("exclamation-circle", style = "solid")` Quality control without context leads to misinterpretation</div>
+
 
 ---
 # Quality control for FASTQ files
@@ -567,7 +557,7 @@ class: heading-slide, middle, center
 
 --
 
-<div class="alert comment">`r icon::fa("exclamation-circle")` But what is a reference?</div>
+<div class="alert comment">`r fontawesome("exclamation-circle", style = "solid")` But what is a reference?</div>
 
 ---
 # Reference

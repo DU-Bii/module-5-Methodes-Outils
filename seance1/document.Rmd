@@ -1,17 +1,23 @@
 ---
 title: "First steps with NGS data"
 author: "Valentin Loux - Olivier Rué"
-subtitle: "DUBii - Module 5"
+subtitle: "DUBii - Module 5 - Séance 1"
 css: css/styles.css
-date: "2020/03/09"
+date: "2021/03/08"
+bibliography: ../resources/biblio.bib # don't change
+csl: ../resources/biomed-central.csl # don't change
 output:
     html_document:
+      css: [../css/html_doc.css, 'https://use.fontawesome.com/releases/v5.0.9/css/all.css']
       self_contained: true
-      number_sections: false
+      number_sections: true
       code_folding: "show"
       toc: true
-      toc_depth: 1
+      toc_depth: 3
       toc_float: true
+      includes:
+        after_body: footer.html
+      
 ---
 
 
@@ -25,48 +31,73 @@ file.name <- "biblio.bib"
 bib <- ReadBib(file.name)
 ```
 
-# Hands-on 1: Preparation of your working directory
+# Reminders
 
-## Instruction
+1. How to load a tool?
+2. How to display help of a command or a tool?
+3. How to submit jobs?
 
-- Go in your home directory
-- Create a directory called M5 (i.e Module5) and move in
-- Create this directory structure:
+<details>
+<summary>Prerequites</summary>
+
+1. `module` allows you to load a tool
+2. `man` or options `--help`, `-h` (RTFM!)
+3. `srun`, `sbatch` ([IFB documentation](https://ifb-elixirfr.gitlab.io/cluster/doc/slurm_user_guide/))
+
+</details>
+
+# Preparation of your working directory
+
+
+1. Go to your home directory
+2. Create a directory called `M5` (i.e Module5) and move in
+3. Create this directory structure
+
+You must see this when you use the `tree` command:
+
+    .
+    ├── CLEANING
+    ├── FASTQ
+    ├── MAPPING
+    └── QC
+
+
+<details>
+<summary>Step by step correction</summary>
+
 ```{bash, eval=FALSE}
-tree ~/M5
-[orue@clust-slurm-client M5]$ tree .
-.
-├── CLEANING
-├── FASTQ
-├── MAPPING
-└── QC
-
-4 directories, 0 files
-```
-
-
-
-## Correction
-
-```{bash, eval=FALSE}
-mkdir -p ~/M5/FASTQ
+mkdir -p ~/M5/FASTQ  # -p: no error if existing, make parent directories as needed
 mkdir -p ~/M5/CLEANING
 mkdir -p ~/M5/MAPPING
 mkdir -p ~/M5/QC
 cd ~/M5
+tree ~/M5 # list contents of directories in a tree-like format.
 ```
 
+</details>
 
 
-# Hands-on 2: Getting raw data 
+# Retrieve raw data (FASTQ)
 
-## Instruction
-
-Get the raw shot read data (Illumina) associated with this article `r Citep(bib, "Allue-Guardiae01052-18")`.
 
 ```{r, fig.align="center", out.width="70%", echo=FALSE}
 knitr::include_graphics("images/MRA.01052-18.png")
 ```
+
+1. Download the raw data (Illumina) associated with this article `r Citep(bib, "Allue-Guardiae01052-18")`. You can use `wget`, `fasterq-dump` or `sra-tools`
+2. Compress them with `gzip`
+
+You have to have these files in the `FASTQ` directory
+
+```{bash, eval=FALSE}
+ls -ltrh ~/M5/FASTQ/
+total 236M
+-rw-rw-r-- 1 orue orue 127M  6 mars  12:32 SRR8082143_2.fastq.gz
+-rw-rw-r-- 1 orue orue 109M  6 mars  12:32 SRR8082143_1.fastq.gz
+```
+
+<details>
+<summary>Step by step correction</summary>
 
 - In the "Data availability" section, extract the accession for Illumina data : SRX4909245
 - Explore [SRA](https://www.ncbi.nlm.nih.gov/sra/SRX4909245) and [ENA](https://www.ebi.ac.uk/ena/browser/view/SRX4909245)
@@ -74,13 +105,6 @@ knitr::include_graphics("images/MRA.01052-18.png")
 Get the data by the method of your choice:
 - use <code>wget</code> or <code>fasterq-dump</code> from <code>sra-tools</code>
 
-Compress FASTQ files with <code>gzip</code>
-
-
-
-## Correction
-
-- Direct download via the web brower
 - Using wget :
 ```{bash, eval=FALSE, class="large"}
 wget ftp://ftp.sra.ebi.ac.uk/vol1/fastq/SRR808/003/SRR8082143/SRR8082143_1.fastq.gz
@@ -91,45 +115,34 @@ wget ftp://ftp.sra.ebi.ac.uk/vol1/fastq/SRR808/003/SRR8082143/SRR8082143_2.fastq
 module load  sra-tools
 srun fasterq-dump -S -p SRR8082143 --outdir . --threads 1
 ```
-- enaBrowserTool is also available
-```{bash, eval=FALSE, class="large", echo=FALSE}
-module load enabrowsertools
-srun enaDataGet -f fastq SRR8082143 
-```
-- Compress FASTQ files
-```{bash, eval=FALSE}
-gzip *.fastq
-```
+
+Then compress the files:
 
 ```{bash, eval=FALSE}
-ls -ltrh ~/M5/FASTQ/
-total 236M
--rw-rw-r-- 1 orue orue 127M  6 mars  12:32 SRR8082143_2.fastq.gz
--rw-rw-r-- 1 orue orue 109M  6 mars  12:32 SRR8082143_1.fastq.gz
-
+srun gzip *.fastq
 ```
 
+</details>
+
+<details>
+<summary>Go further</summary>
+
+* What is the best method if you have hundreds of files to download
+* How many threads are used by default?
+* How to download multiple files simultaneously (thanks to the cluster)?
+
+</details>
 
 
 
-# Hands-on 3: Quality control
 
-## Instruction
-
-- Launch FastQC on the paired-end FastQ files of the sample you previously downloaded
-- Inspect the results
-  - Are the number coherent with the article ?
-  - Comment on the quality of the sequencing
+# Quality control
 
 
-## Correction
+1. Launch <strong class="tool">FastQC</strong> @fastqc on the paired-end FastQ files of the sample you previously downloaded and write results in `QC` directory (use 8 threads)
+2. Explore the results and interpret the graphics
 
-```{bash, eval=FALSE, class="large"}
-cd ~
-module load fastqc
-srun --cpus-per-task 8 fastqc FASTQ/SRR8082143_1.fastq.gz -o QC/ -t 8
-srun --cpus-per-task 8 fastqc FASTQ/SRR8082143_2.fastq.gz -o QC/ -t 8
-```
+You have to obtain these files:
 
 ```{bash, eval=FALSE}
 ls -ltrh ~/M5/QC
@@ -141,24 +154,34 @@ total 1,9M
 ```
 
 
-#  Hands-on 4: Reads cleaning with fastp
+<details>
+<summary>Step by step correction</summary>
 
-## Instruction
+```{bash, eval=FALSE, class="large"}
+cd ~
+module load fastqc
+srun --cpus-per-task 8 fastqc FASTQ/SRR8082143_1.fastq.gz -o QC/ -t 8
+srun --cpus-per-task 8 fastqc FASTQ/SRR8082143_2.fastq.gz -o QC/ -t 8
+```
+</details>
 
-- Launch fastp on the paired-end FastQ files of the sample you previously downloaded
+
+# Reads cleaning with fastp
+
+1. Launch fastp on the paired-end FastQ files of the sample you previously downloaded
   - Detect and Remove the classical Illumina adapters
   - Filter reads with :
       - mean quality >= 20 on a sliding window of 4
       -  40% of the bases with a quality >= 15
       - length of the trimmed read >= 100
 
-- Inspect the results
+2. Inspect the results
   - How many reads are filtered ?
   - Where do fastp store its reports. Is it configurable ?
 
 
-
-## Correction
+<details>
+<summary>Step by step correction</summary>
 
 ```{bash, eval=FALSE, class="large"}
 module load fastp
@@ -175,20 +198,11 @@ total 245M
 -rw-rw-r-- 1 orue orue 130M  6 mars  12:59 SRR8082143_2.cleaned_filtered.fastq.gz
 ```
 
+</details>
 
-# Hands-on 5: MultiQC
+# MultiQC
 
-## Instruction
-
-Run MultiQC to obtain a report with fastqc and fastp results
-
-## Correction
-
-```{bash, eval=FALSE}
-cd ~/M5
-module load multiqc
-multiqc -d . -o CLEANING
-```
+1. Run MultiQC to obtain a report with fastqc and fastp results
 
 ```{bash, eval=FALSE}
 ls -ltrh ~/M5/CLEANING/
@@ -202,15 +216,33 @@ total 248M
 drwxrwxr-x 2 orue orue 2,0M  6 mars  13:28 multiqc_data
 ```
 
+<details>
+<summary>Step by step correction</summary>
+
+```{bash, eval=FALSE}
+cd ~/M5
+module load multiqc
+multiqc -d . -o CLEANING
+```
+
+</details>
 
 
-# Hands-on 6: mapping with bwa
 
-## Instruction
 
-- Map the reads to the reference genome <code>/shared/projects/dubii2020/data/module5/seance1/CP031214.1.fasta</code> with <code>bwa</code>
 
-## Correction
+# Mapping with bwa
+
+1. Map the reads to the reference genome <code>/shared/projects/dubii2020/data/module5/seance1/CP031214.1.fasta</code> with <code>bwa</code>
+
+```{bash, eval=FALSE}
+ls -ltrh ~/M5/MAPPING/
+total 249M
+-rw-rw-r-- 1 orue orue 249M  6 mars  13:01 SRR8082143.bam
+```
+
+<details>
+<summary>Step by step correction</summary>
 
 ```{bash, eval=FALSE}
 cd ~/M5
@@ -219,9 +251,7 @@ module load bwa
 srun --cpus-per-task=33 bwa mem /shared/projects/dubii2020/data/module5/seance1/CP031214.1.fasta CLEANING/SRR8082143_1.cleaned_filtered.fastq.gz CLEANING/SRR8082143_2.cleaned_filtered.fastq.gz -t 32 | samtools view -hbS - > MAPPING/SRR8082143.bam
 ```
 
-```{bash, eval=FALSE}
-ls -ltrh ~/M5/MAPPING/
-total 249M
--rw-rw-r-- 1 orue orue 249M  6 mars  13:01 SRR8082143.bam
-```
+</details>
 
+
+# References

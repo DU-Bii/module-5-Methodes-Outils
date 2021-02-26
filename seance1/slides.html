@@ -1,13 +1,13 @@
 <!DOCTYPE html>
-<html xmlns="http://www.w3.org/1999/xhtml" lang="" xml:lang="">
+<html lang="" xml:lang="">
   <head>
     <title>First steps with NGS data</title>
     <meta charset="utf-8" />
     <meta name="author" content="Valentin Loux - Olivier Rué" />
     <meta name="date" content="2020-03-09" />
+    <script src="slides_files/header-attrs/header-attrs.js"></script>
     <link href="slides_files/remark-css/default.css" rel="stylesheet" />
     <link href="slides_files/remark-css/default-fonts.css" rel="stylesheet" />
-    <link href="slides_files/font-awesome/css/fontawesome-all.min.css" rel="stylesheet" />
     <link rel="stylesheet" href="css/styles.css" type="text/css" />
   </head>
   <body>
@@ -39,39 +39,14 @@ class: center, middle, inverse, title-slide
 Total : 2h 35
 --&gt;
 ---
+class: tp
 &lt;img src="images/TP.png" class="handson"&gt;
-# Preparation of your working directory
+# Hands-on: Preparation of your working directory
 
 ## Instruction
 
-- Go in your home directory
-- Create a directory called M5 (i.e Module5) and move in
-- Create this directory structure:
-
-```bash
-tree ~/M5
-[orue@clust-slurm-client M5]$ tree .
-.
-├── CLEANING
-├── FASTQ
-├── MAPPING
-└── QC
-
-4 directories, 0 files
-```
-
----
-&lt;img src="images/TP.png" class="handson"&gt;
-## Correction
-
-
-```bash
-mkdir -p ~/M5/FASTQ
-mkdir -p ~/M5/CLEANING
-mkdir -p ~/M5/MAPPING
-mkdir -p ~/M5/QC
-cd ~/M5
-```
+- Switch to &lt;a href=""&gt;TP document&lt;/a&gt;
+- Exercice 1
 
 ---
 class: heading-slide, middle, center
@@ -92,9 +67,8 @@ class: heading-slide, middle, center
 - The same information may be represented in different formats
 - The content depends on technologies
 
-&lt;div class="alert comment"&gt;Understanding data formats, what information is encoded in each, and when it
-is appropriate to use one format over another is an essential skill of a bioinfor-
-matician.&lt;/div&gt;
+&lt;div class="alert comment"&gt;&lt;svg viewBox="0 0 512 512" xmlns="http://www.w3.org/2000/svg" style="height:1em;fill:currentColor;position:relative;display:inline-block;top:.1em;"&gt;  [ comment ]  &lt;path d="M504 256c0 136.997-111.043 248-248 248S8 392.997 8 256C8 119.083 119.043 8 256 8s248 111.083 248 248zm-248 50c-25.405 0-46 20.595-46 46s20.595 46 46 46 46-20.595 46-46-20.595-46-46-46zm-43.673-165.346l7.418 136c.347 6.364 5.609 11.346 11.982 11.346h48.546c6.373 0 11.635-4.982 11.982-11.346l7.418-136c.375-6.874-5.098-12.654-11.982-12.654h-63.383c-6.884 0-12.356 5.78-11.981 12.654z"&gt;&lt;/path&gt;&lt;/svg&gt; Understanding data formats, what information is encoded in each, and when it
+is appropriate to use one format over another is an essential skill of a bioinformatician.&lt;/div&gt;
 
 ---
 
@@ -132,7 +106,7 @@ Deposit of sequencing (raw) and processed (analyzed) datas are (most of the time
 Once a year the journal Nucleic Acids Research publishes its so-called “database issue”. Each
 article of this issue of the journal will provide an overview of generic and specific
 databases written by the maintainers of that resource.
-- View the NAR: 2019 Database Issue.
+- The 2021 Nucleic Acids Research database issue and the online molecular biology database collection
 
 &lt;div class="figure" style="text-align: center"&gt;
 &lt;img src="images/NAR_db.png" alt="NAR 2019 database issue overview" width="50%" /&gt;
@@ -142,10 +116,13 @@ databases written by the maintainers of that resource.
 
 ---
 class: heading-slide, middle, center
-# Getting raw data
+# Retrieving NGS data
 
 ---
-# Getting raw data
+# Retrieving NGS data
+
+- Very easy when it concerns only a few files, can be done directly from the website
+- Much more tricky for tens, hundreds, thousands...
 
 ## Sequencing data
 
@@ -153,11 +130,11 @@ class: heading-slide, middle, center
 - ENA: enaBrowserTools (command line, python, R)
 - NCBI: sra-toolkit (command line, python, R)
 
-Common command lines (wget) are most of the time also available
+Common command lines (wget) are most of the time also available.
 
 ---
 &lt;img src="images/TP.png" class="handson"&gt;
-# Hands-on: Getting raw data 
+# Hands-on: Retrieving raw data 
 
 ## Instruction
 
@@ -350,9 +327,11 @@ Command: seq       common transformation of FASTA/Q
 
 # FASTQ Header informations
 
-Information is often encoded in the “free” text section of a FASTQ file.
+Information is often encoded in the "free" text section of a FASTQ file.
+
 
 &lt;code&gt;@EAS139:136:FC706VJ:2:2104:15343:197393 1:Y:18:ATCACG&lt;/code&gt; contains the following information:
+
 
 - &lt;code&gt;EAS139&lt;/code&gt;: the unique instrument name
 - &lt;code&gt;136&lt;/code&gt;: the run id
@@ -370,9 +349,15 @@ This information is specific to a particular instrument/vendor and may change wi
 versions or releases of that instrument.
 
 ---
+
+
 class: heading-slide, middle, center
+
 # Quality control
+
 ---
+
+
 
 ## Why QC'ing your reads ?
 
@@ -387,7 +372,8 @@ class: heading-slide, middle, center
 - Are there (un)expected techincal biases
 - Arte ther (un)expected biological biases
 
-&lt;div class="alert comment"&gt;<i class="fas  fa-exclamation-circle "></i> Quality control without context leads to misinterpretation&lt;/div&gt;
+&lt;div class="alert comment"&gt;&lt;svg viewBox="0 0 512 512" xmlns="http://www.w3.org/2000/svg" style="height:1em;fill:currentColor;position:relative;display:inline-block;top:.1em;"&gt;  [ comment ]  &lt;path d="M504 256c0 136.997-111.043 248-248 248S8 392.997 8 256C8 119.083 119.043 8 256 8s248 111.083 248 248zm-248 50c-25.405 0-46 20.595-46 46s20.595 46 46 46 46-20.595 46-46-20.595-46-46-46zm-43.673-165.346l7.418 136c.347 6.364 5.609 11.346 11.982 11.346h48.546c6.373 0 11.635-4.982 11.982-11.346l7.418-136c.375-6.874-5.098-12.654-11.982-12.654h-63.383c-6.884 0-12.356 5.78-11.981 12.654z"&gt;&lt;/path&gt;&lt;/svg&gt; Quality control without context leads to misinterpretation&lt;/div&gt;
+
 
 ---
 # Quality control for FASTQ files
@@ -579,7 +565,7 @@ class: heading-slide, middle, center
 
 --
 
-&lt;div class="alert comment"&gt;<i class="fas  fa-exclamation-circle "></i> But what is a reference?&lt;/div&gt;
+&lt;div class="alert comment"&gt;&lt;svg viewBox="0 0 512 512" xmlns="http://www.w3.org/2000/svg" style="height:1em;fill:currentColor;position:relative;display:inline-block;top:.1em;"&gt;  [ comment ]  &lt;path d="M504 256c0 136.997-111.043 248-248 248S8 392.997 8 256C8 119.083 119.043 8 256 8s248 111.083 248 248zm-248 50c-25.405 0-46 20.595-46 46s20.595 46 46 46 46-20.595 46-46-20.595-46-46-46zm-43.673-165.346l7.418 136c.347 6.364 5.609 11.346 11.982 11.346h48.546c6.373 0 11.635-4.982 11.982-11.346l7.418-136c.375-6.874-5.098-12.654-11.982-12.654h-63.383c-6.884 0-12.356 5.78-11.981 12.654z"&gt;&lt;/path&gt;&lt;/svg&gt; But what is a reference?&lt;/div&gt;
 
 ---
 # Reference
@@ -864,7 +850,7 @@ The raw read format is also different
 ---
 # References
 
-&lt;a name=bib-Allue-Guardiae01052-18&gt;&lt;/a&gt;[Allué-Guardia, A, E. C. Nyong,
+&lt;a name=bib-Allue-Guardiae01052-18&gt;&lt;/a&gt;[Allué-Guardia, A., E. C. Nyong,
 S. S. K. Koenig, et al.](#cite-Allue-Guardiae01052-18) (2019). "Closed
 Genome Sequence of Escherichia coli K-12 Group Strain C600". In:
 _Microbiology Resource Announcements_ 8.2. Ed. by J. A. Maresca. DOI:
@@ -885,8 +871,8 @@ sequencing reads using basic local alignment with successive refinement
 (BLASR): application and theory". In: _BMC bioinformatics_ 13.1, p.
 238.
 
-&lt;a name=bib-101093bioinformaticsbty149&gt;&lt;/a&gt;[De Coster, W, S. D’Hert, D.
-T. Schultz, et al.](#cite-101093bioinformaticsbty149) (2018).
+&lt;a name=bib-101093bioinformaticsbty149&gt;&lt;/a&gt;[De Coster, W., S. D’Hert,
+D. T. Schultz, et al.](#cite-101093bioinformaticsbty149) (2018).
 "NanoPack: visualizing and processing long-read sequencing data". In:
 _Bioinformatics_ 34.15, pp. 2666-2669. ISSN: 1367-4803. DOI:
 [10.1093/bioinformatics/bty149](https://doi.org/10.1093%2Fbioinformatics%2Fbty149).
@@ -895,7 +881,7 @@ https://academic.oup.com/bioinformatics/article-pdf/34/15/2666/25230836/bty149.p
 URL:
 [https://doi.org/10.1093/bioinformatics/bty149](https://doi.org/10.1093/bioinformatics/bty149).
 
-&lt;a name=bib-multiqc&gt;&lt;/a&gt;[Ewels, P, M. Magnusson, S. Lundin, et
+&lt;a name=bib-multiqc&gt;&lt;/a&gt;[Ewels, P., M. Magnusson, S. Lundin, et
 al.](#cite-multiqc) (2016). "MultiQC: summarize analysis results for
 multiple tools and samples in a single report". In: _Bioinformatics_
 32.19, pp. 3047-3048.
@@ -906,7 +892,7 @@ multiple tools and samples in a single report". In: _Bioinformatics_
 _Sickle: a sliding-window, adaptive, quality-based trimming tool for
 FastQ files_.
 
-&lt;a name=bib-koren2017canu&gt;&lt;/a&gt;[Koren, S, B. P. Walenz, K. Berlin, et
+&lt;a name=bib-koren2017canu&gt;&lt;/a&gt;[Koren, S., B. P. Walenz, K. Berlin, et
 al.](#cite-koren2017canu) (2017). "Canu: scalable and accurate
 long-read assembly via adaptive k-mer weighting and repeat separation".
 In: _Genome research_ 27.5, pp. 722-736.
@@ -927,7 +913,7 @@ preprint arXiv:1303.3997_.
 "Minimap2: pairwise alignment for nucleotide sequences". In:
 _Bioinformatics_ 34.18, pp. 3094-3100.
 
-&lt;a name=bib-samtools&gt;&lt;/a&gt;[Li, H, B. Handsaker, A. Wysoker, et
+&lt;a name=bib-samtools&gt;&lt;/a&gt;[Li, H., B. Handsaker, A. Wysoker, et
 al.](#cite-samtools) (2009). "The sequence alignment/map format and
 SAMtools". In: _Bioinformatics_ 25.16, pp. 2078-2079.
 
@@ -942,16 +928,16 @@ Rivals](#cite-salmela2014lordec) (2014). "LoRDEC: accurate and
 efficient long read error correction". In: _Bioinformatics_ 30.24, pp.
 3506-3514.
 
-&lt;a name=bib-shen2016seqkit&gt;&lt;/a&gt;[Shen, W, S. Le, Y. Li, et
+&lt;a name=bib-shen2016seqkit&gt;&lt;/a&gt;[Shen, W., S. Le, Y. Li, et
 al.](#cite-shen2016seqkit) (2016). "SeqKit: a cross-platform and
 ultrafast toolkit for FASTA/Q file manipulation". In: _PloS one_ 11.10.
 
-&lt;a name=bib-xiao2017mecat&gt;&lt;/a&gt;[Xiao, C, Y. Chen, S. Xie, et
+&lt;a name=bib-xiao2017mecat&gt;&lt;/a&gt;[Xiao, C., Y. Chen, S. Xie, et
 al.](#cite-xiao2017mecat) (2017). "MECAT: fast mapping, error
 correction, and de novo assembly for single-molecule sequencing reads".
 In: _nature methods_ 14.11, p. 1072.
 
-&lt;a name=bib-fastp&gt;&lt;/a&gt;[Zhou, Y, Y. Chen, S. Chen, et al.](#cite-fastp)
+&lt;a name=bib-fastp&gt;&lt;/a&gt;[Zhou, Y., Y. Chen, S. Chen, et al.](#cite-fastp)
 (2018). "fastp: an ultra-fast all-in-one FASTQ preprocessor". In:
 _Bioinformatics_ 34.17, pp. i884-i890. ISSN: 1367-4803. DOI:
 [10.1093/bioinformatics/bty560](https://doi.org/10.1093%2Fbioinformatics%2Fbty560).
@@ -1003,9 +989,25 @@ if (window.HTMLWidgets) slideshow.on('afterShowSlide', function (slide) {
     }
     deleted = true;
   });
-})();</script>
-
-<script>
+})();
+(function() {
+  "use strict"
+  // Replace <script> tags in slides area to make them executable
+  var scripts = document.querySelectorAll(
+    '.remark-slides-area .remark-slide-container script'
+  );
+  if (!scripts.length) return;
+  for (var i = 0; i < scripts.length; i++) {
+    var s = document.createElement('script');
+    var code = document.createTextNode(scripts[i].textContent);
+    s.appendChild(code);
+    var scriptAttrs = scripts[i].attributes;
+    for (var j = 0; j < scriptAttrs.length; j++) {
+      s.setAttribute(scriptAttrs[j].name, scriptAttrs[j].value);
+    }
+    scripts[i].parentElement.replaceChild(s, scripts[i]);
+  }
+})();
 (function() {
   var links = document.getElementsByTagName('a');
   for (var i = 0; i < links.length; i++) {
@@ -1013,8 +1015,7 @@ if (window.HTMLWidgets) slideshow.on('afterShowSlide', function (slide) {
       links[i].target = '_blank';
     }
   }
-})();
-</script>
+})();</script>
 
 <script>
 slideshow._releaseMath = function(el) {

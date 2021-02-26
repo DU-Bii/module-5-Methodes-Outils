@@ -1,0 +1,76 @@
+---
+title: "DUBII - Modules 4 & 5"
+author: "Valentin Loux - Olivier Rué - Bertrand Cosson - Olivier Kirsh"
+subtitle: "Production and analysis of data"
+css: css/styles.css
+date: "2020-03-09"
+output:
+    #html_document:
+    #  self_contained: true
+    #  number_sections: TRUE
+    #  code_folding: "show"
+    #  toc: true
+    #  toc_depth: 2
+    #  toc_float: true
+    xaringan::moon_reader:
+      nature:
+        ratio: '16:9'
+---
+
+# Introduction
+
+The branches of science known informally as omics are various disciplines in biology whose names end in the suffix __-omics__, such as **genomics**, **proteomics**, **metabolomics**, **metagenomics** and **transcriptomics**... Omics aims at the collective characterization and quantification of pools of biological molecules that translate into the structure, function, and dynamics of an organism or organisms.
+
+```{r, fig.align="center", out.width="50%", echo=FALSE}
+knitr::include_graphics("images/omics.png")
+```
+
+---
+# Introduction
+
+```{r, fig.align="center", out.width="70%", echo=FALSE}
+knitr::include_graphics("images/omics2.jpg")
+```
+
+---
+
+# Program
+
+.pull-left[
+### First steps with NGS data (8 March)
+  - Claude Thermes
+  - Valentin Loux
+  - Olivier Rué
+
+### Good practices in Bioinformatics (10 March)
+  - Valentin Loux
+  - Olivier Rué
+  
+### Genome arithmetic (25 march)
+  - Matthias Zynticki
+  - Olivier Rué
+]
+  
+.pull-right[
+### Proteomics (10 March)
+  - Thibault Léger
+
+### Transcriptomics (24 March)
+  - Marc Deloger
+  - Nicolas Servant
+
+### Metabolomics (22 March)
+  - Binta Diémé
+  - Mélanie Pétéra
+]
+
+---
+
+# Resources
+
+All teaching materials are available here:
+- [https://du-bii.github.io/accueil/](https://du-bii.github.io/accueil/)
+
+# Need help
+
+[Slack](dubii.slack.com) is the most appropriate place to ask questions concerning courses.
