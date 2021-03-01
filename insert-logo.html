@@ -1,0 +1,70 @@
+<style>
+.logo-inra {
+  background-image: url(images/logos/Logo-INRAE_Transparent.png);
+  background-size: contain;
+  background-repeat: no-repeat;
+  position: fixed;
+  bottom: -4em;
+  width: 53px;
+  height: 110px;
+  z-index: 0;
+  margin-bottom: -10px;
+  left:25em;
+}
+
+.logo-migale {
+  background-image: url(images/logos/migale-orange.png);
+  background-size: contain;
+  background-repeat: no-repeat;
+  position: fixed;
+  bottom: -4em;
+  width: 85px;
+  left: 7em;
+  height: 116px;
+  z-index: 0;
+  margin-bottom: -10px;
+  left:28em;
+}
+
+.logo-univ {
+  background-image: url(../images/logo_UParis.png);
+  background-size: contain;
+  background-repeat: no-repeat;
+  position: fixed;
+  width: 85px;
+  left: 7em;
+  height: 60px;
+  z-index: 0;
+  left: 27em;
+}
+
+.logo-ifb {
+  background-image: url(../images/logo-ifb_small.png);
+  background-size: contain;
+  background-repeat: no-repeat;
+  position: fixed;
+  width: 98px;
+  left: 7em;
+  height: 65px;
+  z-index: 0;
+  left: 31em;
+}
+
+</style>
+
+<script>
+document
+  .querySelectorAll(
+    '.remark-slide-content' +
+    '.title-slide' +
+    // add additional classes to exclude here, e.g.
+    // ':not(.inverse)' +
+    ':not(.hide-logo)'
+  )
+  .forEach(el => {
+    //el.innerHTML += '<div class="logo-inra"></div>';
+    //el.innerHTML += '<div class="logo-migale"></div>';
+    el.innerHTML += '<div class="logo-univ"></div>';
+    el.innerHTML += '<div class="logo-ifb"></div>';
+  });
+</script>

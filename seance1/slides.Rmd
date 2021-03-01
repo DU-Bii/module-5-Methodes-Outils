@@ -2,20 +2,16 @@
 title: "First steps with NGS data"
 author: "Valentin Loux - Olivier Rué"
 subtitle: "DUBii - Module 5"
-css: css/styles.css
-date: "2020-03-09"
+css: ../css/styles.css
+date: "2021-03-08"
 output:
-    #html_document:
-    #  self_contained: true
-    #  number_sections: TRUE
-    #  code_folding: "show"
-    #  toc: true
-    #  toc_depth: 2
-    #  toc_float: true
     xaringan::moon_reader:
       nature:
         ratio: '16:9'
+      includes:
+        after_body: ../insert-logo.html
 ---
+class: hide-logo
 
 ```{r setup, include=FALSE}
 options(htmltools.dir.version = FALSE)
@@ -49,7 +45,7 @@ class: tp
 
 ## Instruction
 
-- Switch to <a href="">TP document</a>
+- Switch to <a href="../TP.html">TP document</a>
 - Exercice 1
 
 ---
@@ -135,6 +131,7 @@ class: heading-slide, middle, center
 Common command lines (wget) are most of the time also available.
 
 ---
+class: tp
 <img src="images/TP.png" class="handson">
 # Hands-on: Retrieving raw data 
 
@@ -146,49 +143,11 @@ Get the raw shot read data (Illumina) associated with this article `r Citep(bib,
 knitr::include_graphics("images/MRA.01052-18.png")
 ```
 
-- In the "Data availability" section, extract the accession for Illumina data : SRX4909245
-- Explore [SRA](https://www.ncbi.nlm.nih.gov/sra/SRX4909245) and [ENA](https://www.ebi.ac.uk/ena/browser/view/SRX4909245)
-
-Get the data by the method of your choice:
-- use <code>wget</code> or <code>fasterq-dump</code> from <code>sra-tools</code>
-
-Compress FASTQ files with <code>gzip</code>
+- Switch to <a href="../TP.html">TP document</a>
+- Exercice 2
 
 ---
-<img src="images/TP.png" class="handson">
-## Correction
 
-- Direct download via the web brower
-- Using wget :
-```{bash, eval=FALSE, class="large"}
-wget ftp://ftp.sra.ebi.ac.uk/vol1/fastq/SRR808/003/SRR8082143/SRR8082143_1.fastq.gz
-wget ftp://ftp.sra.ebi.ac.uk/vol1/fastq/SRR808/003/SRR8082143/SRR8082143_2.fastq.gz
-```
-- Using sra-toolkit
-```{bash, eval=FALSE, class="large"}
-module load  sra-tools
-srun fasterq-dump -S -p SRR8082143 --outdir . --threads 1
-```
-- enaBrowserTool is also available
-```{bash, eval=FALSE, class="large", echo=FALSE}
-module load enabrowsertools
-srun enaDataGet -f fastq SRR8082143 
-```
-- Compress FASTQ files
-```{bash, eval=FALSE}
-gzip *.fastq
-```
-
-```{bash, eval=FALSE}
-ls -ltrh ~/M5/FASTQ/
-total 236M
--rw-rw-r-- 1 orue orue 127M  6 mars  12:32 SRR8082143_2.fastq.gz
--rw-rw-r-- 1 orue orue 109M  6 mars  12:32 SRR8082143_1.fastq.gz
-
-```
-
-
----
 # Sequencing  - Vocabulary
 
 .pull-left[
@@ -293,6 +252,31 @@ knitr::include_graphics("images/qualityscore.png")
 
 ---
 
+# FASTQ Header informations
+
+Information is often encoded in the "free" text section of a FASTQ file.
+
+
+<code>@EAS139:136:FC706VJ:2:2104:15343:197393 1:Y:18:ATCACG</code> contains the following information:
+
+
+- <code>EAS139</code>: the unique instrument name
+- <code>136</code>: the run id
+- <code>FC706VJ</code>: the flowcell id
+- <code>2</code>: flowcell lane
+- <code>2104</code>: tile number within the flowcell lane
+- <code>15343</code>: ‘x’-coordinate of the cluster within the tile
+- <code>197393</code>: ‘y’-coordinate of the cluster within the tile
+- <code>1</code>: the member of a pair, 1 or 2 (paired-end or mate-pair reads only)
+- <code>Y</code>: Y if the read is filtered, N otherwise
+- <code>18</code>: 0 when none of the control bits are on, otherwise it is an even number
+- <code>ATCACG</code>: index sequence
+
+This information is specific to a particular instrument/vendor and may change with different
+versions or releases of that instrument.
+
+---
+
 # FASTQ toolbox
 
 ## seqtk 
@@ -326,32 +310,6 @@ Command: seq       common transformation of FASTA/Q
 ```
 
 ---
-
-# FASTQ Header informations
-
-Information is often encoded in the "free" text section of a FASTQ file.
-
-
-<code>@EAS139:136:FC706VJ:2:2104:15343:197393 1:Y:18:ATCACG</code> contains the following information:
-
-
-- <code>EAS139</code>: the unique instrument name
-- <code>136</code>: the run id
-- <code>FC706VJ</code>: the flowcell id
-- <code>2</code>: flowcell lane
-- <code>2104</code>: tile number within the flowcell lane
-- <code>15343</code>: ‘x’-coordinate of the cluster within the tile
-- <code>197393</code>: ‘y’-coordinate of the cluster within the tile
-- <code>1</code>: the member of a pair, 1 or 2 (paired-end or mate-pair reads only)
-- <code>Y</code>: Y if the read is filtered, N otherwise
-- <code>18</code>: 0 when none of the control bits are on, otherwise it is an even number
-- <code>ATCACG</code>: index sequence
-
-This information is specific to a particular instrument/vendor and may change with different
-versions or releases of that instrument.
-
----
-
 
 class: heading-slide, middle, center
 

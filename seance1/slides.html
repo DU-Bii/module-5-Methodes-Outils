@@ -4,11 +4,11 @@
     <title>First steps with NGS data</title>
     <meta charset="utf-8" />
     <meta name="author" content="Valentin Loux - Olivier Rué" />
-    <meta name="date" content="2020-03-09" />
+    <meta name="date" content="2021-03-08" />
     <script src="slides_files/header-attrs/header-attrs.js"></script>
     <link href="slides_files/remark-css/default.css" rel="stylesheet" />
     <link href="slides_files/remark-css/default-fonts.css" rel="stylesheet" />
-    <link rel="stylesheet" href="css/styles.css" type="text/css" />
+    <link rel="stylesheet" href="../css/styles.css" type="text/css" />
   </head>
   <body>
     <textarea id="source">
@@ -17,10 +17,11 @@ class: center, middle, inverse, title-slide
 # First steps with NGS data
 ## DUBii - Module 5
 ### Valentin Loux - Olivier Rué
-### 2020-03-09
+### 2021-03-08
 
 ---
 
+class: hide-logo
 
 
 
@@ -133,6 +134,7 @@ class: heading-slide, middle, center
 Common command lines (wget) are most of the time also available.
 
 ---
+class: tp
 &lt;img src="images/TP.png" class="handson"&gt;
 # Hands-on: Retrieving raw data 
 
@@ -142,50 +144,11 @@ Get the raw shot read data (Illumina) associated with this article &lt;a name=ci
 
 &lt;img src="images/MRA.01052-18.png" width="70%" style="display: block; margin: auto;" /&gt;
 
-- In the "Data availability" section, extract the accession for Illumina data : SRX4909245
-- Explore [SRA](https://www.ncbi.nlm.nih.gov/sra/SRX4909245) and [ENA](https://www.ebi.ac.uk/ena/browser/view/SRX4909245)
-
-Get the data by the method of your choice:
-- use &lt;code&gt;wget&lt;/code&gt; or &lt;code&gt;fasterq-dump&lt;/code&gt; from &lt;code&gt;sra-tools&lt;/code&gt;
-
-Compress FASTQ files with &lt;code&gt;gzip&lt;/code&gt;
+- Switch to &lt;a href="document.html"&gt;TP document&lt;/a&gt;
+- Exercice 2
 
 ---
-&lt;img src="images/TP.png" class="handson"&gt;
-## Correction
 
-- Direct download via the web brower
-- Using wget :
-
-```bash
-wget ftp://ftp.sra.ebi.ac.uk/vol1/fastq/SRR808/003/SRR8082143/SRR8082143_1.fastq.gz
-wget ftp://ftp.sra.ebi.ac.uk/vol1/fastq/SRR808/003/SRR8082143/SRR8082143_2.fastq.gz
-```
-- Using sra-toolkit
-
-```bash
-module load  sra-tools
-srun fasterq-dump -S -p SRR8082143 --outdir . --threads 1
-```
-- enaBrowserTool is also available
-
-- Compress FASTQ files
-
-```bash
-gzip *.fastq
-```
-
-
-```bash
-ls -ltrh ~/M5/FASTQ/
-total 236M
--rw-rw-r-- 1 orue orue 127M  6 mars  12:32 SRR8082143_2.fastq.gz
--rw-rw-r-- 1 orue orue 109M  6 mars  12:32 SRR8082143_1.fastq.gz
-
-```
-
-
----
 # Sequencing  - Vocabulary
 
 .pull-left[
@@ -290,6 +253,31 @@ starts close to where the other scale ends.
 
 ---
 
+# FASTQ Header informations
+
+Information is often encoded in the "free" text section of a FASTQ file.
+
+
+&lt;code&gt;@EAS139:136:FC706VJ:2:2104:15343:197393 1:Y:18:ATCACG&lt;/code&gt; contains the following information:
+
+
+- &lt;code&gt;EAS139&lt;/code&gt;: the unique instrument name
+- &lt;code&gt;136&lt;/code&gt;: the run id
+- &lt;code&gt;FC706VJ&lt;/code&gt;: the flowcell id
+- &lt;code&gt;2&lt;/code&gt;: flowcell lane
+- &lt;code&gt;2104&lt;/code&gt;: tile number within the flowcell lane
+- &lt;code&gt;15343&lt;/code&gt;: ‘x’-coordinate of the cluster within the tile
+- &lt;code&gt;197393&lt;/code&gt;: ‘y’-coordinate of the cluster within the tile
+- &lt;code&gt;1&lt;/code&gt;: the member of a pair, 1 or 2 (paired-end or mate-pair reads only)
+- &lt;code&gt;Y&lt;/code&gt;: Y if the read is filtered, N otherwise
+- &lt;code&gt;18&lt;/code&gt;: 0 when none of the control bits are on, otherwise it is an even number
+- &lt;code&gt;ATCACG&lt;/code&gt;: index sequence
+
+This information is specific to a particular instrument/vendor and may change with different
+versions or releases of that instrument.
+
+---
+
 # FASTQ toolbox
 
 ## seqtk 
@@ -324,32 +312,6 @@ Command: seq       common transformation of FASTA/Q
 ```
 
 ---
-
-# FASTQ Header informations
-
-Information is often encoded in the "free" text section of a FASTQ file.
-
-
-&lt;code&gt;@EAS139:136:FC706VJ:2:2104:15343:197393 1:Y:18:ATCACG&lt;/code&gt; contains the following information:
-
-
-- &lt;code&gt;EAS139&lt;/code&gt;: the unique instrument name
-- &lt;code&gt;136&lt;/code&gt;: the run id
-- &lt;code&gt;FC706VJ&lt;/code&gt;: the flowcell id
-- &lt;code&gt;2&lt;/code&gt;: flowcell lane
-- &lt;code&gt;2104&lt;/code&gt;: tile number within the flowcell lane
-- &lt;code&gt;15343&lt;/code&gt;: ‘x’-coordinate of the cluster within the tile
-- &lt;code&gt;197393&lt;/code&gt;: ‘y’-coordinate of the cluster within the tile
-- &lt;code&gt;1&lt;/code&gt;: the member of a pair, 1 or 2 (paired-end or mate-pair reads only)
-- &lt;code&gt;Y&lt;/code&gt;: Y if the read is filtered, N otherwise
-- &lt;code&gt;18&lt;/code&gt;: 0 when none of the control bits are on, otherwise it is an even number
-- &lt;code&gt;ATCACG&lt;/code&gt;: index sequence
-
-This information is specific to a particular instrument/vendor and may change with different
-versions or releases of that instrument.
-
----
-
 
 class: heading-slide, middle, center
 
@@ -1016,6 +978,76 @@ if (window.HTMLWidgets) slideshow.on('afterShowSlide', function (slide) {
     }
   }
 })();</script>
+<style>
+.logo-inra {
+  background-image: url(images/logos/Logo-INRAE_Transparent.png);
+  background-size: contain;
+  background-repeat: no-repeat;
+  position: fixed;
+  bottom: -4em;
+  width: 53px;
+  height: 110px;
+  z-index: 0;
+  margin-bottom: -10px;
+  left:25em;
+}
+
+.logo-migale {
+  background-image: url(images/logos/migale-orange.png);
+  background-size: contain;
+  background-repeat: no-repeat;
+  position: fixed;
+  bottom: -4em;
+  width: 85px;
+  left: 7em;
+  height: 116px;
+  z-index: 0;
+  margin-bottom: -10px;
+  left:28em;
+}
+
+.logo-univ {
+  background-image: url(../images/logo_UParis.png);
+  background-size: contain;
+  background-repeat: no-repeat;
+  position: fixed;
+  width: 85px;
+  left: 7em;
+  height: 60px;
+  z-index: 0;
+  left: 27em;
+}
+
+.logo-ifb {
+  background-image: url(../images/logo-ifb_small.png);
+  background-size: contain;
+  background-repeat: no-repeat;
+  position: fixed;
+  width: 98px;
+  left: 7em;
+  height: 65px;
+  z-index: 0;
+  left: 31em;
+}
+
+</style>
+
+<script>
+document
+  .querySelectorAll(
+    '.remark-slide-content' +
+    '.title-slide' +
+    // add additional classes to exclude here, e.g.
+    // ':not(.inverse)' +
+    ':not(.hide-logo)'
+  )
+  .forEach(el => {
+    //el.innerHTML += '<div class="logo-inra"></div>';
+    //el.innerHTML += '<div class="logo-migale"></div>';
+    el.innerHTML += '<div class="logo-univ"></div>';
+    el.innerHTML += '<div class="logo-ifb"></div>';
+  });
+</script>
 
 <script>
 slideshow._releaseMath = function(el) {

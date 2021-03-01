@@ -372,14 +372,7 @@ h4:not(.d-toc-header) {
 .nav[role=tablist]{
   margin-top: 30px;
 }
-/*
-#TOC:not(.d-toc) {
-  background: url("../img/migale-orange.png");
-  background-size: contain;
-  padding-top: 80px !important;
-  background-repeat: no-repeat;
-}
-*/
+
 .distill-site-nav {
     color: rgba(255, 255, 255, 0.8);
     background-color: #4e8f93;
