@@ -40,14 +40,15 @@ class: hide-logo
 Total : 2h 35
 --&gt;
 ---
+
 class: tp
 &lt;img src="images/TP.png" class="handson"&gt;
 # Hands-on: Preparation of your working directory
 
 ## Instruction
 
-- Switch to &lt;a href=""&gt;TP document&lt;/a&gt;
-- Exercice 1
+- Switch to &lt;a href="TP.html#1_Preparation_of_your_working_directory"&gt;TP document&lt;/a&gt;
+- Preparation of your working directory
 
 ---
 class: heading-slide, middle, center
@@ -61,15 +62,30 @@ class: heading-slide, middle, center
 
 - `Data` is &lt;i&gt;a symbolic representation of information&lt;/i&gt;
 - `Data` is stored in files whose format allows an easy way to access and manipulate
-- `Data` represent the knowledge at a given time.
+- `Data` represents the knowledge at a given time.
 
 ## Properties
 
 - The same information may be represented in different formats
 - The content depends on technologies
 
-&lt;div class="alert comment"&gt;&lt;svg viewBox="0 0 512 512" xmlns="http://www.w3.org/2000/svg" style="height:1em;fill:currentColor;position:relative;display:inline-block;top:.1em;"&gt;  [ comment ]  &lt;path d="M504 256c0 136.997-111.043 248-248 248S8 392.997 8 256C8 119.083 119.043 8 256 8s248 111.083 248 248zm-248 50c-25.405 0-46 20.595-46 46s20.595 46 46 46 46-20.595 46-46-20.595-46-46-46zm-43.673-165.346l7.418 136c.347 6.364 5.609 11.346 11.982 11.346h48.546c6.373 0 11.635-4.982 11.982-11.346l7.418-136c.375-6.874-5.098-12.654-11.982-12.654h-63.383c-6.884 0-12.356 5.78-11.981 12.654z"&gt;&lt;/path&gt;&lt;/svg&gt; Understanding data formats, what information is encoded in each, and when it
-is appropriate to use one format over another is an essential skill of a bioinformatician.&lt;/div&gt;
+&lt;div class="alert comment"&gt;&lt;svg viewBox="0 0 512 512" xmlns="http://www.w3.org/2000/svg" style="height:1em;fill:currentColor;position:relative;display:inline-block;top:.1em;"&gt;  [ comment ]  &lt;path d="M504 256c0 136.997-111.043 248-248 248S8 392.997 8 256C8 119.083 119.043 8 256 8s248 111.083 248 248zm-248 50c-25.405 0-46 20.595-46 46s20.595 46 46 46 46-20.595 46-46-20.595-46-46-46zm-43.673-165.346l7.418 136c.347 6.364 5.609 11.346 11.982 11.346h48.546c6.373 0 11.635-4.982 11.982-11.346l7.418-136c.375-6.874-5.098-12.654-11.982-12.654h-63.383c-6.884 0-12.356 5.78-11.981 12.654z"&gt;&lt;/path&gt;&lt;/svg&gt; Understanding data formats, what information is encoded in each, and when it is appropriate to use one format over another is an essential skill of a bioinformatician.&lt;/div&gt;
+
+---
+
+# Some NGS file formats
+
+Format | Who generates it? | Who reads it?
+--- | --- | ---
+*FASTQ* | `sequencers`, `simulation tools` | `mapping tools`, `QC tools`, `cleaning tools`, `taxonomic assignation tools`
+*FASTA* | `assembly tools`, `gene prediction tools` ... | almost all
+*SAM/BAM* | `mapping tools`, `samtools` | `visualization tools`, `variant discovery tools`, `tools`
+*BED* | `annotation tools`, `bedtools` | `visualization tools`, `variant discovery tools`, `peak calling tools`, `RNAseq tools`
+*GFF* | `annotation tools` | `visualization tools`, `variant discovery tools`, `peak calling tools`, `RNAseq tools`
+*VCF* | `variant discovery tools` | `vcftools`,  `visualization tools`, `variant discovery tools`, `tools`
+
+* [synthesis](https://ressources.france-bioinformatique.fr/sites/default/files/formats.pdf)
+
 
 ---
 
@@ -114,8 +130,8 @@ databases written by the maintainers of that resource.
 &lt;p class="caption"&gt;NAR 2019 database issue overview&lt;/p&gt;
 &lt;/div&gt;
 
-
 ---
+
 class: heading-slide, middle, center
 # Retrieving NGS data
 
@@ -144,11 +160,24 @@ Get the raw shot read data (Illumina) associated with this article &lt;a name=ci
 
 &lt;img src="images/MRA.01052-18.png" width="70%" style="display: block; margin: auto;" /&gt;
 
-- Switch to &lt;a href="document.html"&gt;TP document&lt;/a&gt;
-- Exercice 2
+- Switch to &lt;a href="TP.html#2_Retrieve_raw_data_(FASTQ)"&gt;TP document&lt;/a&gt;
+- Retrieve raw data (FASTQ)
 
 ---
 
+# Sequencing  - Vocabulary
+
+- **read**: a single sequence produced from a sequencer. Think: a sequencing machine read a molecule and this is what it thinks it is.
+
+- **library**: a collection of DNA fragments that have been prepared for sequencing. This is generally talking about individual samples.
+
+- **flowcell**: a chip on which DNA is loaded and provided to the sequencer.
+
+- **lane**: one portion of a flowcell. Usually used for technical replicates or different samples.
+
+- **run**: an entire sequencing reaction from start to finish.
+
+---
 # Sequencing  - Vocabulary
 
 .pull-left[
@@ -278,41 +307,6 @@ versions or releases of that instrument.
 
 ---
 
-# FASTQ toolbox
-
-## seqtk 
-
-Seqtk &lt;a name=cite-li2012seqtk&gt;&lt;/a&gt;([Li, 2012](#bib-li2012seqtk)) is a fast and lightweight tool for processing sequences in the FASTA or FASTQ format. It seamlessly parses both FASTA and FASTQ files which can also be optionally compressed by gzip.
-
-
-```bash
-module load seqtk
-seqtk
-
-Usage:   seqtk &lt;command&gt; &lt;arguments&gt;
-Version: 1.3-r106
-
-Command: seq       common transformation of FASTA/Q
-         comp      get the nucleotide composition of FASTA/Q
-         sample    subsample sequences
-         subseq    extract subsequences from FASTA/Q
-         fqchk     fastq QC (base/quality summary)
-         mergepe   interleave two PE FASTA/Q files
-         trimfq    trim FASTQ using the Phred algorithm
-         hety      regional heterozygosity
-         gc        identify high- or low-GC regions
-         mutfa     point mutate FASTA at specified positions
-         mergefa   merge two FASTA/Q files
-         famask    apply a X-coded FASTA to a source FASTA
-         dropse    drop unpaired from interleaved PE FASTA/Q
-         rename    rename sequence names
-         randbase  choose a random base from hets
-         cutN      cut sequence at long N
-         listhet   extract the position of each het
-```
-
----
-
 class: heading-slide, middle, center
 
 # Quality control
@@ -326,13 +320,13 @@ class: heading-slide, middle, center
 **Try to answer to (not always) simple questions :**
 --
 
-- Do the generated sequences conform to the expected level of performance?
+- Are the generated sequences conform to the expected level of performance?
   - Size
   - Number of reads
   - Quality
 - Residual presence of adapters or indexes ?
-- Are there (un)expected techincal biases
-- Arte ther (un)expected biological biases
+- Are there (un)expected technical biases?
+- Are there (un)expected biological biases?
 
 &lt;div class="alert comment"&gt;&lt;svg viewBox="0 0 512 512" xmlns="http://www.w3.org/2000/svg" style="height:1em;fill:currentColor;position:relative;display:inline-block;top:.1em;"&gt;  [ comment ]  &lt;path d="M504 256c0 136.997-111.043 248-248 248S8 392.997 8 256C8 119.083 119.043 8 256 8s248 111.083 248 248zm-248 50c-25.405 0-46 20.595-46 46s20.595 46 46 46 46-20.595 46-46-20.595-46-46-46zm-43.673-165.346l7.418 136c.347 6.364 5.609 11.346 11.982 11.346h48.546c6.373 0 11.635-4.982 11.982-11.346l7.418-136c.375-6.874-5.098-12.654-11.982-12.654h-63.383c-6.884 0-12.356 5.78-11.981 12.654z"&gt;&lt;/path&gt;&lt;/svg&gt; Quality control without context leads to misinterpretation&lt;/div&gt;
 
@@ -354,38 +348,12 @@ class: heading-slide, middle, center
   
 
 ---
+class: tp
 &lt;img src="images/TP.png" class="handson"&gt;
 # Hands-on : Quality control
 
-## Instruction
-
-- Launch FastQC on the paired-end FastQ files of the sample you previously downloaded
-- Inspect the results
-  - Are the number coherent with the article ?
-  - Comment on the quality of the sequencing
-
----
-&lt;img src="images/TP.png" class="handson"&gt;
-## Correction
-
-
-```bash
-cd ~
-module load fastqc
-srun --cpus-per-task 8 fastqc FASTQ/SRR8082143_1.fastq.gz -o QC/ -t 8
-srun --cpus-per-task 8 fastqc FASTQ/SRR8082143_2.fastq.gz -o QC/ -t 8
-```
-
-
-```bash
-ls -ltrh ~/M5/QC
-total 1,9M
--rw-rw-r-- 1 orue orue 321K  6 mars  13:23 SRR8082143_1_fastqc.zip
--rw-rw-r-- 1 orue orue 642K  6 mars  13:23 SRR8082143_1_fastqc.html
--rw-rw-r-- 1 orue orue 333K  6 mars  13:23 SRR8082143_2_fastqc.zip
--rw-rw-r-- 1 orue orue 642K  6 mars  13:23 SRR8082143_2_fastqc.html
-```
-
+- Switch to &lt;a href="TP.html#3_Quality_control"&gt;TP document&lt;/a&gt;
+- Quality control
 
 ---
 class: heading-slide, middle, center
@@ -411,109 +379,12 @@ class: heading-slide, middle, center
 
 
 ---
+class: tp
 &lt;img src="images/TP.png" class="handson"&gt;
 #  Hands-on : reads cleaning with fastp
 
-## Instruction
-
-- Launch fastp on the paired-end FastQ files of the sample you previously downloaded
-  - Detect and Remove the classical Illumina adapters
-  - Filter reads with :
-      - mean quality &gt;= 20 on a sliding window of 4
-      -  40% of the bases with a quality &gt;= 15
-      - length of the trimmed read &gt;= 100
-
-- Inspect the results
-  - How many reads are filtered ?
-  - Where do fastp store its reports. Is it configurable ?
-
----
-&lt;img src="images/TP.png" class="handson"&gt;
-## Correction
-
-
-```bash
-module load fastp
-cd ~/M5
-srun --cpus-per-task 8 fastp \
- --in1 FASTQ/SRR8082143_1.fastq.gz \
- --in2 FASTQ/SRR8082143_2.fastq.gz \
- -l 100 \
- --out1 CLEANING/SRR8082143_1.cleaned_filtered.fastq.gz \
- --out2 CLEANING/SRR8082143_2.cleaned_filtered.fastq.gz \
- --unpaired1 CLEANING/SRR8082143_singles.fastq.gz \
- --unpaired2 CLEANING/SRR8082143_singles.fastq.gz \
- -w 1 \
- -j CLEANING/fastp.json \
- -h CLEANING/fastp.html \
- -t 8
-```
-
-```bash
-ls -ltrh ~/M5/CLEANING/
-total 245M
--rw-rw-r-- 1 orue orue 113M  6 mars  12:59 SRR8082143_1.cleaned_filtered.fastq.gz
--rw-rw-r-- 1 orue orue 162K  6 mars  12:59 fastp.json
--rw-rw-r-- 1 orue orue 525K  6 mars  12:59 fastp.html
--rw-rw-r-- 1 orue orue 2,2M  6 mars  12:59 SRR8082143_singles.fastq.gz
--rw-rw-r-- 1 orue orue 130M  6 mars  12:59 SRR8082143_2.cleaned_filtered.fastq.gz
-```
-
-
----
-
-# One report to rule them all 
-.pull-left[
-MultiqQC &lt;a name=cite-multiqc&gt;&lt;/a&gt;([Ewels, Magnusson, Lundin, and Käller, 2016](#bib-multiqc)) allow the aggregation of individual reports from FastQC, Fastp, Trimmomactic, Cutadapt and much more
-- 78 tools included
-- Aggregate all analysis in one report :
-  - by tool
-  - in one graphe aggregating samples
-  ]
-.pull-right[
-&lt;div class="figure" style="text-align: center"&gt;
-&lt;img src="images/multiqc-tools.png" alt="MultiQC tools" width="30%" /&gt;
-&lt;p class="caption"&gt;MultiQC tools&lt;/p&gt;
-&lt;/div&gt;
-]
-
-&lt;div class="figure" style="text-align: center"&gt;
-&lt;img src="images/multiqc-example.png" alt="MultiQC Report Example" width="35%" /&gt;
-&lt;p class="caption"&gt;MultiQC Report Example&lt;/p&gt;
-&lt;/div&gt;
-
----
-&lt;img src="images/TP.png" class="handson"&gt;
-# Hands-on: MultiQC
-
-## Instruction
-
-Run MultiQC to obtain a report with fastqc and fastp results
-
---
-
-## Correction
-
-
-```bash
-cd ~/M5
-module load multiqc
-multiqc -d . -o CLEANING
-```
-
-
-```bash
-ls -ltrh ~/M5/CLEANING/
-total 248M
--rw-rw-r-- 1 orue orue 113M  6 mars  12:59 SRR8082143_1.cleaned_filtered.fastq.gz
--rw-rw-r-- 1 orue orue 162K  6 mars  12:59 fastp.json
--rw-rw-r-- 1 orue orue 525K  6 mars  12:59 fastp.html
--rw-rw-r-- 1 orue orue 2,2M  6 mars  12:59 SRR8082143_singles.fastq.gz
--rw-rw-r-- 1 orue orue 130M  6 mars  12:59 SRR8082143_2.cleaned_filtered.fastq.gz
--rw-rw-r-- 1 orue orue 1,2M  6 mars  13:28 multiqc_report.html
-drwxrwxr-x 2 orue orue 2,0M  6 mars  13:28 multiqc_data
-```
-
+- Switch to &lt;a href="TP.html#4_Reads_cleaning_with_fastp"&gt;TP document&lt;/a&gt;
+- Reads cleaning with fastp
 
 ---
 class: heading-slide, middle, center
@@ -589,6 +460,7 @@ they are accustomed to are required by some standard - whereas no such thing exi
 - Some tools ignore anything following the first space in the header line
 - Some tools are very restrictive on the alphabet used
 - Some tools require uppercase letters
+- seqkit &lt;a name=cite-shen2016seqkit&gt;&lt;/a&gt;([Shen, Le, Li, and Hu, 2016](#bib-shen2016seqkit)) saves your life
 
 ---
 
@@ -619,7 +491,7 @@ ATGCATGCATGATGCATGCA
 TGCATGCA
 ```
 
-&lt;i&gt;Can be easily to with seqkit &lt;a name=cite-shen2016seqkit&gt;&lt;/a&gt;([Shen, Le, Li, and Hu, 2016](#bib-shen2016seqkit))&lt;/i&gt;
+&lt;i&gt;Can be easily to with seqkit ([Shen, Le, Li, et al., 2016](#bib-shen2016seqkit))&lt;/i&gt;
 
 
 ```bash
@@ -687,40 +559,15 @@ sequence and the reference sequence.
 
 &lt;img src="images/mapping_tools.png" width="70%" style="display: block; margin: auto;" /&gt;
 
-- Short reads: BWA &lt;a name=cite-bwa&gt;&lt;/a&gt;([Li, 2013](#bib-bwa))/ BOWTIE &lt;a name=cite-langmead2012fast&gt;&lt;/a&gt;([Langmead and Salzberg, 2012](#bib-langmead2012fast))
+- Short reads: BWA &lt;a name=cite-bwa&gt;&lt;/a&gt;([Li, 2013](#bib-bwa))/ BOWTIE &lt;a name=cite-langmead2012fast&gt;&lt;/a&gt;([Langmead and Salzberg, 2012](#bib-langmead2012fast)) -&gt; for `DNAseq`!
 
 ---
+class: tp
 &lt;img src="images/TP.png" class="handson"&gt;
 # Hands-on: mapping with bwa
 
-## Instruction
-
-- Map the reads to the reference genome &lt;code&gt;/shared/projects/dubii2020/data/module5/seance1/CP031214.1.fasta&lt;/code&gt; with &lt;code&gt;bwa&lt;/code&gt;
-
----
-&lt;img src="images/TP.png" class="handson"&gt;
-## Correction
-
-
-```bash
-cd ~/M5
-module load bwa
-# srun bwa index sequence.fasta
-srun --cpus-per-task=33 bwa mem \
-  /shared/projects/dubii2020/data/module5/seance1/CP031214.1.fasta \
-  CLEANING/SRR8082143_1.cleaned_filtered.fastq.gz \
-  CLEANING/SRR8082143_2.cleaned_filtered.fastq.gz \
-  -t 32 \
-  | \
-  samtools view -hbS - &gt; MAPPING/SRR8082143.bam
-```
-
-
-```bash
-ls -ltrh ~/M5/MAPPING/
-total 249M
--rw-rw-r-- 1 orue orue 249M  6 mars  13:01 SRR8082143.bam
-```
+- Switch to &lt;a href="TP.html#5_Mapping_with_bwa"&gt;TP document&lt;/a&gt;
+- Mapping with bwa
 
 ---
 class: heading-slide, middle, center
@@ -762,41 +609,27 @@ Samtools &lt;a name=cite-samtools&gt;&lt;/a&gt;([Li, Handsaker, Wysoker, Fennell
 - ...
 
 ---
-## Some examples with samtools
+# MultiQC: a tool to synthesize results
 
+* MultiqQC &lt;a name=cite-multiqc&gt;&lt;/a&gt;([Ewels, Magnusson, Lundin, and Käller, 2016](#bib-multiqc)) allow the aggregation of individual reports from FastQC, Fastp, Trimmomactic, Cutadapt and much more
+* [97 supported tools](https://multiqc.info/#supported-tools)
 
-```bash
-# Visualize BAM content in SAM format
-samtools view -h MAPPING/SRR8082143.bam
-# Sort BAM file
-samtools sort MAPPING/SRR8082143.bam -o MAPPING/SRR8082143.sorted.bam
-# Index sorted BAM file
-samtools index MAPPING/SRR8082143.sorted.bam
-# Get some statistics
-samtools flagstat MAPPING/SRR8082143.sorted.bam
-# Extract specific region
-samtools view MAPPING/SRR8082143.sorted.bam CP031214.1:1-1000
-# Extract specific region in a BAM file
-samtools view -h MAPPING/SRR8082143.sorted.bam CP031214.1:1-1000 |samtools view -bS -  &gt; MAPPING/SRR8082143.1-1000.bam
-# ...
-```
+&lt;iframe width="60%" height="60%" src="https://www.youtube.com/embed/BbScv9TcaMg" frameborder="0" allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture" allowfullscreen&gt;&lt;/iframe&gt;
 
+---
+class: tp
+&lt;img src="images/TP.png" class="handson"&gt;
+# Hands-on: mapping with bwa
 
-## Picard tools
-
-
-```bash
-module load picard
-picard -h
-```
-
+- Switch to &lt;a href="TP.html#6_Synthesis_of_all_steps_done_with_MultiQC"&gt;TP document&lt;/a&gt;
+- Synthesis of all steps done with MultiQC
 
 ---
 # What about Long Reads ?
 
-As global quality and error models ar different, ,algorithms and tools are different for long reads. 
+As global quality and error models are different, algorithms and tools are different for long reads. 
 
-The raw read format is also different
+The raw read format is also different.
 
 - PacBio :
   - internal read correction
@@ -805,11 +638,22 @@ The raw read format is also different
   - Correction (hybrid) : LorDec &lt;a name=cite-salmela2014lordec&gt;&lt;/a&gt;([Salmela and Rivals, 2014](#bib-salmela2014lordec))
   - Alignment minimap2 &lt;a name=cite-li2018minimap2&gt;&lt;/a&gt;([Li, 2018](#bib-li2018minimap2)), BLASR &lt;a name=cite-chaisson2012mapping&gt;&lt;/a&gt;([Chaisson and Tesler, 2012](#bib-chaisson2012mapping))
 - NanoPore :
-  - Caution to basecaller / chemistry version !
+  - Caution to basecaller / chemistry version!
   - QC : nanoPlot
   - Correction : Canu &lt;a name=cite-koren2017canu&gt;&lt;/a&gt;([Koren, Walenz, Berlin, Miller, Bergman, and Phillippy, 2017](#bib-koren2017canu)), MECAT &lt;a name=cite-xiao2017mecat&gt;&lt;/a&gt;([Xiao, Chen, Xie, Chen, Wang, Han, Luo, and Xie, 2017](#bib-xiao2017mecat))
   
 ---
+# Bioinformaticians best friends
+
+* [labworm](https://labworm.com/category/for-the-developer)
+* [biostats blog](https://www.biostars.org/)
+* [biostars books](https://biostar.myshopify.com/)
+* [bionfo-fr.net](https://bioinfo-fr.net/)
+* [seqanswers](http://seqanswers.com/)
+* [IFB community](https://community.france-bioinformatique.fr/)
+
+---
+
 # References
 
 &lt;a name=bib-Allue-Guardiae01052-18&gt;&lt;/a&gt;[Allué-Guardia, A., E. C. Nyong,
@@ -864,9 +708,6 @@ Salzberg](#cite-langmead2012fast) (2012). _Fast gapped-read alignment
 with bowtie 2 Nat Methods 9 (4): 357-359. pmid: 22388286 View Article
 PubMed_.
 
-&lt;a name=bib-li2012seqtk&gt;&lt;/a&gt;[Li, H.](#cite-li2012seqtk) (2012). _seqtk
-Toolkit for processing sequences in FASTA/Q formats_.
-
 &lt;a name=bib-bwa&gt;&lt;/a&gt;[Li, H.](#cite-bwa) (2013). "Aligning sequence
 reads, clone sequences and assembly contigs with BWA-MEM". In: _arXiv
 preprint arXiv:1303.3997_.
@@ -883,13 +724,13 @@ SAMtools". In: _Bioinformatics_ 25.16, pp. 2078-2079.
 removes adapter sequences from high-throughput sequencing reads". In:
 _EMBnet. journal_ 17.1, pp. 10-12.
 
----
-# References
 &lt;a name=bib-salmela2014lordec&gt;&lt;/a&gt;[Salmela, L. and E.
 Rivals](#cite-salmela2014lordec) (2014). "LoRDEC: accurate and
 efficient long read error correction". In: _Bioinformatics_ 30.24, pp.
 3506-3514.
 
+---
+# References
 &lt;a name=bib-shen2016seqkit&gt;&lt;/a&gt;[Shen, W., S. Le, Y. Li, et
 al.](#cite-shen2016seqkit) (2016). "SeqKit: a cross-platform and
 ultrafast toolkit for FASTA/Q file manipulation". In: _PloS one_ 11.10.
@@ -1011,11 +852,11 @@ if (window.HTMLWidgets) slideshow.on('afterShowSlide', function (slide) {
   background-size: contain;
   background-repeat: no-repeat;
   position: fixed;
-  width: 85px;
+  width: 205px;
   left: 7em;
   height: 60px;
   z-index: 0;
-  left: 27em;
+  left: 20em;
 }
 
 .logo-ifb {
@@ -1023,11 +864,11 @@ if (window.HTMLWidgets) slideshow.on('afterShowSlide', function (slide) {
   background-size: contain;
   background-repeat: no-repeat;
   position: fixed;
-  width: 98px;
+  width: 118px;
   left: 7em;
-  height: 65px;
+  height: 100%;
   z-index: 0;
-  left: 31em;
+  left: 34em;
 }
 
 </style>

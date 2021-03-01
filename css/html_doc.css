@@ -12,7 +12,7 @@
   background-color: #cce5ff;
   border-color: #b8daff;
 }
-.info p::before{
+.info::before{
   font-family: "Font Awesome 5 Free";
   content: '\f05a';
   font-weight: 900;

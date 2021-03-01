@@ -1,7 +1,8 @@
-/*.title-slide {
-  background-image: url(../images/Genomics.jpg);
+.title-slide {
+  background-image: url(../images/background.png);
   background-size: cover;
-}*/
+  /*opacity: 75%;*/
+}
 
 code{
   padding: 2px 4px;
