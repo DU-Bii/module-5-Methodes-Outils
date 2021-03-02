@@ -78,11 +78,11 @@ class: heading-slide, middle, center
 Format | Who generates it? | Who reads it?
 --- | --- | ---
 *FASTQ* | `sequencers`, `simulation tools` | `mapping tools`, `QC tools`, `cleaning tools`, `taxonomic assignation tools`
-*FASTA* | `assembly tools`, `gene prediction tools` ... | almost all
-*SAM/BAM* | `mapping tools`, `samtools` | `visualization tools`, `variant discovery tools`, `tools`
-*BED* | `annotation tools`, `bedtools` | `visualization tools`, `variant discovery tools`, `peak calling tools`, `RNAseq tools`
+*FASTA* | `assembly tools`, `gene prediction tools` ... | `visualization tools`, almost all
+*SAM/BAM* | `mapping tools`, `samtools` | `visualization tools`, `variant discovery tools`, `counting tools`
+*BED* | `annotation tools`, `bedtools` | `visualization tools`, `variant discovery tools`, `peak calling tools`, `counting tools`
 *GFF* | `annotation tools` | `visualization tools`, `variant discovery tools`, `peak calling tools`, `RNAseq tools`
-*VCF* | `variant discovery tools` | `vcftools`,  `visualization tools`, `variant discovery tools`, `tools`
+*VCF* | `variant discovery tools` | `vcftools`,  `visualization tools`, `variant discovery tools`
 
 * [synthesis](https://ressources.france-bioinformatique.fr/sites/default/files/formats.pdf)
 
@@ -614,7 +614,7 @@ Samtools &lt;a name=cite-samtools&gt;&lt;/a&gt;([Li, Handsaker, Wysoker, Fennell
 * MultiqQC &lt;a name=cite-multiqc&gt;&lt;/a&gt;([Ewels, Magnusson, Lundin, and Käller, 2016](#bib-multiqc)) allow the aggregation of individual reports from FastQC, Fastp, Trimmomactic, Cutadapt and much more
 * [97 supported tools](https://multiqc.info/#supported-tools)
 
-&lt;iframe width="60%" height="60%" src="https://www.youtube.com/embed/BbScv9TcaMg" frameborder="0" allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture" allowfullscreen&gt;&lt;/iframe&gt;
+&lt;iframe height="400px"; width="900px"; src="https://www.youtube.com/embed/BbScv9TcaMg" frameborder="0" allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture" allowfullscreen&gt;&lt;/iframe&gt;
 
 ---
 class: tp
@@ -638,6 +638,7 @@ The raw read format is also different.
   - Correction (hybrid) : LorDec &lt;a name=cite-salmela2014lordec&gt;&lt;/a&gt;([Salmela and Rivals, 2014](#bib-salmela2014lordec))
   - Alignment minimap2 &lt;a name=cite-li2018minimap2&gt;&lt;/a&gt;([Li, 2018](#bib-li2018minimap2)), BLASR &lt;a name=cite-chaisson2012mapping&gt;&lt;/a&gt;([Chaisson and Tesler, 2012](#bib-chaisson2012mapping))
 - NanoPore :
+  - Porchop &lt;a name=cite-wick2017completing&gt;&lt;/a&gt;([Wick, Judd, Gorrie, and Holt, 2017](#bib-wick2017completing)) for trimming
   - Caution to basecaller / chemistry version!
   - QC : nanoPlot
   - Correction : Canu &lt;a name=cite-koren2017canu&gt;&lt;/a&gt;([Koren, Walenz, Berlin, Miller, Bergman, and Phillippy, 2017](#bib-koren2017canu)), MECAT &lt;a name=cite-xiao2017mecat&gt;&lt;/a&gt;([Xiao, Chen, Xie, Chen, Wang, Han, Luo, and Xie, 2017](#bib-xiao2017mecat))
@@ -734,6 +735,11 @@ efficient long read error correction". In: _Bioinformatics_ 30.24, pp.
 &lt;a name=bib-shen2016seqkit&gt;&lt;/a&gt;[Shen, W., S. Le, Y. Li, et
 al.](#cite-shen2016seqkit) (2016). "SeqKit: a cross-platform and
 ultrafast toolkit for FASTA/Q file manipulation". In: _PloS one_ 11.10.
+
+&lt;a name=bib-wick2017completing&gt;&lt;/a&gt;[Wick, R. R., L. M. Judd, C. L.
+Gorrie, et al.](#cite-wick2017completing) (2017). "Completing bacterial
+genome assemblies with multiplex MinION sequencing". In: _Microbial
+genomics_ 3.10.
 
 &lt;a name=bib-xiao2017mecat&gt;&lt;/a&gt;[Xiao, C., Y. Chen, S. Xie, et
 al.](#cite-xiao2017mecat) (2017). "MECAT: fast mapping, error
@@ -871,6 +877,30 @@ if (window.HTMLWidgets) slideshow.on('afterShowSlide', function (slide) {
   left: 34em;
 }
 
+.logo-inrae {
+  background-image: url(../images/inrae.png);
+  background-size: contain;
+  background-repeat: no-repeat;
+  position: fixed;
+  width: 118px;
+  left: 7em;
+  height: 100%;
+  z-index: 0;
+  left: 16em;
+}
+
+.logo-migale {
+  background-image: url(../images/migale-orange.png);
+  background-size: contain;
+  background-repeat: no-repeat;
+  position: fixed;
+  width: 118px;
+  left: 7em;
+  height: 100%;
+  z-index: 0;
+  left: 18em;
+}
+
 </style>
 
 <script>
@@ -885,8 +915,11 @@ document
   .forEach(el => {
     //el.innerHTML += '<div class="logo-inra"></div>';
     //el.innerHTML += '<div class="logo-migale"></div>';
-    el.innerHTML += '<div class="logo-univ"></div>';
-    el.innerHTML += '<div class="logo-ifb"></div>';
+    el.innerHTML += '<p style="text-align: center;"> \
+    <img src="../images/logo-ifb_small.png" height="60px"></img> \
+    <img src="../images/logo_UParis.png" height="60px"></img></p>';
+    el.innerHTML += '<p style="text-align: center;"><img src="../images/migale-orange.png" height="40px"></img> \
+    <img src="../images/inrae.png" height="35px"></img></p><p style="text-align: center;"><img src="../images/licence.png" height="40px"></img></p>';
   });
 </script>
 

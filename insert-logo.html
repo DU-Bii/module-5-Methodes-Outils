@@ -50,6 +50,30 @@
   left: 34em;
 }
 
+.logo-inrae {
+  background-image: url(../images/inrae.png);
+  background-size: contain;
+  background-repeat: no-repeat;
+  position: fixed;
+  width: 118px;
+  left: 7em;
+  height: 100%;
+  z-index: 0;
+  left: 16em;
+}
+
+.logo-migale {
+  background-image: url(../images/migale-orange.png);
+  background-size: contain;
+  background-repeat: no-repeat;
+  position: fixed;
+  width: 118px;
+  left: 7em;
+  height: 100%;
+  z-index: 0;
+  left: 18em;
+}
+
 </style>
 
 <script>
@@ -64,7 +88,10 @@ document
   .forEach(el => {
     //el.innerHTML += '<div class="logo-inra"></div>';
     //el.innerHTML += '<div class="logo-migale"></div>';
-    el.innerHTML += '<div class="logo-univ"></div>';
-    el.innerHTML += '<div class="logo-ifb"></div>';
+    el.innerHTML += '<p style="text-align: center;"> \
+    <img src="../images/logo-ifb_small.png" height="60px"></img> \
+    <img src="../images/logo_UParis.png" height="60px"></img></p>';
+    el.innerHTML += '<p style="text-align: center;"><img src="../images/migale-orange.png" height="40px"></img> \
+    <img src="../images/inrae.png" height="35px"></img></p><p style="text-align: center;"><img src="../images/licence.png" height="40px"></img></p>';
   });
 </script>

@@ -214,6 +214,8 @@ expr $(expr $(zcat SRR8082143_1.fastq.gz | wc -l) / 4) = $(expr $(zcat SRR808214
 
 4. Why this command gives you (often) a wrong answer?
 
+</br>
+
     echo $(zgrep -cv "^@" SRR8082143_1.fastq.gz)/4|bc
 
 ```{bash, eval=FALSE}
@@ -377,7 +379,7 @@ cd ~/M5S1/MAPPING
 cp /shared/projects/dubii2021/trainers/module5/seance1/CP031214.1.fasta .
 ```
 
- Load bwa and Index FASTA file with `bwa index`
+2. Load bwa and Index FASTA file with `bwa index`
 
 ```{bash, eval=FALSE}
 module load bwa

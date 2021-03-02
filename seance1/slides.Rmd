@@ -77,11 +77,11 @@ class: heading-slide, middle, center
 Format | Who generates it? | Who reads it?
 --- | --- | ---
 *FASTQ* | `sequencers`, `simulation tools` | `mapping tools`, `QC tools`, `cleaning tools`, `taxonomic assignation tools`
-*FASTA* | `assembly tools`, `gene prediction tools` ... | almost all
-*SAM/BAM* | `mapping tools`, `samtools` | `visualization tools`, `variant discovery tools`, `tools`
-*BED* | `annotation tools`, `bedtools` | `visualization tools`, `variant discovery tools`, `peak calling tools`, `RNAseq tools`
+*FASTA* | `assembly tools`, `gene prediction tools` ... | `visualization tools`, almost all
+*SAM/BAM* | `mapping tools`, `samtools` | `visualization tools`, `variant discovery tools`, `counting tools`
+*BED* | `annotation tools`, `bedtools` | `visualization tools`, `variant discovery tools`, `peak calling tools`, `counting tools`
 *GFF* | `annotation tools` | `visualization tools`, `variant discovery tools`, `peak calling tools`, `RNAseq tools`
-*VCF* | `variant discovery tools` | `vcftools`,  `visualization tools`, `variant discovery tools`, `tools`
+*VCF* | `variant discovery tools` | `vcftools`,  `visualization tools`, `variant discovery tools`
 
 * [synthesis](https://ressources.france-bioinformatique.fr/sites/default/files/formats.pdf)
 
@@ -615,7 +615,7 @@ Samtools `r Citep(bib, "samtools")` and Picard tools `r Citep(bib, "picardtools"
 * MultiqQC `r Citep(bib, "multiqc")` allow the aggregation of individual reports from FastQC, Fastp, Trimmomactic, Cutadapt and much more
 * [97 supported tools](https://multiqc.info/#supported-tools)
 
-<iframe width="60%" height="60%" src="https://www.youtube.com/embed/BbScv9TcaMg" frameborder="0" allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture" allowfullscreen></iframe>
+<iframe height="400px"; width="900px"; src="https://www.youtube.com/embed/BbScv9TcaMg" frameborder="0" allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture" allowfullscreen></iframe>
 
 ---
 class: tp
@@ -639,6 +639,7 @@ The raw read format is also different.
   - Correction (hybrid) : LorDec `r Citep(bib, "salmela2014lordec")`
   - Alignment minimap2 `r Citep(bib, "li2018minimap2")`, BLASR `r Citep(bib, "chaisson2012mapping")`
 - NanoPore :
+  - Porchop `r Citep(bib, "wick2017completing")` for trimming
   - Caution to basecaller / chemistry version!
   - QC : nanoPlot
   - Correction : Canu `r Citep(bib, "koren2017canu")`, MECAT `r Citep(bib, "xiao2017mecat")`
@@ -670,5 +671,5 @@ PrintBibliography(bib, start=7, end=14)
 ---
 # References
 ```{r, results='asis', echo=FALSE}
-PrintBibliography(bib, start=15, end=17)
+PrintBibliography(bib, start=15, end=18)
 ```
