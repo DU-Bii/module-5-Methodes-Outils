@@ -36,8 +36,8 @@ Calendrier du DU-Bii : <!--<https://du-bii.github.io/accueil/img/planning_DUBii_
 | INTRODUCTION AU SÉQUENÇAGE À HAUT DÉBIT POUR LA GÉNOMIQUE 1 | [[pdf](seance1/20200309_THERMES_1.pdf)] [[pptx](seance1/20200309_THERMES_1.pptx)]  |
 | INTRODUCTION AU SÉQUENÇAGE À HAUT DÉBIT POUR LA GÉNOMIQUE 2 | [[pdf](seance1/20200309_THERMES_2.pdf)] [[pptx](seance1/20200309_THERMES_2.pptx)] |
 | INTRODUCTION AU SÉQUENÇAGE À HAUT DÉBIT POUR LA GÉNOMIQUE 3 | [[pdf](seance1/20200309_THERMES_3.pdf)] [[pptx](seance1/20200309_THERMES_3.pptx)] |
-| First steps with NGS data | [[pdf](seance1/seance1.pdf)] [[html](seance1/slides.html)] |
-| Correction TP | [[html](seance1//document.html)] |
+| First steps with NGS data | [[html](seance1/slides.html)] |
+| TP | [[html](seance1//TP.html)] |
 
 ### [Séance 2 - Protéomique](https://github.com/DU-Bii/module-5-Methodes-Outils/tree/master/seance2)
 
