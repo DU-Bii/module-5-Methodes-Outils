@@ -501,8 +501,6 @@ firefox multiqc_report.html &
 
 * [multiqc_report](html/multiqc_report.html)
 
-# Visualization
-
 
 
 # Summary
@@ -539,5 +537,45 @@ firefox multiqc_report.html &
         └── SRR8082143_2_fastqc.zip
     
     4 directories, 23 files
+
+# Visualization
+
+1. Create the `FASTA` index with `samtools faidx`
+
+```{bash, eval=FALSE}
+cd ~/M5S1/MAPPING/
+samtools faidx CP031214.1.fasta
+```
+
+2. Download the following files on your local desktop
+
+- ~/M5S1/MAPPING/CP031214.1.fasta
+- ~/M5S1/MAPPING/CP031214.1.fasta.fai
+- ~/M5S1/MAPPING/SRR8082143_on_CP031214.1.sort.bam
+- ~/M5S1/MAPPING/SRR8082143_on_CP031214.1.sort.bam.bai
+
+```{bash, eval=FALSE}
+scp orue@core.cluster.france-bioinformatique.fr:~/M5S1/MAPPING/CP031214.1.fasta .
+scp orue@core.cluster.france-bioinformatique.fr:~/M5S1/MAPPING/CP031214.1.fasta.fai .
+scp orue@core.cluster.france-bioinformatique.fr:~/M5S1/MAPPING/SRR8082143_on_CP031214.1.sort.bam .
+scp orue@core.cluster.france-bioinformatique.fr:~/M5S1/MAPPING/SRR8082143_on_CP031214.1.sort.bam.bai .
+```
+
+3. Open you web browser and go to `https://igv.org/app/`
+
+4. Load the reference
+
+5. Load the alignments
+
+<details>
+<summary>Step by step correction</summary>
+<br>
+<video width="80%" autoplay controls>
+  <source src="media/igvapp.webm" type="video/webm">
+</video>
+</details>
+
+
+
 
 # References
