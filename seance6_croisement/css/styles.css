@@ -1,0 +1,121 @@
+.title-slide {
+  background-image: url(../images/background.jpg);
+  background-size: cover;
+  
+}
+
+code{
+  padding: 2px 4px;
+  font-size: 90%;
+  color: #c7254e;
+  background-color: #f9f2f4;
+  border-radius: 4px;
+}
+
+p > code{
+  color: #c7254e !important;
+  background-color: #f9f2f4 !important;
+}
+
+li > code{
+  color: #c7254e !important;
+  background-color: #f9f2f4 !important;
+}
+
+.bash{
+  overflow: auto;
+  background-color: #f0f0f0;
+  padding: 5px;
+  font-family: Lucida Console, Lucida Sans Typewriter, monaco, Bitstream Vera Sans Mono, monospace;
+  font-size: 0.7em;
+  border-radius: 2px;
+  padding: 15px;
+  margin-bottom:20px;
+}
+
+aside.gdbar img {
+    width: 88%;
+    height: 82%;
+    position: absolute;
+    right: 0;
+    margin: 8px 15px;
+}
+
+slides > slide:not(.nobackground)::before {
+    background-size: 79px 30px;
+    padding-left: 80px;
+}
+
+.caption{
+    font-size: medium;
+    padding-top: 20px;
+}
+
+.heading-slide {
+  background-color: #4b898d;  /* blue background */
+  color: #fff;                /* white text*/
+  text-shadow: 0 0 0;         /* no text shadow */
+  border-bottom: 0;           /* no border */
+  font-family: 'Yanone Kaffeesatz';
+}
+
+.large {
+  white-space:pre !important; 
+  overflow-x:scroll !important;
+  overflow-y:scroll !important;
+  max-height: 384px !important;
+}
+
+.alert{
+  position: relative;
+  padding: .75rem 1.25rem;
+  margin-bottom: 1rem;
+  border: 1px solid transparent;
+  border-radius: .25rem;
+}
+
+/* Custom colors and icons of alert div */
+.info{
+  color: #004085;
+  background-color: #cce5ff;
+  border-color: #b8daff;
+}
+
+.comment{
+  color: #155724;
+  background-color: #d4edda;
+  border-color: #c3e6cb;
+}
+
+.danger{
+  color: #721c24;
+  background-color: #f8d7da;
+  border-color: #f5c6cb;
+}
+
+.handson{
+  text-align: center;
+  width: 138px;
+  float: right;
+  margin-top: -30px;
+  margin-right: -30px;
+}
+
+.tool,.databank{
+    background-color: #8eadac;
+    color: white;
+    padding: 1px 1px 3px 6px;
+    border-radius: 8px;
+}
+
+.tool:after {    
+    font-family: "FontAwesome";  /* updated font-family */
+    font-weight: 900;
+    content: '\f0Ad';
+    margin:0 5px 0 5px;
+    color: white;
+}
+
+summary{
+  cursor:pointer;
+}

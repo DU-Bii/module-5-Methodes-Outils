@@ -1,0 +1,543 @@
+---
+title: "First steps with NGS data"
+author: "Valentin Loux - Olivier Rué"
+subtitle: "DUBii - Module 5 - Session 1"
+css: ../css/styles.css
+date: "2021/03/08"
+bibliography: ../resources/biblio.bib 
+csl: ../resources/biomed-central.csl
+output:
+    html_document:
+      css: [../css/html_doc.css, 'https://use.fontawesome.com/releases/v5.0.9/css/all.css']
+      self_contained: true
+      number_sections: true
+      code_folding: "hide"
+      toc: true
+      toc_depth: 3
+      toc_float: true
+      includes:
+        after_body: ../footer.html
+---
+
+# Reminders {-}
+
+1. How to connect to the ifb core cluster?
+
+```{bash, eval=FALSE}
+ssh -X login@core.cluster.france-bioinformatique.fr
+```
+
+2. How to load a tool?
+
+```{bash, eval=FALSE}
+module avail |grep mytool
+module load mytool
+```
+
+3. How to display help of a command or a tool?
+
+```{bash, eval=FALSE}
+man mytool
+mytool --help
+mytool -h
+mytool
+mytool -help
+```
+
+<div class="alert info">No convention established: Read The (F***) Manual!</div>
+
+4. How to submit jobs? [IFB documentation](https://ifb-elixirfr.gitlab.io/cluster/doc/slurm_user_guide/)
+
+```{bash, eval=FALSE}
+srun [options] mycommand
+sbatch [options] myscript
+sbatch [options] --wrap="mycommand"
+```
+
+
+# Preparation of your working directory
+
+
+1. Go to your home directory
+2. Create a directory called `M5S1` (i.e Module5 session 1) and move in
+3. Create the following directory structure and check with `tree`
+
+<br/>
+
+    .
+    ├── CLEANING
+    ├── FASTQ
+    ├── MAPPING
+    └── QC
+    
+    4 directories, 0 files
+
+
+<details>
+<summary>Step by step correction</summary>
+
+`mkdir`, `cd` and `tree` are needed.
+
+```{bash, eval=FALSE}
+mkdir -p ~/M5S1/FASTQ  # -p: no error if existing, make parent directories as needed
+mkdir -p ~/M5S1/CLEANING
+mkdir -p ~/M5S1/MAPPING
+mkdir -p ~/M5S1/QC
+cd ~/M5S1
+tree ~/M5S1 # list contents of directories in a tree-like format.
+```
+
+</details>
+
+
+# Retrieve raw data (FASTQ)
+
+<a href="https://mra.asm.org/content/8/2/e01052-18"><img src="images/MRA.01052-18.png" style="width:70%"></img></a>
+
+1. Find the run identifier of the the raw data (Illumina) associated with <a href="https://mra.asm.org/content/8/2/e01052-18">this article</a>
+2. Download FASTQ files in `FASTQ` directory with <strong class="tool">sra-tools</strong> @sratoolkit
+2. Compress them with `gzip`
+
+These files must be present in the `FASTQ` directory
+
+    ls -ltrh ~/M5S1/FASTQ/
+    total 236M
+    -rw-rw-r-- 1 orue orue 127M  6 mars  12:32 SRR8082143_2.fastq.gz
+    -rw-rw-r-- 1 orue orue 109M  6 mars  12:32 SRR8082143_1.fastq.gz
+
+
+<details>
+<summary>Step by step correction</summary>
+
+1. Find the section describing sequencing data
+
+```{bash, eval=FALSE}
+Data availability
+The annotated chromosome has been deposited in NCBI GenBank under the accession number CP031214. Illumina and PacBio reads are available under the accession numbers SRX4909245 and SRX4908799, respectively, in the Sequence Read Archive (SRA).
+
+SRX4909245 is the Illumina experience, SRR8082143 is the run identifier.
+```
+
+2. Download with `fasterq-dump` subcommand of `sra-tools`
+
+```{bash, eval=FALSE, class="large"}
+module load  sra-tools
+fasterq-dump -h
+srun --cpus-per-task=6 fasterq-dump --split-files -p SRR8082143 --outdir FASTQ
+```
+
+3. Then compress the files with `gzip`:
+
+```{bash, eval=FALSE}
+cd ~/M5S1/FASTQ
+srun gzip *.fastq
+```
+
+</details>
+
+
+## Read a FASTQ file
+
+<div class="alert danger">Never uncompress a FASTQ file unless it is absolutely necessary.</div> 
+
+1. Display the 8 first lines of `SRR8082143_1.fastq.gz`
+2. How many reads are present in this file?
+
+<details>
+<summary>Step by step correction</summary>
+
+1. `zcat` or `zless` are used to display compressed FASTQ files. `head` displays first lines.
+
+```{bash, eval=FALSE}
+cd ~/M5S1/FASTQ
+zcat SRR8082143_1.fastq.gz | head -n 8
+# or
+gzip -cd SRR8082143_1.fastq.gz |head -n 8
+```
+
+2. Informations about one read are stored in 4 consecutives lines. So to count the number of reads in a FASTQ file, a simple way is to count the number of lines and to divide it by 4.
+
+```{bash, eval=FALSE}
+cd ~/M5S1/FASTQ
+# With bash
+echo $(zcat SRR8082143_1.fastq.gz|wc -l)/4|bc
+# or
+zcat SRR8082143_1.fastq.gz| echo $((`wc -l`/4))
+# or
+expr $(zcat SRR8082143_1.fastq.gz | wc -l) / 4
+# or, with awk
+zcat SRR8082143_1.fastq.gz |awk '{s++}END{print s/4}' 
+# ...
+```
+
+</details>
+
+
+## Go further
+
+FASTQ files can be directly downloaded with `wget` from the ftp server.
+
+```{bash, eval=FALSE, class="large"}
+wget ftp://ftp.sra.ebi.ac.uk/vol1/fastq/SRR808/003/SRR8082143/SRR8082143_1.fastq.gz
+wget ftp://ftp.sra.ebi.ac.uk/vol1/fastq/SRR808/003/SRR8082143/SRR8082143_2.fastq.gz
+```
+
+<div class="alert comment">This method shows its limits as soon as the number of FASTQs grows up.</div>
+
+A very smart utility is <a href="https://sra-explorer.info/#">SRA-explorer</a>. It gives you several ways to download the files you need.
+
+
+1. Write in a file called `raw_data_statistics.txt` the name of the FASTQ file and the number of reads in the same line, for all FASTQ files in a directory
+
+```{bash, eval=FALSE}
+for i in *.fastq.gz ; do echo $i $(zcat $i |echo $((`wc -l`/4))) ; done >> raw_data_statistics.txt
+```
+
+2. Which command of <strong class="tool">seqkit</strong> @seqkit tool does the same (better)?
+
+```{bash, eval=FALSE}
+#module avail |grep seqkit
+module load seqkit
+srun seqkit stats --threads 1 *.fastq.gz
+file                   format  type  num_seqs      sum_len  min_len  avg_len  max_len
+SRR8082143_1.fastq.gz  FASTQ   DNA    718,021  169,774,551       35    236.4      251
+SRR8082143_2.fastq.gz  FASTQ   DNA    718,021  169,928,313       35    236.7      251
+
+```
+
+
+3. Check with `expr` if R1 and R2 files have the same number of reads
+
+```{bash, eval=FALSE}
+expr $(expr $(zcat SRR8082143_1.fastq.gz | wc -l) / 4) = $(expr $(zcat SRR8082143_2.fastq.gz | wc -l) / 4)
+```
+
+4. Why this command gives you (often) a wrong answer?
+
+</br>
+
+    echo $(zgrep -cv "^@" SRR8082143_1.fastq.gz)/4|bc
+
+```{bash, eval=FALSE}
+zgrep  "^@" SRR8082143_1.fastq.gz |grep -v SRR | head
+```
+
+# Quality control
+
+1. Launch <strong class="tool">FastQC</strong> @fastqc on the paired-end FastQ files of the sample you previously downloaded and write results in `QC` directory (use 8 threads)
+2. Explore the results and interpret the graphics
+
+You have to obtain these files:
+
+
+    ls -ltrh ~/M5S1/QC
+    total 1,9M
+    -rw-rw-r-- 1 orue orue 321K  6 mars  13:23 SRR8082143_1_fastqc.zip
+    -rw-rw-r-- 1 orue orue 642K  6 mars  13:23 SRR8082143_1_fastqc.html
+    -rw-rw-r-- 1 orue orue 333K  6 mars  13:23 SRR8082143_2_fastqc.zip
+    -rw-rw-r-- 1 orue orue 642K  6 mars  13:23 SRR8082143_2_fastqc.html
+
+
+
+<details>
+<summary>Step by step correction</summary>
+
+1. Load fastqc
+
+```{bash, eval=FALSE, class="large"}
+cd ~/M5S1 # if you went somewhere else
+module load fastqc
+```
+
+2. Run fastqc
+
+```{bash, eval=FALSE}
+srun --cpus-per-task 8 fastqc FASTQ/SRR8082143_1.fastq.gz -o QC/ -t 8
+srun --cpus-per-task 8 fastqc FASTQ/SRR8082143_2.fastq.gz -o QC/ -t 8
+```
+
+3. Download the reports on your local desktop with `scp`
+
+```{bash, eval=FALSE}
+# On your local desktop
+scp orue@core.cluster.france-bioinformatique.fr:~/M5S1/QC/*.html .
+```
+
+4. Open the `HTML` files with `Firefox`, `Chrome`, `Safari`...
+
+```{bash, eval=FALSE}
+# On your local desktop
+firefox *.html &
+```
+
+</details>
+
+* [R1 report](html/SRR8082143_1_fastqc.html)
+* [R2 report](html/SRR8082143_2_fastqc.html)
+
+## Go further
+
+1. Is the length distribution of reads expected for Illumina raw data? Why
+
+```{bash, eval=FALSE}
+Some cleaning has be performed. Usually REALLY RAW reads have the same lengths.
+```
+
+2. FastQC can be run with R (see <a href="http://www.sthda.com/english/wiki/fastqcr-an-r-package-facilitating-quality-controls-of-sequencing-data-for-large-numbers-of-samples">this tutorial</a>) or with Python (see <a href="https://pypi.org/project/sequana-fastqc/">this package</a>).
+
+# Reads cleaning with fastp
+
+1. Launch <strong class="tool">fastp</strong> @fastp on the paired-end FastQ files of the sample you previously downloaded
+  - Detect and Remove the classical Illumina adapters
+  - Filter reads with :
+      - mean quality >= 30 on a sliding window of 8 from 3' extremity to 5' extremity
+      - length of the read >= 100
+      - keep only pairs
+
+2. Inspect the results
+  - How many reads are remaining ?
+
+</br>
+
+    ls -ltrh ~/M5S1/CLEANING/
+    -rw-rw-r-- 1 orue orue 117M  1 mars  16:07 SRR8082143_2.cleaned_filtered.fastq.gz
+    -rw-rw-r-- 1 orue orue 107M  1 mars  16:07 SRR8082143_1.cleaned_filtered.fastq.gz
+    -rw-rw-r-- 1 orue orue 531K  1 mars  16:07 fastp.html
+
+<details>
+<summary>Step by step correction</summary>
+
+1. Load fastp, write and submit the appropriate command
+
+```{bash, eval=FALSE, class="large"}
+cd ~/M5S1
+module load fastp
+
+fastp --version
+fastp 0.20.0
+
+fastp --help
+```
+
+```{bash, eval=FALSE}
+srun --cpus-per-task 8 fastp --in1 FASTQ/SRR8082143_1.fastq.gz --in2 FASTQ/SRR8082143_2.fastq.gz --out1 CLEANING/SRR8082143_1.cleaned_filtered.fastq.gz --out2 CLEANING/SRR8082143_2.cleaned_filtered.fastq.gz --html CLEANING/fastp.html --thread 8 --cut_mean_quality 30 --cut_window_size 8 --length_required 100 --cut_tail --json CLEANING/fastp.json
+```
+
+2. How many reads are remaining?
+
+```{bash, eval=FALSE}
+seqkit stats CLEANING/*.fastq.gz
+file                                    format  type  num_seqs      sum_len  min_len  avg_len  max_len
+SRR8082143_1.cleaned_filtered.fastq.gz  FASTQ   DNA    677,649  159,276,371      100      235      251
+SRR8082143_2.cleaned_filtered.fastq.gz  FASTQ   DNA    677,649  150,859,154      100    222.6      251
+
+677,649 out of 718,021 reads are remaining (~94%)
+```
+
+</details>
+
+* [fastp report](html/fastp.html)
+
+## Go further
+
+1. How to avoid to write `fastp.json`?
+
+<div class="alert comment">Useless files can be written in `/dev/null`. It can be compared to a black hole in space.</div>
+
+```{bash, eval=FALSE}
+srun --cpus-per-task 8 fastp --in1 FASTQ/SRR8082143_1.fastq.gz --in2 FASTQ/SRR8082143_2.fastq.gz --out1 CLEANING/SRR8082143_1.cleaned_filtered.fastq.gz --out2 CLEANING/SRR8082143_2.cleaned_filtered.fastq.gz --html CLEANING/fastp.html --thread 8 --cut_mean_quality 30 --cut_window_size 8 --length_required 100 --cut_tail --json /dev/null
+```
+
+2. How to redirect the informations given by `fastp` in a file called `fastp.log`?
+
+```{bash, eval=FALSE}
+srun --cpus-per-task 8 fastp --in1 FASTQ/SRR8082143_1.fastq.gz --in2 FASTQ/SRR8082143_2.fastq.gz --out1 CLEANING/SRR8082143_1.cleaned_filtered.fastq.gz --out2 CLEANING/SRR8082143_2.cleaned_filtered.fastq.gz --html CLEANING/fastp.html --thread 8 --cut_mean_quality 30 --cut_window_size 8 --length_required 100 --cut_tail  &> CLEANING/fastp.log
+```
+
+
+# Mapping with bwa
+
+1. Copy the file `/shared/projects/dubii2021/trainers/module5/seance1/CP031214.1.fasta` in the directory `~/M5S1/MAPPING/`
+2. Index it with <strong class="tool">bwa</strong> @bwa.
+3. Map the reads to this reference with default parameters and write alignments in a file called SRR8082143_on_CP031214.1.sam
+4. Convert the `SAM` file into a `BAM` file with <strong class="tool">samtools</strong> @samtools
+5. Sort the `BAM` file with `samtools sort`
+6. Index the sorted `BAM` file with `samtools index`
+7. Remove unnecessary files
+
+    ls -ltrh ~/M5S1/MAPPING/
+    total 249M
+    -rw-rw-r-- 1 orue orue 249M  6 mars  13:01 SRR8082143.bam
+
+
+<details>
+<summary>Step by step correction</summary>
+
+1. Copy the file with `cp`
+```{bash, eval=FALSE}
+cd ~/M5S1/MAPPING
+cp /shared/projects/dubii2021/trainers/module5/seance1/CP031214.1.fasta .
+```
+
+2. Load bwa and Index FASTA file with `bwa index`
+
+```{bash, eval=FALSE}
+module load bwa
+bwa
+# Version: 0.7.17-r1188
+bwa index
+```
+
+```{bash, eval=FALSE}
+srun bwa index CP031214.1.fasta
+```
+
+3. Map reads with `bwa mem`
+
+```{bash, eval=FALSE}
+bwa mem
+srun --cpus-per-task=32 bwa mem CP031214.1.fasta ../CLEANING/SRR8082143_1.cleaned_filtered.fastq.gz ../CLEANING/SRR8082143_2.cleaned_filtered.fastq.gz -t 32 > SRR8082143_on_CP031214.1.sam
+```
+
+4. Load `samtools` and convert `SAM` file to `BAM` file with `samtools view`
+
+```{bash, eval=FALSE}
+module load samtools
+samtools --version
+# samtools 1.10
+```
+
+```{bash, eval=FALSE}
+srun --cpus-per-task=8 samtools view --threads 8 SRR8082143_on_CP031214.1.sam -b > SRR8082143_on_CP031214.1.bam
+```
+
+
+5. Sort the `BAM` file with `samtools sort`
+
+```{bash, eval=FALSE}
+srun samtools sort SRR8082143_on_CP031214.1.bam -o SRR8082143_on_CP031214.1.sort.bam
+```
+
+6. Index the `BAM` file with `samtools index` 
+
+```{bash, eval=FALSE}
+srun samtools index SRR8082143_on_CP031214.1.sort.bam
+```
+
+7. Remove useless files with `rm`
+
+```{bash, eval=FALSE}
+du -hcs SRR8082143_on_CP031214.1.bam SRR8082143_on_CP031214.1.sam
+226M	SRR8082143_on_CP031214.1.bam
+732M	SRR8082143_on_CP031214.1.sam
+958M	total
+
+rm -f SRR8082143_on_CP031214.1.bam SRR8082143_on_CP031214.1.sam # -f: never prompt, be sure of what you do!
+```
+
+</details>
+
+## Mapping statistics
+
+1. Run `samtools idxstats` and `samtools flagstat` on your `BAM` file and write stdout to `.idxstats` and `.flagstat` files
+
+```{bash, eval=FALSE}
+cd ~/M5S1/MAPPING
+srun samtools idxstats SRR8082143_on_CP031214.1.sort.bam > SRR8082143_on_CP031214.1.sort.bam.idxstats
+srun samtools flagstat SRR8082143_on_CP031214.1.sort.bam > SRR8082143_on_CP031214.1.sort.bam.flagstat
+```
+
+
+## Go further
+
+1. Can you write a command to map, convert to BAM and sort in only one command to avoid temporary files?
+
+```{bash, eval=FALSE}
+srun --cpus-per-task=34 bwa mem CP031214.1.fasta ../CLEANING/SRR8082143_1.cleaned_filtered.fastq.gz ../CLEANING/SRR8082143_2.cleaned_filtered.fastq.gz -t 32 | srun samtools view -b - | srun samtools sort - > SRR8082143.bam
+```
+
+<div class="alert note">Each command must be prefixed with `srun` and the number `--cpus-per-task` is the sum of all cpus used by each command</div>
+
+2. What is the size of the `FASTA` file?
+
+```{bash, eval=FALSE}
+cd ~/M5S1/MAPPING
+seqkit stats CP031214.1.fasta
+file                      format  type  num_seqs    sum_len    min_len    avg_len    max_len
+MAPPING/CP031214.1.fasta  FASTA   DNA          1  4,599,824  4,599,824  4,599,824  4,599,824
+```
+
+3. How to count the number of sequences in the `FASTA` file?
+
+```{bash, eval=FALSE}
+grep -c '>' CP031214.1.fasta
+```
+
+
+
+# Synthesis of all steps done with MultiQC
+
+1. Run <strong class="tool">MultiQC</strong> @multiqc to obtain a report all tools run in your directory.
+2. Visualize the `HTML` report on your local desktop
+
+<details>
+<summary>Step by step correction</summary>
+
+1. Run multiqc
+
+```{bash, eval=FALSE}
+cd ~/M5S1
+module load multiqc
+srun multiqc -d . -o .
+```
+
+2. Download multiqc report and open with your web browser
+
+```{bash, eval=FALSE}
+scp orue@core.cluster.france-bioinformatique.fr:~/M5S1/multiqc_report.html .
+firefox multiqc_report.html &
+```
+</details>
+
+* [multiqc_report](html/multiqc_report.html)
+
+# Visualization
+
+
+
+# Summary
+
+
+    tree
+    .
+    ├── CLEANING
+    │   ├── fastp.html
+    │   ├── fastp.json
+    │   ├── SRR8082143_1.cleaned_filtered.fastq.gz
+    │   └── SRR8082143_2.cleaned_filtered.fastq.gz
+    ├── FASTQ
+    │   ├── SRR8082143_1.fastq.gz
+    │   └── SRR8082143_2.fastq.gz
+    ├── MAPPING
+    │   ├── CP031214.1.fasta
+    │   ├── CP031214.1.fasta.amb
+    │   ├── CP031214.1.fasta.ann
+    │   ├── CP031214.1.fasta.bwt
+    │   ├── CP031214.1.fasta.pac
+    │   ├── CP031214.1.fasta.sa
+    │   ├── SRR8082143_on_CP031214.1.bam
+    │   ├── SRR8082143_on_CP031214.1.sam
+    │   ├── SRR8082143_on_CP031214.1.sort.bam
+    │   ├── SRR8082143_on_CP031214.1.sort.bam.bai
+    │   ├── SRR8082143_on_CP031214.1.sort.bam.flagstat
+    │   └── SRR8082143_on_CP031214.1.sort.bam.idxstats
+    ├── multiqc_report.html
+    └── QC
+        ├── SRR8082143_1_fastqc.html
+        ├── SRR8082143_1_fastqc.zip
+        ├── SRR8082143_2_fastqc.html
+        └── SRR8082143_2_fastqc.zip
+    
+    4 directories, 23 files
+
+# References

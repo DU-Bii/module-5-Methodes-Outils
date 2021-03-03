@@ -1,0 +1,364 @@
+---
+title: "Croisement de données"
+author: "Olivier Rué - Matthias Zytnicki"
+subtitle: "DUBii - Module 5"
+css: css/styles.css
+libs: libs
+date: "2020-06-05"
+output:
+    #html_document:
+    #  self_contained: true
+    #  number_sections: TRUE
+    #  code_folding: "show"
+    #  toc: true
+    #  toc_depth: 2
+    #  toc_float: true
+    xaringan::moon_reader:
+      nature:
+        ratio: '16:9'
+---
+
+
+```{r setup, include=FALSE}
+options(htmltools.dir.version = FALSE)
+library(RefManageR)
+BibOptions(check.entries = FALSE, bib.style = "authoryear", style = "html",
+           dashed = TRUE)
+file.name <- "biblio.bib"
+bib <- ReadBib(file.name)
+```
+
+# Programme
+
+
+- Présentation des intervenants, organisation
+
+- Rappel sur les formats de fichiers
+
+- <strong class="tool">Bedtools</strong> `r Cite(bib, hyperlink = "to.bib", "quinlan2010bedtools")`
+
+- TP en mode distanciation sociale
+
+.center[
+![](images/formation-a-distance.jpeg)
+]
+
+---
+
+# Rappels sur les formats de fichiers
+
+Format  | Contenu
+------------- | -------------
+FASTA  | ?
+FASTQ  | ?
+SAM/BAM  | ?
+BED/GTF/GFF  | ?
+VCF  | ? 
+
+---
+
+# Rappels sur les formats de fichiers
+
+Format  | Contenu
+------------- | -------------
+FASTA  | Information de séquence
+FASTQ  | Séquence et qualité de lectures provenant d'un séquençage
+SAM/BAM  | Alignement des lectures sur une référence
+BED/GTF/GFF  | Coordonnées et annotations génomiques
+VCF  | Coordonnées et annotations des variants génomiques 
+
+---
+
+## FASTA
+
+```bash
+>foo
+ATGCC
+>bar other optional text could go here
+CCGTA
+>bidou
+ACTGCAGT
+TTCGN
+>repeatmasker
+ATGTGTcggggggATTTT
+>prot2; my_favourite_prot
+MTSRRSVKSGPREVPRDEYEDLYYTPSSGMASP
+```
+
+## FASTQ
+
+```bash
+@SEQ_ID
+GATTTGGGGTTCAAAGCAGTATCGATCAAATAGTAAATCCATTTGTTCAACTCACAGTTT
++
+!''*((((***+))%%%++)(%%%%).1***-+*''))**55CCF>>>>>>CCCCCCC65
+```
+---
+
+## SAM/BAM
+
+- _Sequence Alignment Map_
+
+- Contient les informations des alignements des lectures sur le génome
+
+- 2 sections
+  - le header
+  - les alignements
+
+- Se manipule avec 
+  - <strong class="tool">samtools</strong> `r Citep(bib, "samtools")`,
+  - <strong class="tool">bedtools</strong> `r Citep(bib, "quinlan2010bedtools")`,
+  - <strong class="tool">Picard tools</strong> `r Citep(bib, "picardtools")`,
+  - ...
+
+- Toujours travailler avec le BAM, trié et indexé
+
+---
+
+## SAM/BAM
+
+
+```{r, out.width = "80%", echo=FALSE, fig.align="center"}
+knitr::include_graphics("images/SAM_format.jpg")
+```
+
+
+---
+
+## BED
+
+- _Browser Extensible Data_
+
+- Ce sont des formats "d'intervalles". Chaque ligne contient un intervalle de coordonnées génomiques avec au minimum 3 colonnes :
+
+```{bash, eval=FALSE}
+# BED 3 columns
+#chromosome  start  end
+chr1  145  200
+chr1  345  500
+chr1  600  1000
+```
+
+- Plus d'informations avec 6 colonnes :
+  
+```{bash, eval=FALSE}
+# BED 6 columns
+#chromosome  start  end  name  score  strand
+chr1  145  200  i1  0  +
+chr1  345  500  i2  0  +
+chr1  600  1000  i3  0  +
+```
+
+
+---
+
+## BED
+
+```{r, out.width = "100%", echo=FALSE, fig.align="center"}
+knitr::include_graphics("images/BED_format.png")
+```
+
+---
+
+## GFF
+
+- _General Feature Format_
+
+- GFF puis GFF2 puis GFF3
+
+- GFF3 actuellement en vigueur : <a href="http://gmod.org/wiki/GFF3">documentation</a>
+
+- Format utilisé pour localiser et décrire toute zone caractéristique d'un génome (ex : un exon)
+
+- Un header
+
+```{bash, eval=FALSE}
+##gff-version 3
+```
+
+- 9 colonnes décrivant des *features*
+
+```{bash, eval=FALSE}
+ctg123 . mRNA            1300  9000  .  +  .  ID=mrna0001;Name=sonichedgehog
+ctg123 . exon            1300  1500  .  +  .  ID=exon00001;Parent=mrna0001
+ctg123 . exon            1050  1500  .  +  .  ID=exon00002;Parent=mrna0001
+ctg123 . exon            3000  3902  .  +  .  ID=exon00003;Parent=mrna0001
+ctg123 . exon            5000  5500  .  +  .  ID=exon00004;Parent=mrna0001
+ctg123 . exon            7000  9000  .  +  .  ID=exon00005;Parent=mrna0001
+```
+
+---
+
+## GFF3
+
+1. seqid - Nom du chromosome ou scaffold
+2. source - Nom du programme utilisé pour générer ce fichier
+3. type - Type d'élément (feature). Doit correspondre à l'ontologie <a href="http://www.sequenceontology.org/so_wiki/index.php/Category:SO:SOFA">SOFA</a> `r Citep(bib, "eilbeck2005sequence")`
+4. start - Début (1-based)
+5. end - Fin
+6. score - Score décimal
+7. strand - Brin + (forward) ou - (reverse).
+8. phase - Phase : 0, 1 ou 2 (base du codon)
+9. attributes - Liste de paires tag-valeur, par exemple ID, Name, Alias, Parent...
+
+```{bash, eval=FALSE}
+#seqid source type  start  end   score  strand  phase  attributes
+ctg123 .      mRNA  1300   9000  .      +       .      ID=mrna0001;Name=bidou;Parent=gene001
+```
+
+---
+
+## GTF
+
+- Dérivé du GFF
+- 8 premières colonnes identiques
+- La 9ème (attributes) doit contenir gene_id ou transcript_id
+- Spécialisé dans l'annotation des gènes
+  - gene_id obligatoire
+  - transcript_id obligatoire
+- GTF == GFF2
+
+```{bash, eval=FALSE}
+chr1	Cufflinks	transcript	62948	63887	1000	+	.	gene_id "ENSG00000240361"; transcript_id "ENST00000492842"; FPKM "0.1133032705"; frac "1.596713"; conf_lo "0.000000"; conf_hi "0.312052"; cov "0.351936"; full_read_support "yes";
+```
+
+--
+
+<div class="alert danger">Attention au parsing du GTF, il y a des espaces dans la 9ème colonne !</div>
+
+---
+
+## VCF
+
+- _Variant Calling Format_
+
+- En migration vers _gVCF_ ()
+
+- Header décrivant le format et l'obtention du fichier
+
+- Une ligne par variant (SNV, INSERTION, DELETION...)
+
+---
+
+## VCF
+
+```{r, out.width = "100%", echo=FALSE, fig.align="center"}
+knitr::include_graphics("images/VCF_format.png")
+```
+
+---
+
+## Système de coordonnées
+
+
+.pull-left[
+0-based:
+
+```{bash, eval=FALSE}
+ACTGACTG
+012345678
+```
+
+- BED
+- BAM
+
+]
+
+.pull-right[
+1-based:
+
+```{bash, eval=FALSE}
+ACTGACTG
+12345678
+```
+
+- GTF
+- GFF
+- SAM
+- VCF
+
+]
+
+--
+
+<div class="alert comment">Les outils font automatiquement la conversion, attention si vous cherchez l'information directement !</div>
+---
+
+## BEDTOOLS
+
+- Le couteau suisse pour travailler sur des fichiers d'intervalles et croiser différents types de données
+
+- Permet de nombreuses manipulations et croisement sur :
+  - BAM
+  - BED
+  - GFF/GTF
+  - VCF
+
+.pull-left[
+![](images/bedtools_logo.png)
+]
+.pull-right[
+- Documentation : https://bedtools.readthedocs.io/en/latest/
+- Tutoriel : http://quinlanlab.org/tutorials/bedtools/bedtools.html
+]
+
+---
+
+## Une super documentation !
+
+- Avec des schémas
+
+```{r, out.width = "30%", echo=FALSE, fig.align="center"}
+knitr::include_graphics("images/bedtools_intersect.png")
+```
+
+- Une documentation complète
+
+- De nombreux exemples
+
+<a href="https://bedtools.readthedocs.io/en/latest/content/tools/intersect.html">Exemple pour l'outil intersect</a>
+
+---
+
+## Performance
+
+- Pas de multithreading avec Bedtools
+- Sur de gros jeux de données, il faut que les fichiers soient triés (de la même manière bien sûr)
+
+```{r, out.width = "30%", echo=FALSE, fig.align="center"}
+knitr::include_graphics("images/bedtools_time.png")
+```
+
+---
+
+## TP : Données à croiser
+
+.pull-left[
+* Génome humain : <code>FASTA</code>
+* Annotation : <code>GFF3</code>
+* Variants : <code>VCF</code>
+* Alignements : <code>BAM</code>
+* Transcrits : <code>GTF</code>
+]
+
+.pull-right[
+```{r, out.width = "60%", echo=FALSE, fig.align="center"}
+knitr::include_graphics("images/croisement.jpg")
+```
+]
+
+--
+
+Ce <a href="https://du-bii.github.io/module-5-Methodes-Outils/seance4/document.html">document</a> vous permettra de suivre pas à pas le TP associé à la suite BEDtools
+
+```{r, out.width = "30%", echo=FALSE, fig.align="center"}
+knitr::include_graphics("images/Charge-mentale-1__1_.jpg")
+```
+
+---
+
+# References
+
+```{r, results='asis', echo=FALSE}
+PrintBibliography(bib, start=1, end=4)
+```

@@ -1,0 +1,975 @@
+<!DOCTYPE html>
+<html lang="" xml:lang="">
+  <head>
+    <title>First steps with NGS data</title>
+    <meta charset="utf-8" />
+    <meta name="author" content="Valentin Loux - Olivier Rué" />
+    <meta name="date" content="2021-03-08" />
+    <script src="slides_files/header-attrs/header-attrs.js"></script>
+    <link href="slides_files/remark-css/default.css" rel="stylesheet" />
+    <link href="slides_files/remark-css/default-fonts.css" rel="stylesheet" />
+    <link rel="stylesheet" href="../css/styles.css" type="text/css" />
+  </head>
+  <body>
+    <textarea id="source">
+class: center, middle, inverse, title-slide
+
+# First steps with NGS data
+## DUBii - Module 5
+### Valentin Loux - Olivier Rué
+### 2021-03-08
+
+---
+
+class: hide-logo
+
+
+
+# Program
+
+- Introduction (5 min)
+- Get data from public resources (30 min)
+- FASTQ format
+- Quality control (45 min)
+- Cleaning of reads (30 min)
+- Mapping of reads (30 min)
+- FASTA format
+- SAM format
+
+&lt;!-- 
+Total : 2h 35
+--&gt;
+---
+
+class: tp
+&lt;img src="images/TP.png" class="handson"&gt;
+# Hands-on: Preparation of your working directory
+
+## Instruction
+
+- Switch to &lt;a href="TP.html#1_Preparation_of_your_working_directory"&gt;TP document&lt;/a&gt;
+- Preparation of your working directory
+
+---
+class: heading-slide, middle, center
+# The Data
+
+---
+
+# What is data
+
+## Definition
+
+- `Data` is &lt;i&gt;a symbolic representation of information&lt;/i&gt;
+- `Data` is stored in files whose format allows an easy way to access and manipulate
+- `Data` represents the knowledge at a given time.
+
+## Properties
+
+- The same information may be represented in different formats
+- The content depends on technologies
+
+&lt;div class="alert comment"&gt;&lt;svg viewBox="0 0 512 512" xmlns="http://www.w3.org/2000/svg" style="height:1em;fill:currentColor;position:relative;display:inline-block;top:.1em;"&gt;  [ comment ]  &lt;path d="M504 256c0 136.997-111.043 248-248 248S8 392.997 8 256C8 119.083 119.043 8 256 8s248 111.083 248 248zm-248 50c-25.405 0-46 20.595-46 46s20.595 46 46 46 46-20.595 46-46-20.595-46-46-46zm-43.673-165.346l7.418 136c.347 6.364 5.609 11.346 11.982 11.346h48.546c6.373 0 11.635-4.982 11.982-11.346l7.418-136c.375-6.874-5.098-12.654-11.982-12.654h-63.383c-6.884 0-12.356 5.78-11.981 12.654z"&gt;&lt;/path&gt;&lt;/svg&gt; Understanding data formats, what information is encoded in each, and when it is appropriate to use one format over another is an essential skill of a bioinformatician.&lt;/div&gt;
+
+---
+
+# Some NGS file formats
+
+Format | Who generates it? | Who reads it?
+--- | --- | ---
+*FASTQ* | `sequencers`, `simulation tools` | `mapping tools`, `QC tools`, `cleaning tools`, `taxonomic assignation tools`
+*FASTA* | `assembly tools`, `gene prediction tools` ... | `visualization tools`, almost all
+*SAM/BAM* | `mapping tools`, `samtools` | `visualization tools`, `variant discovery tools`, `counting tools`
+*BED* | `annotation tools`, `bedtools` | `visualization tools`, `variant discovery tools`, `peak calling tools`, `counting tools`
+*GFF* | `annotation tools` | `visualization tools`, `variant discovery tools`, `peak calling tools`, `RNAseq tools`
+*VCF* | `variant discovery tools` | `vcftools`,  `visualization tools`, `variant discovery tools`
+
+* [synthesis](https://ressources.france-bioinformatique.fr/sites/default/files/formats.pdf)
+
+
+---
+
+# Genomics sequences resources
+
+The International Nucleotide Sequence Database Collaboration (INSDC) is a long-standing foundational initiative that operates between DDBJ, EMBL-EBI and NCBI. INSDC covers the spectrum of data raw reads, through alignments and assemblies to functional annotation, enriched with contextual information relating to samples and experimental configurations.
+
+&lt;div class="figure" style="text-align: center"&gt;
+&lt;img src="images/public_resources.png" alt="INDSC resources" width="70%" /&gt;
+&lt;p class="caption"&gt;INDSC resources&lt;/p&gt;
+&lt;/div&gt;
+
+---
+# International Nucleotide Sequence Database Collaboration
+
+The member organizations of this collaboration are:
+- NCBI: National Center for Biotechnology Information
+- EMBL: European Molecular Biology Laboratory
+- DDBJ: DNA Data Bank of Japan
+
+The INSDC has set up rules on the types of data that will be mirrored. The most important
+of these from a bioinformatician’s perspective are:
+- GenBank/Ebi ENA contains all annotated and identified DNA sequence information
+- SRA [NCBI Sequence Reads Archive](https://trace.ncbi.nlm.nih.gov/Traces/sra/) / ENA [European Nucleotide Archive](https://www.ebi.ac.uk/ena/browser/search): Short Read Archive contains measurements from high throughput sequencing
+experiments (raw data)
+
+
+Deposit of sequencing (raw) and processed (analyzed) datas are (most of the time) a prerequiste for publication.
+
+---
+# Other sequence resources
+
+## NAR Database Issue
+
+Once a year the journal Nucleic Acids Research publishes its so-called “database issue”. Each
+article of this issue of the journal will provide an overview of generic and specific
+databases written by the maintainers of that resource.
+- The 2021 Nucleic Acids Research database issue and the online molecular biology database collection
+
+&lt;div class="figure" style="text-align: center"&gt;
+&lt;img src="images/NAR_db.png" alt="NAR 2019 database issue overview" width="50%" /&gt;
+&lt;p class="caption"&gt;NAR 2019 database issue overview&lt;/p&gt;
+&lt;/div&gt;
+
+---
+
+class: heading-slide, middle, center
+# Retrieving NGS data
+
+---
+# Retrieving NGS data
+
+- Very easy when it concerns only a few files, can be done directly from the website
+- Much more tricky for tens, hundreds, thousands...
+
+## Sequencing data
+
+- Specialized Tools or API are offered by the public repository to easily get data locally
+- ENA: enaBrowserTools (command line, python, R)
+- NCBI: sra-toolkit (command line, python, R)
+
+Common command lines (wget) are most of the time also available.
+
+---
+class: tp
+&lt;img src="images/TP.png" class="handson"&gt;
+# Hands-on: Retrieving raw data 
+
+## Instruction
+
+Get the raw shot read data (Illumina) associated with this article &lt;a name=cite-Allue-Guardiae01052-18&gt;&lt;/a&gt;([Allué-Guardia, Nyong, Koenig, Vargas, Bono, and Eppinger, 2019](https://mra.asm.org/content/8/2/e01052-18)).
+
+&lt;img src="images/MRA.01052-18.png" width="70%" style="display: block; margin: auto;" /&gt;
+
+- Switch to &lt;a href="TP.html#2_Retrieve_raw_data_(FASTQ)"&gt;TP document&lt;/a&gt;
+- Retrieve raw data (FASTQ)
+
+---
+
+# Sequencing  - Vocabulary
+
+- **read**: a single sequence produced from a sequencer. Think: a sequencing machine read a molecule and this is what it thinks it is.
+
+- **library**: a collection of DNA fragments that have been prepared for sequencing. This is generally talking about individual samples.
+
+- **flowcell**: a chip on which DNA is loaded and provided to the sequencer.
+
+- **lane**: one portion of a flowcell. Usually used for technical replicates or different samples.
+
+- **run**: an entire sequencing reaction from start to finish.
+
+---
+# Sequencing  - Vocabulary
+
+.pull-left[
+**Read** :  piece of sequenced DNA
+
+**DNA fragment** = 1 or more reads depending on whether the sequencing is single end or paird-end
+
+**Insert** = Fragment size
+
+**Depth** = `\(N*L/G\)` 
+N= number of reads, L = size, G : genome size
+
+**Coverage** = % of genome covered
+]
+.pull-right[
+&lt;img src="images/se-pe.png" width="80%" style="display: block; margin: auto;" /&gt;
+
+&lt;img src="images/fragment-insert.png" width="80%" style="display: block; margin: auto;" /&gt;
+
+&lt;div class="figure" style="text-align: center"&gt;
+&lt;img src="images/depth-breadth.png" alt="Single-End , Paired-End" width="80%" /&gt;
+&lt;p class="caption"&gt;Single-End , Paired-End&lt;/p&gt;
+&lt;/div&gt;
+
+]
+---
+class: heading-slide, middle, center
+# FASTQ format
+
+---
+
+# FASTQ syntax
+
+The FASTQ format is the de facto standard by which all sequencing instruments represent
+data. It may be thought of as a variant of the FASTA format that allows it to associate a
+quality measure to each sequence base:   **FASTA with QUALITIES**.
+
+
+The FASTQ format consists of 4 sections:
+1. A FASTA-like header, but instead of the &lt;code&gt;&gt;&lt;/code&gt; symbol it uses the &lt;code&gt;@&lt;/code&gt; symbol. This is followed
+by an ID and more optional text, similar to the FASTA headers.
+2. The second section contains the measured sequence (typically on a single line), but it
+may be wrapped until the &lt;code&gt;+&lt;/code&gt; sign starts the next section.
+3. The third section is marked by the &lt;code&gt;+&lt;/code&gt; sign and may be optionally followed by the same
+sequence id and header as the first section
+4. The last line encodes the quality values for the sequence in section 2, and must be of
+the same length as section 2.
+
+&lt;i&gt;Example&lt;/i&gt;
+
+
+```bash
+@SEQ_ID
+GATTTGGGGTTCAAAGCAGTATCGATCAAATAGTAAATCCATTTGTTCAACTCACAGTTT
++
+!''*((((***+))%%%++)(%%%%).1***-+*''))**55CCF&gt;&gt;&gt;&gt;&gt;&gt;CCCCCCC65
+```
+
+---
+
+# FASTQ quality
+
+The weird characters in the 4th section are the so called “encoded” numerical values.
+In a nutshell, each character represents a numerical value: a so-called Phred score,
+encoded via a single letter encoding.
+
+
+```bash
+!"#$%&amp;'()*+,-./0123456789:;&lt;=&gt;?@ABCDEFGHI
+|    |    |    |    |    |    |    |    |
+0....5...10...15...20...25...30...35...40
+|    |    |    |    |    |    |    |    |
+worst................................best
+```
+
+The quality values of the FASTQ files are on top. The numbers in the middle of the scale
+from 0 to 40 are called Phred scores. The numbers represent the error probabilities  via the formula:
+
+Error=10ˆ(-P/10) 
+It is basically summarized as:
+
+- P=0 means 1/1 (100% probability of error)
+- P=10 means 1/10 (10% probability of error)
+- P=20 means 1/100 (1% probability of error)
+- P=30 means 1/1000 (0.1% probability of error)
+- P=40 means 1/10000 (0.01% probability of error)
+
+---
+
+# FASTQ quality encoding specificities
+
+There was a time when instrumentation makers could not decide at what
+character to start the scale. The **current standard** shown above is the so-called Sanger (+33)
+format where the ASCII codes are shifted by 33. There is the so-called +64 format that
+starts close to where the other scale ends.
+
+
+&lt;div class="figure" style="text-align: center"&gt;
+&lt;img src="images/qualityscore.png" alt="FASTQ encoding values" width="80%" /&gt;
+&lt;p class="caption"&gt;FASTQ encoding values&lt;/p&gt;
+&lt;/div&gt;
+
+---
+
+# FASTQ Header informations
+
+Information is often encoded in the "free" text section of a FASTQ file.
+
+
+&lt;code&gt;@EAS139:136:FC706VJ:2:2104:15343:197393 1:Y:18:ATCACG&lt;/code&gt; contains the following information:
+
+
+- &lt;code&gt;EAS139&lt;/code&gt;: the unique instrument name
+- &lt;code&gt;136&lt;/code&gt;: the run id
+- &lt;code&gt;FC706VJ&lt;/code&gt;: the flowcell id
+- &lt;code&gt;2&lt;/code&gt;: flowcell lane
+- &lt;code&gt;2104&lt;/code&gt;: tile number within the flowcell lane
+- &lt;code&gt;15343&lt;/code&gt;: ‘x’-coordinate of the cluster within the tile
+- &lt;code&gt;197393&lt;/code&gt;: ‘y’-coordinate of the cluster within the tile
+- &lt;code&gt;1&lt;/code&gt;: the member of a pair, 1 or 2 (paired-end or mate-pair reads only)
+- &lt;code&gt;Y&lt;/code&gt;: Y if the read is filtered, N otherwise
+- &lt;code&gt;18&lt;/code&gt;: 0 when none of the control bits are on, otherwise it is an even number
+- &lt;code&gt;ATCACG&lt;/code&gt;: index sequence
+
+This information is specific to a particular instrument/vendor and may change with different
+versions or releases of that instrument.
+
+---
+
+class: heading-slide, middle, center
+
+# Quality control
+
+---
+
+
+
+## Why QC'ing your reads ?
+
+**Try to answer to (not always) simple questions :**
+--
+
+- Are the generated sequences conform to the expected level of performance?
+  - Size
+  - Number of reads
+  - Quality
+- Residual presence of adapters or indexes ?
+- Are there (un)expected technical biases?
+- Are there (un)expected biological biases?
+
+&lt;div class="alert comment"&gt;&lt;svg viewBox="0 0 512 512" xmlns="http://www.w3.org/2000/svg" style="height:1em;fill:currentColor;position:relative;display:inline-block;top:.1em;"&gt;  [ comment ]  &lt;path d="M504 256c0 136.997-111.043 248-248 248S8 392.997 8 256C8 119.083 119.043 8 256 8s248 111.083 248 248zm-248 50c-25.405 0-46 20.595-46 46s20.595 46 46 46 46-20.595 46-46-20.595-46-46-46zm-43.673-165.346l7.418 136c.347 6.364 5.609 11.346 11.982 11.346h48.546c6.373 0 11.635-4.982 11.982-11.346l7.418-136c.375-6.874-5.098-12.654-11.982-12.654h-63.383c-6.884 0-12.356 5.78-11.981 12.654z"&gt;&lt;/path&gt;&lt;/svg&gt; Quality control without context leads to misinterpretation&lt;/div&gt;
+
+
+---
+# Quality control for FASTQ files
+
+- FastQC &lt;a name=cite-fastqc&gt;&lt;/a&gt;([Andrews, 2010](http://www.bioinformatics.babraham.ac.uk/projects/fastqc/))
+  - QC for (Illumina) FastQ files
+  - Command line fastqc or graphical interface
+  - Complete HTML report to spot problem originating from sequencer, library preparation, contamination
+  - Summary graphs and tables to quickly assess your data
+
+  
+&lt;div class="figure" style="text-align: center"&gt;
+&lt;img src="images/fastqc.png" alt="FastQC software" width="40%" /&gt;
+&lt;p class="caption"&gt;FastQC software&lt;/p&gt;
+&lt;/div&gt;
+  
+
+---
+class: tp
+&lt;img src="images/TP.png" class="handson"&gt;
+# Hands-on : Quality control
+
+- Switch to &lt;a href="TP.html#3_Quality_control"&gt;TP document&lt;/a&gt;
+- Quality control
+
+---
+class: heading-slide, middle, center
+# Reads cleaning
+---
+
+## Objectives
+
+- Detect and remove sequencing adapters (still) present in the FastQ files
+- Filter / trim reads according to quality (as plotted in FastQC)
+
+## Tools
+
+- Simple &amp; fast : Sickle &lt;a name=cite-sickle&gt;&lt;/a&gt;([Joshi and Fass, 2011](#bib-sickle)) (quality), cutadapt &lt;a name=cite-cutadapt&gt;&lt;/a&gt;([Martin, 2011](#bib-cutadapt)) (adpater removal)
+- Ultra-configurable : Trimmomatic 
+- All in one &amp; ultra-fast : fastp &lt;a name=cite-fastp&gt;&lt;/a&gt;([Zhou, Chen, Chen, and Gu, 2018](https://dx.doi.org/10.1093/bioinformatics/bty560))
+
+
+&lt;div class="figure" style="text-align: center"&gt;
+&lt;img src="images/fastp_wkwf.png" alt="FASTQ encoding values" width="55%" /&gt;
+&lt;p class="caption"&gt;FASTQ encoding values&lt;/p&gt;
+&lt;/div&gt;
+
+
+---
+class: tp
+&lt;img src="images/TP.png" class="handson"&gt;
+#  Hands-on : reads cleaning with fastp
+
+- Switch to &lt;a href="TP.html#4_Reads_cleaning_with_fastp"&gt;TP document&lt;/a&gt;
+- Reads cleaning with fastp
+
+---
+class: heading-slide, middle, center
+# Mapping
+
+---
+# Mapping
+
+- Map short reads to a reference genome is predict the locus where a read comes from.
+- The result of a mapping is the list of the most probable regions with an associated probability.
+
+--
+
+&lt;div class="alert comment"&gt;&lt;svg viewBox="0 0 512 512" xmlns="http://www.w3.org/2000/svg" style="height:1em;fill:currentColor;position:relative;display:inline-block;top:.1em;"&gt;  [ comment ]  &lt;path d="M504 256c0 136.997-111.043 248-248 248S8 392.997 8 256C8 119.083 119.043 8 256 8s248 111.083 248 248zm-248 50c-25.405 0-46 20.595-46 46s20.595 46 46 46 46-20.595 46-46-20.595-46-46-46zm-43.673-165.346l7.418 136c.347 6.364 5.609 11.346 11.982 11.346h48.546c6.373 0 11.635-4.982 11.982-11.346l7.418-136c.375-6.874-5.098-12.654-11.982-12.654h-63.383c-6.884 0-12.356 5.78-11.981 12.654z"&gt;&lt;/path&gt;&lt;/svg&gt; But what is a reference?&lt;/div&gt;
+
+---
+# Reference
+
+It can be everything containing DNA information:
+- Complete genome
+- Assembly
+- Set of contigs
+- Set of sequences
+- Genes, non-coding RNA...
+
+For mapping, references have to be stored in a &lt;code&gt;FASTA&lt;/code&gt; file.
+
+---
+class: heading-slide, middle, center
+# FASTA format
+
+---
+# Informations inside
+
+The FASTA format is used to represent sequence information. The format is very simple:
+- A &lt;code&gt;&gt;&lt;/code&gt; symbol on the FASTA header line indicates a fasta record start.
+- A string of letters called the sequence id may follow the &lt;code&gt;&gt;&lt;/code&gt; symbol.
+- The header line may contain an arbitrary amount of text (including spaces) on the
+same line.
+- Subsequent lines contain the sequence.
+
+--
+
+&lt;i&gt;Example&lt;/i&gt;
+
+
+```bash
+&gt;foo
+ATGCC
+&gt;bar other optional text could go here
+CCGTA
+&gt;bidou
+ACTGCAGT
+TTCGN
+&gt;repeatmasker
+ATGTGTcggggggATTTT
+&gt;prot2; my_favourite_prot
+MTSRRSVKSGPREVPRDEYEDLYYTPSSGMASP
+```
+
+---
+
+# FASTA syntax
+
+The lack of a definition of the FASTA format and its apparent simplicity can be a source of
+some of the most confounding errors in bioinformatics. Since the format appears so exceed-
+ingly straightforward, software developers have been tacitly assuming that the properties
+they are accustomed to are required by some standard - whereas no such thing exists. 
+
+## Common problems
+
+- Some tools need 60 characters per line
+- Some tools ignore anything following the first space in the header line
+- Some tools are very restrictive on the alphabet used
+- Some tools require uppercase letters
+- seqkit &lt;a name=cite-shen2016seqkit&gt;&lt;/a&gt;([Shen, Le, Li, and Hu, 2016](#bib-shen2016seqkit)) saves your life
+
+---
+
+# FASTA formating
+
+## Good practices
+
+The sequence lines should always wrap at the same width (with the exception of the
+last line). Some tools will fail to operate correctly and may not even warn the users if
+this condition is not satisfied. The following is technically a valid FASTA but it may
+cause various subtle problems.
+
+
+```bash
+&gt;foo
+ATGCATGCATGCATGCATGC
+ATGCATGCA
+TGATGCATGCATGCATGCA
+```
+
+should be reformated to
+
+
+```bash
+&gt;foo
+ATGCATGCATGCATGCATGC
+ATGCATGCATGATGCATGCA
+TGCATGCA
+```
+
+&lt;i&gt;Can be easily to with seqkit ([Shen, Le, Li, et al., 2016](#bib-shen2016seqkit))&lt;/i&gt;
+
+
+```bash
+seqkit seq -w 60 seqs.fa &gt; seqs2.fa
+```
+
+---
+
+# FASTA Header
+
+Some data repositories will format FASTA headers to include structured information. Tools
+may operate differently when this information is present in the FASTA header. Below is a list of the
+recognized FASTA header formats.
+
+&lt;div class="figure" style="text-align: center"&gt;
+&lt;img src="images/FASTA_headers.png" alt="FASTA header examples" width="50%" /&gt;
+&lt;p class="caption"&gt;FASTA header examples&lt;/p&gt;
+&lt;/div&gt;
+
+---
+class: heading-slide, middle, center
+# Alignment
+
+---
+# Alignment strategies
+
+
+```bash
+GAAGCTCTAGGATTACGATCTTGATCGCCGGGAAATTATGATCCTGACCTGAGTTTAAGGCATGGACCCATAA
+                 ATCTTGATCGCCGAC----ATT              # GLOBAL
+                 ATCTTGATCGCCGACATT                  # LOCAL, with soft clipping
+```
+
+## Global alignment
+
+Global alignments, which attempt to align every residue in every sequence, are most useful when the sequences in the query set are similar and of roughly equal size. (This does not mean global alignments cannot start and/or end in gaps.) A general global alignment technique is the &lt;code&gt;Needleman–Wunsch algorithm&lt;/code&gt;, which is based on dynamic programming.
+
+## Local alignment
+
+Local alignments are more useful for dissimilar sequences that are suspected to contain regions of similarity or similar sequence motifs within their larger sequence context. The &lt;code&gt;Smith–Waterman algorithm&lt;/code&gt; is a general local alignment method based on the same dynamic programming scheme but with additional choices to start and end at any place.
+
+---
+# Seed-and-extend especially adapted to NGS data
+
+Seed-and-extend mappers are a class of read mappers that break down each read sequence into seeds (i.e., smaller segments) to ﬁnd locations in the reference genome that closely match the read
+
+.pull-left[
+1. First, the mapper obtains a read
+2. Second, the mapper selects smaller DNA segments from the read to
+serve as seeds
+3. Third, the mapper indexes a data structure with each seed to
+obtain a list of possible locations within the reference genome that could result in
+a match
+4. Fourth, for each possible location in the list, the mapper obtains the
+corresponding DNA sequence from the reference genome
+5. Fifth, the mapper aligns the read sequence to the reference sequence, using an expensive sequence
+alignment (i.e., veriﬁcation) algorithm to determine the similarity between the read
+sequence and the reference sequence.
+]
+.pull-right[
+&lt;img src="images/seed_and_extend.png" width="90%" style="display: block; margin: auto;" /&gt;
+]
+---
+# Mapping tools
+
+&lt;img src="images/mapping_tools.png" width="70%" style="display: block; margin: auto;" /&gt;
+
+- Short reads: BWA &lt;a name=cite-bwa&gt;&lt;/a&gt;([Li, 2013](#bib-bwa))/ BOWTIE &lt;a name=cite-langmead2012fast&gt;&lt;/a&gt;([Langmead and Salzberg, 2012](#bib-langmead2012fast)) -&gt; for `DNAseq`!
+
+---
+class: tp
+&lt;img src="images/TP.png" class="handson"&gt;
+# Hands-on: mapping with bwa
+
+- Switch to &lt;a href="TP.html#5_Mapping_with_bwa"&gt;TP document&lt;/a&gt;
+- Mapping with bwa
+
+---
+class: heading-slide, middle, center
+# Sequence Alignment Format (SAM)
+
+---
+# SAM / BAM formats
+
+The SAM/BAM formats are so-called Sequence Alignment Maps. These files typically represent
+the results of aligning a FASTQ file to a reference FASTA file and describe the individual,
+pairwise alignments that were found. Different algorithms may create different alignments
+(and hence BAM files)
+
+&lt;img src="images/SAM_format.jpg" width="70%" style="display: block; margin: auto;" /&gt;
+---
+# SAM FLAG
+
+[FLAGS](https://broadinstitute.github.io/picard/explain-flags.html) contain a lot of informations.
+
+&lt;img src="images/sam_flag.png" width="70%" style="display: block; margin: auto;" /&gt;
+
+---
+# SAM CIGAR
+
+&lt;img src="images/SAM_example.png" width="70%" style="display: block; margin: auto;" /&gt;
+
+---
+# SAM toolbox
+
+## Samtools &amp; Picard tools
+
+Samtools &lt;a name=cite-samtools&gt;&lt;/a&gt;([Li, Handsaker, Wysoker, Fennell, Ruan, Homer, Marth, Abecasis, and Durbin, 2009](#bib-samtools)) and Picard tools &lt;a name=cite-picardtools&gt;&lt;/a&gt;([Broad Institute, 2018](#bib-picardtools)) are Swiss-knifes for operating of SAM/BAM format
+
+- Visualize
+- Filter
+- Stats
+- Index
+- Merge
+- ...
+
+---
+# MultiQC: a tool to synthesize results
+
+* MultiqQC &lt;a name=cite-multiqc&gt;&lt;/a&gt;([Ewels, Magnusson, Lundin, and Käller, 2016](#bib-multiqc)) allow the aggregation of individual reports from FastQC, Fastp, Trimmomactic, Cutadapt and much more
+* [97 supported tools](https://multiqc.info/#supported-tools)
+
+&lt;iframe height="400px"; width="900px"; src="https://www.youtube.com/embed/BbScv9TcaMg" frameborder="0" allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture" allowfullscreen&gt;&lt;/iframe&gt;
+
+---
+class: tp
+&lt;img src="images/TP.png" class="handson"&gt;
+# Hands-on: mapping with bwa
+
+- Switch to &lt;a href="TP.html#6_Synthesis_of_all_steps_done_with_MultiQC"&gt;TP document&lt;/a&gt;
+- Synthesis of all steps done with MultiQC
+
+---
+class: heading-slide, middle, center
+# Visualization
+
+
+---
+# Visualization
+
+---
+# Visualization
+
+---
+## Genome browsers
+
+- IGV
+
+
+---
+
+# What about Long Reads ?
+
+As global quality and error models are different, algorithms and tools are different for long reads. 
+
+The raw read format is also different.
+
+- PacBio :
+  - internal read correction
+  - built in software for QC / correction
+  - QC : nanoPlot &lt;a name=cite-101093bioinformaticsbty149&gt;&lt;/a&gt;([De Coster, D’Hert, Schultz, Cruts, and Van Broeckhoven, 2018](https://doi.org/10.1093/bioinformatics/bty149))
+  - Correction (hybrid) : LorDec &lt;a name=cite-salmela2014lordec&gt;&lt;/a&gt;([Salmela and Rivals, 2014](#bib-salmela2014lordec))
+  - Alignment minimap2 &lt;a name=cite-li2018minimap2&gt;&lt;/a&gt;([Li, 2018](#bib-li2018minimap2)), BLASR &lt;a name=cite-chaisson2012mapping&gt;&lt;/a&gt;([Chaisson and Tesler, 2012](#bib-chaisson2012mapping))
+- NanoPore :
+  - Porchop &lt;a name=cite-wick2017completing&gt;&lt;/a&gt;([Wick, Judd, Gorrie, and Holt, 2017](#bib-wick2017completing)) for trimming
+  - Caution to basecaller / chemistry version!
+  - QC : nanoPlot
+  - Correction : Canu &lt;a name=cite-koren2017canu&gt;&lt;/a&gt;([Koren, Walenz, Berlin, Miller, Bergman, and Phillippy, 2017](#bib-koren2017canu)), MECAT &lt;a name=cite-xiao2017mecat&gt;&lt;/a&gt;([Xiao, Chen, Xie, Chen, Wang, Han, Luo, and Xie, 2017](#bib-xiao2017mecat))
+  
+---
+# Bioinformaticians best friends
+
+* [labworm](https://labworm.com/category/for-the-developer)
+* [biostats blog](https://www.biostars.org/)
+* [biostars books](https://biostar.myshopify.com/)
+* [bionfo-fr.net](https://bioinfo-fr.net/)
+* [seqanswers](http://seqanswers.com/)
+* [IFB community](https://community.france-bioinformatique.fr/)
+
+---
+
+# References
+
+&lt;a name=bib-Allue-Guardiae01052-18&gt;&lt;/a&gt;[Allué-Guardia, A., E. C. Nyong,
+S. S. K. Koenig, et al.](#cite-Allue-Guardiae01052-18) (2019). "Closed
+Genome Sequence of Escherichia coli K-12 Group Strain C600". In:
+_Microbiology Resource Announcements_ 8.2. Ed. by J. A. Maresca. DOI:
+[10.1128/MRA.01052-18](https://doi.org/10.1128%2FMRA.01052-18). eprint:
+https://mra.asm.org/content/8/2/e01052-18.full.pdf. URL:
+[https://mra.asm.org/content/8/2/e01052-18](https://mra.asm.org/content/8/2/e01052-18).
+
+&lt;a name=bib-fastqc&gt;&lt;/a&gt;[Andrews, S.](#cite-fastqc) (2010). _FastQC A
+Quality Control tool for High Throughput Sequence Data_. URL:
+[http://www.bioinformatics.babraham.ac.uk/projects/fastqc/](http://www.bioinformatics.babraham.ac.uk/projects/fastqc/).
+
+&lt;a name=bib-picardtools&gt;&lt;/a&gt;[Broad Institute](#cite-picardtools)
+(2018). _Picard Tools_. &lt;URL: http://broadinstitute.github.io/picard/&gt;.
+
+&lt;a name=bib-chaisson2012mapping&gt;&lt;/a&gt;[Chaisson, M. J. and G.
+Tesler](#cite-chaisson2012mapping) (2012). "Mapping single molecule
+sequencing reads using basic local alignment with successive refinement
+(BLASR): application and theory". In: _BMC bioinformatics_ 13.1, p.
+238.
+
+&lt;a name=bib-101093bioinformaticsbty149&gt;&lt;/a&gt;[De Coster, W., S. D’Hert,
+D. T. Schultz, et al.](#cite-101093bioinformaticsbty149) (2018).
+"NanoPack: visualizing and processing long-read sequencing data". In:
+_Bioinformatics_ 34.15, pp. 2666-2669. ISSN: 1367-4803. DOI:
+[10.1093/bioinformatics/bty149](https://doi.org/10.1093%2Fbioinformatics%2Fbty149).
+eprint:
+https://academic.oup.com/bioinformatics/article-pdf/34/15/2666/25230836/bty149.pdf.
+URL:
+[https://doi.org/10.1093/bioinformatics/bty149](https://doi.org/10.1093/bioinformatics/bty149).
+
+&lt;a name=bib-multiqc&gt;&lt;/a&gt;[Ewels, P., M. Magnusson, S. Lundin, et
+al.](#cite-multiqc) (2016). "MultiQC: summarize analysis results for
+multiple tools and samples in a single report". In: _Bioinformatics_
+32.19, pp. 3047-3048.
+
+---
+# References
+&lt;a name=bib-sickle&gt;&lt;/a&gt;[Joshi, N. and J. Fass](#cite-sickle) (2011).
+_Sickle: a sliding-window, adaptive, quality-based trimming tool for
+FastQ files_.
+
+&lt;a name=bib-koren2017canu&gt;&lt;/a&gt;[Koren, S., B. P. Walenz, K. Berlin, et
+al.](#cite-koren2017canu) (2017). "Canu: scalable and accurate
+long-read assembly via adaptive k-mer weighting and repeat separation".
+In: _Genome research_ 27.5, pp. 722-736.
+
+&lt;a name=bib-langmead2012fast&gt;&lt;/a&gt;[Langmead, B. and S.
+Salzberg](#cite-langmead2012fast) (2012). _Fast gapped-read alignment
+with bowtie 2 Nat Methods 9 (4): 357-359. pmid: 22388286 View Article
+PubMed_.
+
+&lt;a name=bib-bwa&gt;&lt;/a&gt;[Li, H.](#cite-bwa) (2013). "Aligning sequence
+reads, clone sequences and assembly contigs with BWA-MEM". In: _arXiv
+preprint arXiv:1303.3997_.
+
+&lt;a name=bib-li2018minimap2&gt;&lt;/a&gt;[Li, H.](#cite-li2018minimap2) (2018).
+"Minimap2: pairwise alignment for nucleotide sequences". In:
+_Bioinformatics_ 34.18, pp. 3094-3100.
+
+&lt;a name=bib-samtools&gt;&lt;/a&gt;[Li, H., B. Handsaker, A. Wysoker, et
+al.](#cite-samtools) (2009). "The sequence alignment/map format and
+SAMtools". In: _Bioinformatics_ 25.16, pp. 2078-2079.
+
+&lt;a name=bib-cutadapt&gt;&lt;/a&gt;[Martin, M.](#cite-cutadapt) (2011). "Cutadapt
+removes adapter sequences from high-throughput sequencing reads". In:
+_EMBnet. journal_ 17.1, pp. 10-12.
+
+&lt;a name=bib-salmela2014lordec&gt;&lt;/a&gt;[Salmela, L. and E.
+Rivals](#cite-salmela2014lordec) (2014). "LoRDEC: accurate and
+efficient long read error correction". In: _Bioinformatics_ 30.24, pp.
+3506-3514.
+
+---
+# References
+&lt;a name=bib-shen2016seqkit&gt;&lt;/a&gt;[Shen, W., S. Le, Y. Li, et
+al.](#cite-shen2016seqkit) (2016). "SeqKit: a cross-platform and
+ultrafast toolkit for FASTA/Q file manipulation". In: _PloS one_ 11.10.
+
+&lt;a name=bib-wick2017completing&gt;&lt;/a&gt;[Wick, R. R., L. M. Judd, C. L.
+Gorrie, et al.](#cite-wick2017completing) (2017). "Completing bacterial
+genome assemblies with multiplex MinION sequencing". In: _Microbial
+genomics_ 3.10.
+
+&lt;a name=bib-xiao2017mecat&gt;&lt;/a&gt;[Xiao, C., Y. Chen, S. Xie, et
+al.](#cite-xiao2017mecat) (2017). "MECAT: fast mapping, error
+correction, and de novo assembly for single-molecule sequencing reads".
+In: _nature methods_ 14.11, p. 1072.
+
+&lt;a name=bib-fastp&gt;&lt;/a&gt;[Zhou, Y., Y. Chen, S. Chen, et al.](#cite-fastp)
+(2018). "fastp: an ultra-fast all-in-one FASTQ preprocessor". In:
+_Bioinformatics_ 34.17, pp. i884-i890. ISSN: 1367-4803. DOI:
+[10.1093/bioinformatics/bty560](https://doi.org/10.1093%2Fbioinformatics%2Fbty560).
+eprint:
+http://academic.oup.com/bioinformatics/article-pdf/34/17/i884/25702346/bty560.pdf.
+URL:
+[https://dx.doi.org/10.1093/bioinformatics/bty560](https://dx.doi.org/10.1093/bioinformatics/bty560).
+    </textarea>
+<style data-target="print-only">@media screen {.remark-slide-container{display:block;}.remark-slide-scaler{box-shadow:none;}}</style>
+<script src="https://remarkjs.com/downloads/remark-latest.min.js"></script>
+<script>var slideshow = remark.create({
+"ratio": "16:9"
+});
+if (window.HTMLWidgets) slideshow.on('afterShowSlide', function (slide) {
+  window.dispatchEvent(new Event('resize'));
+});
+(function(d) {
+  var s = d.createElement("style"), r = d.querySelector(".remark-slide-scaler");
+  if (!r) return;
+  s.type = "text/css"; s.innerHTML = "@page {size: " + r.style.width + " " + r.style.height +"; }";
+  d.head.appendChild(s);
+})(document);
+
+(function(d) {
+  var el = d.getElementsByClassName("remark-slides-area");
+  if (!el) return;
+  var slide, slides = slideshow.getSlides(), els = el[0].children;
+  for (var i = 1; i < slides.length; i++) {
+    slide = slides[i];
+    if (slide.properties.continued === "true" || slide.properties.count === "false") {
+      els[i - 1].className += ' has-continuation';
+    }
+  }
+  var s = d.createElement("style");
+  s.type = "text/css"; s.innerHTML = "@media print { .has-continuation { display: none; } }";
+  d.head.appendChild(s);
+})(document);
+// delete the temporary CSS (for displaying all slides initially) when the user
+// starts to view slides
+(function() {
+  var deleted = false;
+  slideshow.on('beforeShowSlide', function(slide) {
+    if (deleted) return;
+    var sheets = document.styleSheets, node;
+    for (var i = 0; i < sheets.length; i++) {
+      node = sheets[i].ownerNode;
+      if (node.dataset["target"] !== "print-only") continue;
+      node.parentNode.removeChild(node);
+    }
+    deleted = true;
+  });
+})();
+(function() {
+  "use strict"
+  // Replace <script> tags in slides area to make them executable
+  var scripts = document.querySelectorAll(
+    '.remark-slides-area .remark-slide-container script'
+  );
+  if (!scripts.length) return;
+  for (var i = 0; i < scripts.length; i++) {
+    var s = document.createElement('script');
+    var code = document.createTextNode(scripts[i].textContent);
+    s.appendChild(code);
+    var scriptAttrs = scripts[i].attributes;
+    for (var j = 0; j < scriptAttrs.length; j++) {
+      s.setAttribute(scriptAttrs[j].name, scriptAttrs[j].value);
+    }
+    scripts[i].parentElement.replaceChild(s, scripts[i]);
+  }
+})();
+(function() {
+  var links = document.getElementsByTagName('a');
+  for (var i = 0; i < links.length; i++) {
+    if (/^(https?:)?\/\//.test(links[i].getAttribute('href'))) {
+      links[i].target = '_blank';
+    }
+  }
+})();</script>
+<style>
+.logo-inra {
+  background-image: url(images/logos/Logo-INRAE_Transparent.png);
+  background-size: contain;
+  background-repeat: no-repeat;
+  position: fixed;
+  bottom: -4em;
+  width: 53px;
+  height: 110px;
+  z-index: 0;
+  margin-bottom: -10px;
+  left:25em;
+}
+
+.logo-migale {
+  background-image: url(images/logos/migale-orange.png);
+  background-size: contain;
+  background-repeat: no-repeat;
+  position: fixed;
+  bottom: -4em;
+  width: 85px;
+  left: 7em;
+  height: 116px;
+  z-index: 0;
+  margin-bottom: -10px;
+  left:28em;
+}
+
+.logo-univ {
+  background-image: url(../images/logo_UParis.png);
+  background-size: contain;
+  background-repeat: no-repeat;
+  position: fixed;
+  width: 205px;
+  left: 7em;
+  height: 60px;
+  z-index: 0;
+  left: 20em;
+}
+
+.logo-ifb {
+  background-image: url(../images/logo-ifb_small.png);
+  background-size: contain;
+  background-repeat: no-repeat;
+  position: fixed;
+  width: 118px;
+  left: 7em;
+  height: 100%;
+  z-index: 0;
+  left: 34em;
+}
+
+.logo-inrae {
+  background-image: url(../images/inrae.png);
+  background-size: contain;
+  background-repeat: no-repeat;
+  position: fixed;
+  width: 118px;
+  left: 7em;
+  height: 100%;
+  z-index: 0;
+  left: 16em;
+}
+
+.logo-migale {
+  background-image: url(../images/migale-orange.png);
+  background-size: contain;
+  background-repeat: no-repeat;
+  position: fixed;
+  width: 118px;
+  left: 7em;
+  height: 100%;
+  z-index: 0;
+  left: 18em;
+}
+
+</style>
+
+<script>
+document
+  .querySelectorAll(
+    '.remark-slide-content' +
+    '.title-slide' +
+    // add additional classes to exclude here, e.g.
+    // ':not(.inverse)' +
+    ':not(.hide-logo)'
+  )
+  .forEach(el => {
+    //el.innerHTML += '<div class="logo-inra"></div>';
+    //el.innerHTML += '<div class="logo-migale"></div>';
+    el.innerHTML += '<p style="text-align: center;"> \
+    <img src="../images/logo-ifb_small.png" height="60px"></img> \
+    <img src="../images/logo_UParis.png" height="60px"></img></p>';
+    el.innerHTML += '<p style="text-align: center;"><img src="../images/migale-orange.png" height="40px"></img> \
+    <img src="../images/inrae.png" height="35px"></img></p><p style="text-align: center;"><img src="../images/licence.png" height="40px"></img></p>';
+  });
+</script>
+
+<script>
+slideshow._releaseMath = function(el) {
+  var i, text, code, codes = el.getElementsByTagName('code');
+  for (i = 0; i < codes.length;) {
+    code = codes[i];
+    if (code.parentNode.tagName !== 'PRE' && code.childElementCount === 0) {
+      text = code.textContent;
+      if (/^\\\((.|\s)+\\\)$/.test(text) || /^\\\[(.|\s)+\\\]$/.test(text) ||
+          /^\$\$(.|\s)+\$\$$/.test(text) ||
+          /^\\begin\{([^}]+)\}(.|\s)+\\end\{[^}]+\}$/.test(text)) {
+        code.outerHTML = code.innerHTML;  // remove <code></code>
+        continue;
+      }
+    }
+    i++;
+  }
+};
+slideshow._releaseMath(document);
+</script>
+<!-- dynamically load mathjax for compatibility with self-contained -->
+<script>
+(function () {
+  var script = document.createElement('script');
+  script.type = 'text/javascript';
+  script.src  = 'https://mathjax.rstudio.com/latest/MathJax.js?config=TeX-MML-AM_CHTML';
+  if (location.protocol !== 'file:' && /^https?:/.test(script.src))
+    script.src  = script.src.replace(/^https?:/, '');
+  document.getElementsByTagName('head')[0].appendChild(script);
+})();
+</script>
+  </body>
+</html>
