@@ -626,6 +626,24 @@ class: tp
 - Synthesis of all steps done with MultiQC
 
 ---
+class: heading-slide, middle, center
+# Visualization
+
+
+---
+# Visualization
+
+---
+# Visualization
+
+---
+## Genome browsers
+
+- IGV
+
+
+---
+
 # What about Long Reads ?
 
 As global quality and error models are different, algorithms and tools are different for long reads. 

@@ -501,6 +501,10 @@ firefox multiqc_report.html &
 
 * [multiqc_report](html/multiqc_report.html)
 
+# Visualization
+
+
+
 # Summary
 
 
