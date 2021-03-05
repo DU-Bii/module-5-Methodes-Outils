@@ -24,6 +24,7 @@ Calendrier du DU-Bii : <!--<https://du-bii.github.io/accueil/img/planning_DUBii_
 
 ## Synopsis
 
+<!-- 
 ### [Séance 1 - First steps with NGS data](https://github.com/DU-Bii/module-5-Methodes-Outils/tree/master/seance1)
 
 - Date : 8 mars 2021
@@ -140,7 +141,7 @@ lien vers le rapport *MultiQC* sur le serveur IFB `/shared/projects/dubii2020/da
 | TP | [[html](seance4/document.html)]  |
 | TP | [[pdf](seance4/document_pdf.pdf)] |
 
-<!--
+
 ### [Séance 5](https://github.com/DU-Bii/module-5-Methodes-Outils/tree/master/seance5)
 
 - Date : 11 juin 2020
