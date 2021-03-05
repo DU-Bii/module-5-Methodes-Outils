@@ -122,9 +122,6 @@ En cas de blocage ou de question, n'hésitez pas à partager vos questions sur l
 | RNAseq processing | [[pdf](seance2/processing/RNAseq_processing.pdf)] [[html](seance2/processing/RNAseq_processing.html)]  |
 | what2do_with_count_table_diffan | [[pdf](seance2/R/what2do_with_count_table_diffan.pdf)] [[html](seance2/R/what2do_with_count_table_diffan.html)] |
 
-<!--
-lien vers le rapport *MultiQC* sur le serveur IFB `/shared/projects/dubii2020/data/rnaseq/rawdata/multiqc_report.html`
--->
 
 
 ### [Séance 6 - Croisement de données](https://github.com/DU-Bii/module-5-Methodes-Outils/tree/master/seance4)
