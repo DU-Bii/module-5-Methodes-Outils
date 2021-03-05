@@ -10,6 +10,7 @@
 * Claude Thermes - Institut de Biologie Intégrative de la Cellule - Claude.THERMES@i2bc.paris-saclay.fr
 * Olivier Rué - INRAE - olivier.rue@inra.fr
 * Valentin Loux - INRAE - valentin.loux@inrae.fr
+* Cédric Midoux - INRAE - cedric.midoux@inrae.fr
 * Marc Deloger - Institut Gustave Roussy - marc.deloger@gustaveroussy.fr
 * Nicolas Servant - Institut Curie - nicolas.servant@curie.fr
 * Mélanie Petera - INRAE - melanie.petera@inrae.fr
