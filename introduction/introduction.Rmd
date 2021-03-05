@@ -49,7 +49,7 @@ knitr::include_graphics("../images/omics2.jpg")
   - Olivier Rué
   - Cédric Midoux
   
-### Genome arithmetic (25 march)
+### Genomic data crossing (25 march)
   - Matthias Zynticki
   - Olivier Rué
 ]
