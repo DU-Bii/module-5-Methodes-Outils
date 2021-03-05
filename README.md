@@ -24,8 +24,8 @@ Calendrier du DU-Bii : <!--<https://du-bii.github.io/accueil/img/planning_DUBii_
 
 ## Synopsis
 
-<!-- 
-### [Séance 1 - First steps with NGS data](https://github.com/DU-Bii/module-5-Methodes-Outils/tree/master/seance1)
+
+### [Séance 1 - First steps with NGS data](https://github.com/DU-Bii/module-5-Methodes-Outils/tree/master/seance1_NGS)
 
 - Date : 8 mars 2021
 - Horaires : 10h00 - 13h00 ; 14h30 - 17h30
@@ -35,12 +35,13 @@ Calendrier du DU-Bii : <!--<https://du-bii.github.io/accueil/img/planning_DUBii_
 
 | Supports | Formats |
 |--------------------------------------------------|--------|
-| INTRODUCTION AU SÉQUENÇAGE À HAUT DÉBIT POUR LA GÉNOMIQUE 1 | [[pdf](seance1/20200309_THERMES_1.pdf)] [[pptx](seance1/20200309_THERMES_1.pptx)]  |
-| INTRODUCTION AU SÉQUENÇAGE À HAUT DÉBIT POUR LA GÉNOMIQUE 2 | [[pdf](seance1/20200309_THERMES_2.pdf)] [[pptx](seance1/20200309_THERMES_2.pptx)] |
-| INTRODUCTION AU SÉQUENÇAGE À HAUT DÉBIT POUR LA GÉNOMIQUE 3 | [[pdf](seance1/20200309_THERMES_3.pdf)] [[pptx](seance1/20200309_THERMES_3.pptx)] |
-| First steps with NGS data | [[html](seance1/slides.html)] |
-| TP | [[html](seance1//TP.html)] |
+| INTRODUCTION AU SÉQUENÇAGE À HAUT DÉBIT POUR LA GÉNOMIQUE 1 | [pdf](seance1_NGS/NGS_part1.pdf)]  |
+| INTRODUCTION AU SÉQUENÇAGE À HAUT DÉBIT POUR LA GÉNOMIQUE 2 | [pdf](seance1_NGS/NGS_part2.pdf)] |
+| INTRODUCTION AU SÉQUENÇAGE À HAUT DÉBIT POUR LA GÉNOMIQUE 3 | [pdf](seance1_NGS/NGS_part3.pdf)] |
+| First steps with NGS data | [[html](seance1_NGS/slides.html)] |
+| TP | [[html](seance1_NGS/TP.html)] |
 
+<!--
 ### [Séance 2 - Protéomique](https://github.com/DU-Bii/module-5-Methodes-Outils/tree/master/seance2)
 
 - Date : 10 mars 2021
