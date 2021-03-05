@@ -47,6 +47,7 @@ knitr::include_graphics("../images/omics2.jpg")
 ### Good practices in Bioinformatics (10 March)
   - Valentin Loux
   - Olivier Rué
+  - Cédric Midoux
   
 ### Genome arithmetic (25 march)
   - Matthias Zynticki
