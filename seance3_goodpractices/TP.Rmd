@@ -23,11 +23,35 @@ output:
 
 ```{bash, eval=FALSE}
 ssh-keygen -t rsa
-ssh-copy-id -i id_rsa.pub login@core.cluster.france-bioinformatique.fr
-ssh login@core.cluster.france-bioinformatique.fr
+ssh-copy-id -i id_rsa.pub <login>@core.cluster.france-bioinformatique.fr
+ssh <login>@core.cluster.france-bioinformatique.fr
 ```
 
-# Git
+* Pour GitHub, on renseigne les clés publiques via l'interface graphique : https://github.com/settings/keys 
+
+Vous pouvez votre paire de clé depuis plusieurs terminaux mais la clé privée est extrêmement confidentielle et il faut être très vigilent aux fuites et pertes.
+
+# Versionner ses documents avec Git
+
+
+## Créer un dépôt distant sur Github
+
+```{r, out.width = "50%", echo=FALSE, fig.align='center'}
+knitr::include_graphics("images/github-newrepo.png")
+```
+
+
+```{r, out.width = "100%", echo=FALSE}
+knitr::include_graphics("images/github-create-repo.png")
+```
+
+```{r, out.width = "100%", echo=FALSE}
+knitr::include_graphics("images/github-create-repo-2.png")
+```
+
+Notez la premiere ligne avec l'adresse pour récupérer le dépôt avec l'option SSH.
+<!--
+## 1. Initialiser le dépôt (en local)
 
 ```{bash, eval=FALSE}
 mkdir testRepo
@@ -41,6 +65,29 @@ vloux@jj-1404-port196 ~/tmp> cd testRepo
 vloux@jj-1404-port196 ~/tmp> git init
 Initialized empty Git repository in /Users/vloux/tmp/testRepo/.git/
 ```
+-->
+
+## Cloner le dépôt depuis GitHub vers l'IFB
+
+```
+git clone git@github.com:...
+# git clone git@github.com:CedricMidoux/test.git
+```
+
+Le dépôt est vide et disponible localement.
+```{bash, eval=FALSE}
+cd test/
+ls -la
+# total 0
+# drwxrwxrwx 1 cmidoux cmidoux 4096 Mar  5 17:21 .
+# drwxrwxrwx 1 cmidoux cmidoux 4096 Mar  5 17:21 ..
+# drwxrwxrwx 1 cmidoux cmidoux 4096 Mar  5 17:21 .git
+
+```
+
+##############################################################
+
+## Ajouter un document (en local)
 
 ```{bash, eval=FALSE}
 echo 'my first line' > firstFile
@@ -71,6 +118,7 @@ git commit firstFile -m "Premier commit"
 git status
 ```
 
+## 3. Versionner un document (en local)
 
 ```{bash, eval=FALSE}
 vloux@jj-1404-port196 ~/t/testRepo> git add firstFile
@@ -82,6 +130,8 @@ vloux@jj-1404-port196 ~/t/testRepo> git status
 On branch master
 nothing to commit, working tree clean
 ```
+
+## 4. Workflow de modification (en local)
 
 ```{bash, eval=FALSE}
 echo 'seconde modif' >> firstFile
@@ -114,26 +164,8 @@ On branch master
  1 file changed, 1 insertion(+)
 ```
 
+## 5. Initialisation du dépôt distant (Github)
 
-- Créer un dépôt distant sur Github (1)
-
-![](images/github-newrepo.png)
-
-## Initialisation du dépôt distant (Github)
-
-
-- Créer le dépôt distant sur Github
-- Noter l'adresse du dépôt dans l'écran suivant.
-
-```{r, out.width = "100%", echo=FALSE, fig.align="right"}
-knitr::include_graphics("images/github-create-repo.png")
-```
-
-
-
-```{r, out.width = "100%", echo=FALSE, fig.align="right"}
-knitr::include_graphics("images/github-createrepo-2.png")
-```
 
 
 
@@ -286,5 +318,47 @@ git remote -v
 
 ```
 
+# Documents Computationel  : Rédaction d'un notebook avec RStudio
+
+1. Connectez vous au RStudio de l'IFB (https://rstudio.cluster.france-bioinformatique.fr/).
+2. Clonez votre projet :
+    - New Project (en haut à droite)
+    - Version Control
+    - Git
+    - Repository URL (clone with SSH : `git@github.com: ...`)
+3. Explorez le dépôt depuis ce 3e device remote 
+4. Créez un document R Markdown :
+    - File 
+    - New file
+    - R Markdown
+
+**Dans ce document on a** :
+
+- Une entête générale
+- Du texte, mis en forme avec markdown
+- Du code R dans des chunks
+- Des résultats et outputs 
+
+Grâce à l'onglet git de Rstudio, vous pouvez suivre l'état des fichiers, commit, diff, push/pull, ...
+
+Chaque chunk peut être exécuté individuellement grâce à la flèche verte.  
+Les options associées à chaque chunks sont disponible avec la roue crantée.
+
+5. Modifier le document (en plusieurs commit)
+    - ajoutez un chunk `knitr::kable(head(iris))` pour visualiser un table
+    - ajoutez un chunk `plot(cars)` pour un plot
+    - ajoutez des commentaires
+    - puis commitez les modifications.
+6. Lorsque vous êtes satisfait de votre raport, générez la version HTML en cliquant sur Knit. Commitez, pushez, ...
+7. Visualisez les modifications côté GitHub
+8. Pour rentre une page HTML visualisable avec *GitHub Pages*
+    - Dans les options du repo, dans le chapitre "GitHub Pages", activer la source correspondant à la branch `main` (ou master suivant votre configuration)
+    - la page est disponible à l'adresse [https://[user].github.io/[repo]/[page].html](https://cedricmidoux.github.io/cookies/notebook.html)
+
+**Votre rapport est disponible, versionné et partageable !**
+
+Suivant l'interlocuteur, partagez le `.Rmd` ou le `.html`
+
+---
 
 # References

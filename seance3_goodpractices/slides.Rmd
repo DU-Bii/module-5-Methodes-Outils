@@ -21,7 +21,7 @@ library(icon)
 BibOptions(check.entries = FALSE, bib.style = "authoryear", style = "markdown",
            dashed = TRUE)
 file.name <- "biblio_slides.bib"
-bib <- ReadBib(file.name)
+bib <- ReadBib(file.name, .Encoding = "UTF-8")
 ```
 
 
@@ -79,8 +79,8 @@ knitr::include_graphics("images/Magdeburger-Halbkugeln.jpg")
 ```
 
 ???
-Au XVIIe, experience de la pompe à vide par Otto van Guericke étaient basées sur des demonstrations spectaculaires, dans les cours d'europe qui lui assuraient notoriété. L'experience des hemisphères de Magdebourg qui consitait à essayer de fauire séparer des hémisphères de cuivre dans lésquel il avait fait lme vide, par des attelages de chevaux était très appréciée. Cela reposait sur un outillage et un savoir afire secret. Impossible à reproduire
-Plus atrd, Boyle, sur le m^me sujet, consignait tout par écrit et avait recours à des témoins de bonne réputation (des gentlemen, à la base de la Royal Society) pour certifier ses expoeriences. c'est le début des publication scientifiques.
+Au XVIIe, expérience de la pompe à vide par Otto van Guericke étaient basées sur des démonstrations spectaculaires, dans les cours d'europe qui lui assuraient notoriété. L'expérience des hemisphères de Magdebourg qui consistait à essayer de faire séparer des hémisphères de cuivre dans lesquels il avait fait le vide, par des attelages de chevaux était très appréciée. Cela reposait sur un outillage et un savoir faire secret. Impossible à reproduire
+Plus tard, Boyle, sur le même sujet, consignait tout par écrit et avait recours à des témoins de bonne réputation (des gentlemen, à la base de la Royal Society) pour certifier ses expériences. c'est le début des publication scientifiques.
   
 ---
 # Et en bioinfo ?
@@ -117,7 +117,6 @@ Un problème vieux comme la bioinformatique :
 
 
 ---
-
 # Réplication ≠ Reproductibilité
 
 - La réplication indépendant d'analyse est à la base de la méthode scientifique
@@ -138,7 +137,7 @@ Source : `r Citep(bib, "allard")`
 # En pratique, qu'est ce qu'être reproductible ?
 
 
-```{r, out.width = "80%", echo=FALSE, fig.align="left",fig.cap="https://github.com/karthik/rstudio2019/blob/master/reproducible-data-analysis.pdff"}
+```{r, out.width = "80%", echo=FALSE, fig.align="left",fig.cap="https://github.com/karthik/rstudio2019/blob/master/reproducible-data-analysis.pdf"}
 knitr::include_graphics("images/reproducible-data-analysis.png")
 ```
 
@@ -155,9 +154,6 @@ knitr::include_graphics("images/reproducible-data-analysis.png")
   - à la documentation technique (**choix techniques explicites**)
   - au savoir faire du monteur (**formation**)
   - Éventuellement à un atelier équipé pour le montage (**ressources informatiques**)
-  
-
-
 
 ---
 # FAIR : un pré-requis la reproductibilité
@@ -315,7 +311,7 @@ _Exemple illustrant la simplification du balisage :_
 ]
 
 ---
-# Partie 2 : Markdown - exemples de commande 
+# Partie 2 : Markdown - exemples de mise en forme 
 
 ````
 # Titre H1
@@ -335,7 +331,8 @@ bloc de code
   * item
   
 [lien](https://fr.wikipedia.org)
-![](https://migale.inrae.fr/sites/default/files/migale.png) #lien vers une image en ligne ou dans l'espace de travail
+![](https://migale.inrae.fr/sites/default/files/migale.png) 
+      #lien vers une image en ligne ou dans l'espace de travail
 ````
 
 Gardez ce [mémo](https://guides.github.com/pdfs/markdown-cheatsheet-online.pdf) à porté de main !
@@ -372,11 +369,10 @@ Voici un [aide mémoire git](https://github.github.com/training-kit/downloads/fr
 Quelques mots à connaitre :
 - **Repository** / **Dépôt** = Dossier / Projet 
 - **Commit** = Enregistrement d’un ensemble de fichier à un instant T (= photo) 
-- **Branche** = Ensemble chaîné de commits, par défaut la branche principale s’appelle « master » (cette notion n’est pas primordiale pour débuter) 
+- **Branche** = Ensemble chaîné de commits, par défaut la branche principale s'appelle « main »
 
 
-
-- **Git** : logiciel *open-souce*  de gestion de version de document. 
+- **Git** : logiciel *open-souce*  de gestion de version de document. Il est tout a fait possible d'utiliser git pour versionner ses documents sans GitHub.
 - **Github** : site web permettant de centraliser en ligne ses dépôts git et facilitant la collaboration sur les projets.
 ]
 
@@ -430,322 +426,30 @@ class: center, middle
 * Pour GitHub, on renseigne les clés publiques via l'interface graphique
 
 ---
+class: center, middle
+
 # TP : Utilisation de Git  
-
-## 1. Initialiser le dépôt (en local)
-
-```
-mkdir testRepo
-cd testRepo
-git init
-
-```
-
---
-```
-vloux@jj-1404-port196 ~/tmp> mkdir testRepo
-vloux@jj-1404-port196 ~/tmp> cd testRepo
-vloux@jj-1404-port196 ~/tmp> git init
-Initialized empty Git repository in /Users/vloux/tmp/testRepo/.git/
-```
-
-
 ---
-# TP : Utilisation de Git  
 
-## 2. Ajouter un document (en local)
-
-```
-echo 'my first line' > firstFile
-
-git status
-```
-
---
-```
-vloux@jj-1404-port196 ~/t/testRepo> echo 'my first line' > firstFile
-
-vloux@jj-1404-port196 ~/t/testRepo>   git status
-On branch master
-
-No commits yet
-
-Untracked files:
-  (use "git add <file>..." to include in what will be committed)
-	firstFile
-
-nothing added to commit but untracked files present (use "git add" to track)
-```
----
-# TP : Utilisation de Git  
-
-## 3. Versionner un document (en local)
-
-```
-git add firstFile
-git commit firstFile -m "Premier commit"
-
-git status
-```
-
---
-```
-vloux@jj-1404-port196 ~/t/testRepo> git add firstFile
-vloux@jj-1404-port196 ~/t/testRepo> git commit firstFile -m "Premier commit"
-[master (root-commit) 53e1cbc] Premier commit
- 1 file changed, 1 insertion(+)
- create mode 100644 firstFile
-vloux@jj-1404-port196 ~/t/testRepo> git status
-On branch master
-nothing to commit, working tree clean
-```
----
-# TP : Utilisation de Git  
-
-## 4. Workflow de modification (en local)
-.pull-left[
-```
-echo 'seconde modif' >> firstFile
-
-git status
-git diff
-
-git commit -m "ajout de la deuxième ligne" firstFile
-
-```
-]
---
-.pull-right[
-```
-vloux@jj-1404-port196 ~/t/testRepo> git status
-On branch master
-Changes not staged for commit:
-  (use "git add <file>..." to update what will be committed)
-  (use "git restore <file>..." to discard changes in working directory)
-	modified:   firstFile
-vloux@jj-1404-port196 ~/t/testRepo> git diff
-diff --git a/firstFile b/firstFile
-index b1a9f66..d491802 100644
---- a/firstFile
-+++ b/firstFile
-@@ -1 +1,2 @@
- my first line
-+second modif
-vloux@jj-1404-port196 ~/t/testRepo> git commit -m "ajout de la deuxième ligne" firstFile
-On branch master
-[master b3a2b4c] ajout de la deuxième ligne
- 1 file changed, 1 insertion(+)
-```
-]
----
-# TP : Utilisation de GitHub
-
-## 5. Initialisation du dépôt distant (Github)
-
-- Créer un dépôt distant sur Github (1)
-
-![](images/github-newrepo.png)
----
-## 5. Initialisation du dépôt distant (Github)
-
-.pull-left[
-- Créer le dépôt distant sur Github
-- Noter l'adresse du dépôt dans l'écran suivant.
-```{r, out.width = "100%", echo=FALSE, fig.align="right"}
-knitr::include_graphics("images/github-create-repo.png")
-```
-]
---
-.pull-right[
-```{r, out.width = "100%", echo=FALSE, fig.align="right"}
-knitr::include_graphics("images/github-createrepo-2.png")
-```
-]
----
-# TP : Utilisation de GitHub
-## 6. Lier le dépôt local et distant
-
-- La commande `git remote` permet de lier notre dépôt à un dépôt distant, ici `test.git`
-- Par convention, on appelle ce dépôt `origin`
-
-
-
-```
-git remote add origin git@github.com:vloux/test.git
-git remote -v
-
-```
---
-```
-vloux@jj-1404-port196 ~/t/testRepo> git remote add origin git@github.com:vloux/test.git
-vloux@jj-1404-port196 ~/t/testRepo> git remote -v
-origin	git@github.com:vloux/test.git (fetch)
-origin	git@github.com:vloux/test.git (push)
-
-```
----
-# TP : Utilisation de GitHub
-## 7. Pousser les modifications locales sur le dépôt distant
-
-LA commande `push`pousse les modifications de la branche `master` (la branche par défaut locale) sur la branche `origin`(le nom de la branche distante). Le paramètre `-u` permet de créer la branche de reférence distante et de lier les branches disatntes et locales (et ainsi de se passer des arguments `origin` `master` par la suite)
-
-```
-git push origin master -u 
-```
---
-```
-vloux@jj-1404-port196 ~/t/testRepo> git push  origin master -u
-Enumerating objects: 6, done.
-Counting objects: 100% (6/6), done.
-Delta compression using up to 8 threads
-Compressing objects: 100% (2/2), done.
-Writing objects: 100% (6/6), 489 bytes | 489.00 KiB/s, done.
-Total 6 (delta 0), reused 0 (delta 0)
-To github.com:vloux/test.git
- * [new branch]      master -> master
-Branch 'master' set up to track remote branch 'master' from 'origin'
-```
----
-# TP : Utilisation de GitHub
-
-## 8. Verification sur Github des infos
-
-- Connectez vous sur l'interface de Github :
-  - trouvez votre dépôt
-  - verifiez que vous trouvez bien le fichier que vous avez modifié, les commits
-
----
-# TP : Utilisation de GitHub
-
-## 9. Modification du dépôt par l'interface
-
-- ajouter un `README.md` (avec markdown)
-- le commiter depuis l'interface
-- l'éditer
-
-- commiter la modification
-
----
-# TP : Utilisation de Git et GitHub
-
-##  Récupérer sur le repo local des infos de la branche distante
-
-.pull-left[
-```
-git fetch
-git merge
-```
-équivalent à :
- 
-```
-git pull
-```
-]
-
---
-
-.pull-right[
-
-```
-vloux@jj-1404-port196 ~/t/testRepo> git fetch
-remote: Enumerating objects: 7, done.
-remote: Counting objects: 100% (7/7), done.
-remote: Compressing objects: 100% (4/4), done.
-remote: Total 6 (delta 0), reused 0 (delta 0), pack-reused 0
-Unpacking objects: 100% (6/6), done.
-From github.com:vloux/test
-   b3a2b4c..c61dab3  master     -> origin/master
-vloux@jj-1404-port196 ~/t/testRepo> git merge
-Updating b3a2b4c..c61dab3
-Fast-forward
- README.md | 1 +
- 1 file changed, 1 insertion(+)
- create mode 100644 README.md
-```
-]
-
----
-# TP : Utilisation de Git et GitHub
-
-Nommer des versions (tags)
-
-```
-git tag version1 -m "Initial version"
- 
-git push  --tags
-
-```
---
-```
-vloux@jj-1404-port196 ~/t/testRepo> git tag version1 -m "Initial version"
-version1
-vloux@jj-1404-port196 ~/t/testRepo>  git push  --tags
-Enumerating objects: 1, done.
-Counting objects: 100% (1/1), done.
-Writing objects: 100% (1/1), 171 bytes | 171.00 KiB/s, done.
-Total 1 (delta 0), reused 0 (delta 0)
-To github.com:vloux/tesRepository.git
- * [new tag]         version1 -> version1
-```
----
-# TP : utilisation de Git et GitHub
-
-Comparer à une version précédente
-
-```
-git log
-
-git diff [CommitNumber] aNewFile
-
-```
-
---
-```
-vloux@jj-1404-port196 ~/t/testRepo> git diff 53e1cbcc5cab26f6c1550acd159ca30ad2acfeec firstFile
-diff --git a/firstFile b/firstFile
-index b1a9f66..d491802 100644
---- a/firstFile
-+++ b/firstFile
-@@ -1 +1,2 @@
- my first line
-+second modif
-```
-
-
----
-# TP : utilisation de Git et GitHub. 
-## Cloner un dépôt existant
-
-- Dans le cas d'un dépôt distant existant, on peut directement le cloner en local. Il est lié au dépot distant et les modifications peuvenat ainis être récupérées ( `pull`) ou poussées ( `push`) sans avoir besoin de d'abord configurer les liens avec le dépôt distant.
-
-```
-git clone git@github.com:vloux/test.git
-
-git remote -v
-
-
-```
-
----
-# En résumé 
+# Git : En résumé 
 
 - `git clone` : cloner un dépot distant
 - `git init` : initialiser le versionning sur un dépot local
 - `git commit` : enregister l'état d'un dépôt
 - `git status` : afficher l'état des documents du dépôt
 - `git diff` : comparer l'état actuel au dernier commit, ou deux commits entre eux ou deux branches 
+- `git pull` : récupérer les commits distants
+- `git push` : envoyer les commits locaux
 
-et bien d'autres encore (``blame``, revert`,…)
+et bien d'autres encore (`blame`, `revert`,…)
 
 [CheatSheet](https://github.github.com/training-kit/downloads/github-git-cheat-sheet.pdf)
 
 ---
 # Pour apprendre progressivement et/ou se simplifier la vie
 
-- Partir de d^pots que l'on crée sur Github et clone en local.
-
 Utiliser une interface conviviale :
-- Github Desktop
+- Github Desktop (Windows et macOS)
 - Les intégration aux différents IDE (RStudio and co)
 
 .center[
@@ -797,7 +501,9 @@ class: inverse, center, middle
   - Pour assurer leur cohérence et améliorer la traçabilité. 
   - Exportable (ex : html) pour une meilleure portabilité et lisibilité.
 
-.center[![russo2016](https://www.researchgate.net/profile/Dario_Righelli/publication/306538473/figure/fig2/AS:391153263366144@1470269613039/This-figure-explains-the-basic-idea-of-Reproducible-Research-The-raw-data-needs-to-be_W640.jpg)]
+```{r, out.width = "50%", echo=FALSE, fig.align="center"}
+knitr::include_graphics("https://www.researchgate.net/profile/Dario_Righelli/publication/306538473/figure/fig2/AS:391153263366144@1470269613039/This-figure-explains-the-basic-idea-of-Reproducible-Research-The-raw-data-needs-to-be_W640.jpg")
+```
 
 `r Citep(bib, "russo")`
 
@@ -806,62 +512,37 @@ Encore un joli [mémo](https://www.rstudio.org/links/r_markdown_cheat_sheet) pou
 Si vous travaillez principalement avec Python, il est possible de faire des notebook avec Jupyter.
 
 ---
-# TP : Rédaction d'un notebook avec RStudio
+class: center, middle
 
-1. Connectez vous au RStudio de l'IFB (https://rstudio.cluster.france-bioinformatique.fr/).
-2. Clonez le projet :
-  - New Project (en haut à droite)
-  - Version Control
-  - Git
-  - Repository URL (clone with SSH : `git@github.com: ...`)
-3. Explorez le dépot depuis ce 3e device remote 
-4. Créez un document R Markdown :
-  - File 
-  - New file
-  - R Markdown
+# TP : Documents computationels  
+---
 
-**Dans ce document on a** :
+# Documents computationels : En résumé 
+
+**Dans un unique document on a** :
 - Une entête générale
 - Du texte, mis en forme avec markdown
-- Du code R dans des chunks
-- Des résultats et outputs 
+- Du code R ou Python (ou autre) dans des chunks
+- Des résultats, plots et outputs 
 
----
+* Ce document est versionné
+* Il est dans un format texte dont la lisibilité est assurée au cours du temps
+* On peut l'exporter en HTML et le rendre accessible via les GitHub Pages.
 
-# TP : Rédaction d'un notebook avec RStudio 
-* Grace à l'onglet git de Rstudio, vous pouvez suivre l'état des fichiers, commit, diff, push/pull, ...
-
-* Chaque chunk peut être exécuté individuellement grâce à la flèche verte.  
-Les options assosiées à chaque chunks sont disponible avec la roue crantée.
-
-5. Modifier le document (en plusieurs commit)
-  - ajoutez un chunk `knitr::kable(head(iris))` pour visualiser un table
-  - ajoutez un chunk `plot(cars)` pour un plot
-  - ajoutez des commentaires
-  - puis commitez les modifications.
-6. Lorsque vous êtes satisfait de votre raport, générez la version HTML en cliquant sur Knit. Commitez, pushez, ...
-7. Visualisez les modifications côté GitHub.
-
-**Votre rapport est disponible, versionné et partageable !**
-
----
-# TP : Partager un document html avec GitHub Pages
-
-* Dans les options du repo, dans le chapitre "GitHub Pages", activer la source correspondant à la branch master.
-* la page est disponible à l'adresse [https://[user].github.io/[repo]/[page].html](https://cedricmidoux.github.io/cookies/notebook.html)
-
-Suivant l'interlocuteur, partagez le `.Rmd` ou le `.html`
+** &rarr; Expliciter pour augmenter les chances de trouver les erreurs et de les éliminer **
+  - Inspecter pour justifier et comprendre
+  - Refaire pour vérifier, corriger et réutiliser
 
 ---
 # Conclusion : 
 
-La reprouctibilité, comme la "FAIRisation" sont des processus.
+La reproductibilité, comme la "FAIRisation" sont des processus.
 
 Des bonnes pratiques appuyées par des outils qui les facilitent
 
 - Organiser ses analyses
-- Décruire correctement ses données et ses processus d'analyse (PGD, FAIR)
-- Tracer ses analyses à l'aide de documents computationnels (Rmd, Jupyter Notebooks, …) :
+- Décrire correctement ses données et ses processus d'analyse (PGD, FAIR)
+- Tracer ses analyses à l'aide de documents computationels (Rmd, Jupyter Notebooks, …) :
   - Transparents 
   - Accessibles
   - Partageables
@@ -870,7 +551,7 @@ Des bonnes pratiques appuyées par des outils qui les facilitent
   - Accessibilité
 
 ---
-# Aller plus loin - travailler en commun avec Git et Github :
+# Aller plus loin - Travailler en commun avec Git et Github :
 
 .center[![Github Flow](images/github-flow.png)] 
 
@@ -880,7 +561,6 @@ Des bonnes pratiques appuyées par des outils qui les facilitent
 
 [Un exemple de PR](https://github.com/galaxyproject/training-material/pull/1354) 
 
-
 ---
 # Pour aller + loin - Fixer et partager son environnement :
 
@@ -888,12 +568,12 @@ Des bonnes pratiques appuyées par des outils qui les facilitent
 - Conda et  Bioconda 
   - gestion des dépendances, versions
   - Possibilité de créer un environnement par analyse
-  - Exporter son environnement dans un fichier ``env.yml`` et le versionner
-  - ``conda env export > environment.yml``
+  - Exporter son environnement dans un fichier `env.yml` et le versionner
+  - `conda env export > environment.yml`
   
 - Containers,  machines virtuelles
   - Docker, Singularity, VM virtualbox
-  - Pour les outils non "condaoisables", les environnements complexes
+  - Pour les outils non "conda-isables", les environnements complexes
   - Les images Singularity sont déployables sur les infrastructures type IFB et s'éxecutent "presque" comme un executable
 ]
 
@@ -911,7 +591,7 @@ Des bonnes pratiques appuyées par des outils qui les facilitent
 `r Citep(bib, "Bjorn2018")` 
 
 ---
-# Pour aller + loin - gestionnaires de workflows
+# Pour aller + loin - Gestionnaires de workflows
 
 SnakeMake, NextFlow pour :
 - Définir de façon "simple" et modulaire des workflows d'analyse :
