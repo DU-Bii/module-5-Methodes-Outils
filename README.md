@@ -18,10 +18,6 @@
 * Thibaut Léger - Institut Jacques Monod - thibaut.leger@ijm.fr
 * Matthias Zytnicki - INRAE - matthias.zytnicki@inrae.fr
 
-## Calendrier 2021
-
-Calendrier du DU-Bii : <!--<https://du-bii.github.io/accueil/img/planning_DUBii_2020.png>-->
-
 ## Synopsis
 
 - Introduction [[html](introduction/introduction.html)]
