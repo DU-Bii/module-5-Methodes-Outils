@@ -633,10 +633,10 @@ class: heading-slide, middle, center
 ---
 # Visualization
 
-- Genome browser allow to display data visually, in context with other informations (coding genes and other feature postion, functionnal annotation, … )
+- Genome browsers allow to display data visually, in context with other informations (coding genes and other features postions, functionnal annotations, … )
 
-- A long list of software to choose from, with numerous features :
-    - "optimized" for model organisms (mouse, human,…) , allow non eukaryotic and private genomes
+- A long list of softwares to choose from, with numerous features :
+    - "optimized" for model organisms (mouse, human,…), allow non-eukaryotic and private genomes
     - allow multiple "tracks" with different information (read mapping, variant calling, …)
     - configurable
     - data integration
