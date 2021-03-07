@@ -24,6 +24,7 @@ Calendrier du DU-Bii : <!--<https://du-bii.github.io/accueil/img/planning_DUBii_
 
 ## Synopsis
 
+- Introduction [[html](introduction/introduction.html)]
 
 ### [Séance 1 - First steps with NGS data](https://github.com/DU-Bii/module-5-Methodes-Outils/tree/master/seance1_NGS)
 
