@@ -633,35 +633,59 @@ class: heading-slide, middle, center
 ---
 # Visualization
 
+- Genome browser allow to display data visually, in context with other informations (coding genes and other feature postion, functionnal annotation, … )
+
+- A long list of software to choose from, with numerous features :
+    - "optimized" for model organisms (mouse, human,…) , allow non eukaryotic and private genomes
+    - allow multiple "tracks" with different information (read mapping, variant calling, …)
+    - configurable
+    - data integration
+    - allow genome edition and annotation
+
+The tendance is to move from desktop software to "full feature" software in your browser. 
 ---
-# Visualization
+# Some software
 
+- **IGV** ( Integrative Genomics Viewer ) : open source, desktop or webapp, memory efficient. **A reference**.
+
+- **IGB** (Integrated Genome Browser) : Open Source, desktop
+
+- **Artemis** : Open Source, desktop, developped since 1999, fitted for prokaryotic genome. Allow genome annotation.
+
+- **Jbrowse** : Open Source, web , highly configurable.
+
+
+You will find in [this document](https://wikis.univ-lille.fr/bilille/genome_browser) a partial comparison between 7 popular genome browsers.
+
+For the hands-on, we will use **IGV** on the web.
+
+
+
+
+
+
+  
 ---
-## Genome browsers
-
-- IGV
-
-
----
-
 # What about Long Reads ?
 
-As global quality and error models are different, algorithms and tools are different for long reads. 
+As global quality and error profiles ar different, ,algorithms and tools are different for long reads. 
 
-The raw read format is also different.
+The raw read format is also different
 
 - PacBio :
   - internal read correction
   - built in software for QC / correction
   - QC : nanoPlot `r Citep(bib, "10.1093/bioinformatics/bty149")`
   - Correction (hybrid) : LorDec `r Citep(bib, "salmela2014lordec")`
-  - Alignment minimap2 `r Citep(bib, "li2018minimap2")`, BLASR `r Citep(bib, "chaisson2012mapping")`
+  - Alignment = minimap2 `r Citep(bib, "li2018minimap2")`, BLASR `r Citep(bib, "chaisson2012mapping")`
 - NanoPore :
-  - Porchop `r Citep(bib, "wick2017completing")` for trimming
-  - Caution to basecaller / chemistry version!
+  - Caution to basecaller / chemistry version !
   - QC : nanoPlot
   - Correction : Canu `r Citep(bib, "koren2017canu")`, MECAT `r Citep(bib, "xiao2017mecat")`
+  - Alignment : minimap2 `r Citep(bib, "li2018minimap2")`
   
+
+
 ---
 # Bioinformaticians best friends
 
