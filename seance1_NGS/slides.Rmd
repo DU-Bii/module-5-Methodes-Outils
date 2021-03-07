@@ -26,18 +26,16 @@ bib <- ReadBib(file.name)
 
 # Program
 
-- Introduction (5 min)
-- Get data from public resources (30 min)
+- Introduction
+- Get data from public resources
 - FASTQ format
-- Quality control (45 min)
-- Cleaning of reads (30 min)
-- Mapping of reads (30 min)
+- Quality control
+- Cleaning of reads
+- Mapping of reads
 - FASTA format
 - SAM format
+- Visualization
 
-<!-- 
-Total : 2h 35
--->
 ---
 
 class: tp
