@@ -5,7 +5,6 @@
     <meta charset="utf-8" />
     <meta name="author" content="Valentin Loux - Cédric Midoux - Olivier Rué" />
     <meta name="date" content="2021-03-08" />
-    <script src="slides_files/header-attrs/header-attrs.js"></script>
     <link href="slides_files/remark-css/default.css" rel="stylesheet" />
     <link href="slides_files/remark-css/default-fonts.css" rel="stylesheet" />
     <link rel="stylesheet" href="../css/styles.css" type="text/css" />
@@ -72,10 +71,10 @@ class: hide-logo
 
 - Problème général ( "Reproducibility crisis")
   - Remis en avant par les science sociales ( pyschologie )
-  - Etendu à l'ensemble des disciplines
+  - Étendu à l'ensemble des disciplines
 
 Mais un problème qui n'est pas nouveau :
-  - Experiences de la pompe à vide au XVIIe siècle (von Guericke et Boyle) 
+  - Expériences de la pompe à vide au XVIIe siècle (von Guericke et Boyle) 
 
 &lt;div class="figure" style="text-align: center"&gt;
 &lt;img src="images/Magdeburger-Halbkugeln.jpg" alt="Experiences des hemisphères de Magdebourg" width="50%" /&gt;
@@ -83,7 +82,7 @@ Mais un problème qui n'est pas nouveau :
 &lt;/div&gt;
 
 ???
-Au XVIIe, expérience de la pompe à vide par Otto van Guericke étaient basées sur des démonstrations spectaculaires, dans les cours d'europe qui lui assuraient notoriété. L'expérience des hemisphères de Magdebourg qui consistait à essayer de faire séparer des hémisphères de cuivre dans lesquels il avait fait le vide, par des attelages de chevaux était très appréciée. Cela reposait sur un outillage et un savoir faire secret. Impossible à reproduire
+Au XVIIe, expérience de la pompe à vide par Otto van Guericke étaient basées sur des démonstrations spectaculaires, dans les cours d'Europe qui lui assuraient notoriété. L'expérience des hemisphères de Magdebourg qui consistait à essayer de faire séparer des hémisphères de cuivre dans lesquels il avait fait le vide, par des attelages de chevaux était très appréciée. Cela reposait sur un outillage et un savoir faire secret. Impossible à reproduire
 Plus tard, Boyle, sur le même sujet, consignait tout par écrit et avait recours à des témoins de bonne réputation (des gentlemen, à la base de la Royal Society) pour certifier ses expériences. c'est le début des publication scientifiques.
   
 ---
@@ -91,39 +90,36 @@ Plus tard, Boyle, sur le même sujet, consignait tout par écrit et avait recour
 
 Un problème vieux comme la bioinformatique :
 
-- En 2009, moins de la moitié des experiences de transcriptomique parues dans Nature Genetics n'ont pu être reproduites 
+- En 2009, moins de la moitié des expériences de transcriptomique parues dans Nature Genetics ont pu être reproduites 
 - Sur 50 articles citant BWA en 2011, 31 ne citent ni version, ni paramètres. 26 ne donnent pas accès aux données sous-jacentes
-- Selon un sondage mené auprès de plus de 1500 biologistes
+- Selon un sondage mené en 2016 auprès de plus de 1500 biologistes
   - 70% ont déjà éprouvé des difficultés à reproduire une analyse &lt;a name=cite-Baker2016&gt;&lt;/a&gt;([Baker, 2016](https://doi.org/10.1038/533452a))
 
-- [Ten Years Reproducibility Challenge](https://github.com/ReScience/ten-years) refaire ses analyses d'il y a 10 ans …
+- [Ten Years Reproducibility Challenge](https://github.com/ReScience/ten-years) : êtes vous capables de refaire vos analyses d'il y a 10 ans ? 
 
 ---
 # Quelles sont les difficultés ?
 
-
 - Problèmes **d'accès aux données** :
-  - "data available upon request"
-  - méta-données inexistantes ou insuffisantes
+  - le fameux "data available upon request"
+  - données brutes disponibles, mais méta-données inexistantes ou insuffisantes
 - Problèmes **d'accès aux outils** :
   - outils anciens ou obsolètes
   - difficultés à installer
 - Problèmes de **paramètrage de l'analyse**
   - version des outil
   - paramètres des outils
-  - enchainement des outils
+  - enchaînement des outils
 
 - Problème d'accès aux **ressources necessaires**
   - calcul
   - stockage
 
 
-
-
 ---
 # Réplication ≠ Reproductibilité
 
-- La réplication indépendant d'analyse est à la base de la méthode scientifique
+- La réplication indépendante d'expériences est à la base de la méthode scientifique
 
 - En complément de **réplication** indépendante ( expérimentation, échantillonnage, analyse, …), la **reproduction** d'analyse est indispensable à l'évaluation et à la compréhension de la démarche employée
 
@@ -131,8 +127,7 @@ Un problème vieux comme la bioinformatique :
   - Impossibilité de répliquer des résultats de façon indépendante (psychologie, médecine, biologie…)
   - Impossibilité de reproduire des analyses à partir des mêmes données de départ
 
-- Chacun peut déjà, par l'utilisation d'outils conviviaux, améliorer la reproductibilité de ses travaux
-
+- Chacun peut déjà, par la mise en place de pratiques simples et l'utilisation d'outils conviviaux, améliorer la reproductibilité de ses travaux
 
 Source : &lt;a name=cite-allard&gt;&lt;/a&gt;([Allard, 2018](https://laviedesidees.fr/La-crise-de-la-replicabilite.html)) 
 &lt;!-- https://laviedesidees.fr/La-crise-de-la-replicabilite.html --&gt;
@@ -157,11 +152,12 @@ Source : &lt;a name=cite-allard&gt;&lt;/a&gt;([Allard, 2018](https://laviedeside
   Mais aussi :
   - à la description des pièces, de la façon dont elles ont été produites (**méta-données**)
   - à la documentation technique (**choix techniques explicites**)
-  - au savoir faire du monteur (**formation**)
+  - au savoir faire du monteur (**formations**)
   - Éventuellement à un atelier équipé pour le montage (**ressources informatiques**)
 
 ---
-# FAIR : un pré-requis la reproductibilité
+
+# FAIR : un pré-requis à la reproductibilité
 .pull-left[
 &lt;div class="figure" style="text-align: left"&gt;
 &lt;img src="images/fair.png" alt="Findale Accessible Inetroprable Reusable " width="50%" /&gt;
@@ -182,7 +178,6 @@ Principes autour des données au sens large :
 - **R**éutilisables :
   - réutilisables par soi, par d'autres
   - réutilisables par des machines
-
 ]
 
 &lt;a name=cite-Wilkinson2016&gt;&lt;/a&gt;([Wilkinson, Dumontier, Aalbersberg, Appleton, Axton, Baak, Blomberg, Boiten, da
@@ -204,14 +199,13 @@ Source : &lt;a name=cite-piazzi&gt;&lt;/a&gt;([Piazzi, Cerqueira, Manso, and Duq
 ---
 # L'outillage
 
+Aller de façon pragmatique vers une documentation accrue de ce que l'on fait (comment, pourquoi) et des données que l'on utilise et produit. 
 
-Aller de façon pragmatique vers une documentation accrue de ce que l'on fait (comment, pourquoi)
-
-- Rendre accessible ses données à soir, aux partenaires, à tous) :
-  - Data Managemlent Plan (Opidor)
-  - Dépôt internationaux (ENA, NCBI)
-  - DataVerse
-- Définir les outils utilisés :
+- Rendre accessible ses données à soit, aux partenaires, à tous) :
+  - Data Management Plan (Opidor)
+  - Dépôt internationaux (ENA, NCBI) pour les données specialisées
+  - DataVerse pour les autres données
+- Définir et fixer les versions des outils utilisés :
   - conda, bioconda
   - singularity, docker
   - Machine Virtuelle
@@ -221,13 +215,14 @@ Aller de façon pragmatique vers une documentation accrue de ce que l'on fait (c
 - Gérer les versions de ses codes, les publier :
   - git
   - github / gitlab
-- Tracer son analyse dans des documents partageables et réutilisables :
+- Tracer son analyse dans des documents computationnels partageables et réutilisables :
     - Rmd
     - Jupyter Notebooks
 
 ---
 # Objectifs du TP
-Décomplexifier les problème, se décomplexifier, désacraliser  la reproductibilité !
+
+Décomplexifier les problème, se décomplexifier sur ses pratiques , désacraliser  la reproductibilité !
 
 Vous fournir des outils, des pistes pour rendre vos projets :
 - transparents
@@ -235,10 +230,10 @@ Vous fournir des outils, des pistes pour rendre vos projets :
 - réutilisables
 - partageables
 
-Bref, *plus* reproductibles.
+Bref, *plus* ouverts et reproductibles.
 
 
-Parties pratiques sur la versionning des documents (Git et GitHub) et les docs computationnels.
+Parties pratiques sur la versionning des documents (Git et GitHub) et les documents  computationnels.
 
 ---
 class: inverse, center, middle
@@ -703,7 +698,7 @@ Au final, toujours se poser la question du rapport coût / bénéfice.
 
 # References
 &lt;a name=bib-allard&gt;&lt;/a&gt;[Allard, A.](#cite-allard) (2018). _La crise de
-la rÃ©plicabilitÃ©_. URL:
+la réplicabilité_. URL:
 [https://laviedesidees.fr/La-crise-de-la-replicabilite.html](https://laviedesidees.fr/La-crise-de-la-replicabilite.html).
 
 &lt;a name=bib-Baker2016&gt;&lt;/a&gt;[Baker, M.](#cite-Baker2016) (2016). "1, 500
