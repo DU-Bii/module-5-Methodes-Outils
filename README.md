@@ -32,9 +32,7 @@
 
 | Supports | Formats |
 |--------------------------------------------------|--------|
-| INTRODUCTION AU SÉQUENÇAGE À HAUT DÉBIT POUR LA GÉNOMIQUE 1 | [[pdf](seance1_NGS/NGS_part1.pdf)]  |
-| INTRODUCTION AU SÉQUENÇAGE À HAUT DÉBIT POUR LA GÉNOMIQUE 2 | [[pdf](seance1_NGS/NGS_part2.pdf)] |
-| INTRODUCTION AU SÉQUENÇAGE À HAUT DÉBIT POUR LA GÉNOMIQUE 3 | [[pdf](seance1_NGS/NGS_part3.pdf)] |
+| INTRODUCTION AU SÉQUENÇAGE À HAUT DÉBIT POUR LA GÉNOMIQUE 1 | [[pdf](seance1_NGS/20210308_DUBII_THERMES.pdf)]  |
 | First steps with NGS data | [[html](seance1_NGS/slides.html)] |
 | TP | [[html](seance1_NGS/TP.html)] |
 
