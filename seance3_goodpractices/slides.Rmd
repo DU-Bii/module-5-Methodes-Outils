@@ -255,9 +255,11 @@ Séparer
 ---
 # Organiser son espace de travail (2)
 
-![](images/wilson-box1.png)
+```{r, out.width="50%",echo=FALSE, fig.align="center", fig.cap= ""}
+knitr::include_graphics("images/Infographic_Data_Management_v02-02_KH.png")
+```
 
-Source : `r Citep(bib, "Wilson")` 
+Source : [Twitter Kira Höffler](https://twitter.com/KiraHoeffler/status/1367804034413920259) | [Version PDF](images/Infographic_Data_Management_v02-02_KH.pdf) 
 
 ---
 class: inverse, center, middle
