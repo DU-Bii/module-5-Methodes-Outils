@@ -49,11 +49,13 @@
 - Date : 10 mars 2021
 - Horaires : 14h30 - 17h30
 - Intervenants : Valentin Loux, Olivier Rué, Cédric Midoux
-- Titre :Bonnes pratiques en bioinformatique : (essayer) d'aller vers plus de reproductibilité
+- Titre : Bonnes pratiques en bioinformatique : (essayer) d'aller vers plus de reproductibilité
+
 | Supports | Formats |
 |--------------------------------------------------|--------|
-|  Bonnes pratiques en bioinformatique : (essayer) d'aller vers plus de reproductibilité | [[html](seance3_goodpractices/slides.html)]  |
+| Bonnes pratiques en bioinformatique : (essayer) d'aller vers plus de reproductibilité | [[html](seance3_goodpractices/slides.html)]  |
 | TP | [[html](seance3_goodpractices/TP.html)] |
+
 <!--
 ### [Séance 4 - Métabolomics](https://github.com/DU-Bii/module-5-Methodes-Outils/tree/master/seance3)
 
