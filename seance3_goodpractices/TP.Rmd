@@ -431,9 +431,27 @@ Les options associées à chaque chunks sont disponible avec la roue crantée.
 
 Suivant l'interlocuteur, partagez le `.Rmd` ou le `.html`
 
+
+
+
 ---
 
-# Bonus : se connecter en ssh au cluster de l'IFB grace aux clés ssh
+# Bonus 1: configurer Git sur votre poste local (ou votre ordinateur perso) et versionner des fichiers
+
+
+Vous pouvez cloner *en local* votre dépôt Git et le modifier depuis le poste local.
+une fois la modification faite, la pousser avec un `git push`.
+
+- Observer sur le dépot centralisé Github que les modifications ont bien été prises en compte
+- Les raptrier sur votre dépôt IFB, depuis la ligne de commande ou le serveur Rstudio
+
+
+
+
+
+---
+
+# Bonus 2 : se connecter en ssh au cluster de l'IFB grace aux clés ssh
 
 Comme l'on a utiliser les clés SSH pour se connecter à GitHub depuis l'IFB, il est possible de se connecter à l'IFB depuis votre ordinateur.
 
@@ -452,7 +470,7 @@ ssh-copy-id -i id_rsa.pub <login>@core.cluster.france-bioinformatique.fr
 ssh <login>@core.cluster.france-bioinformatique.fr
 ```
 
-* La liste des clés autorisées est regrouppé dans `~/.ssh/authorized_keys`
+* La liste des clés autorisées est regroupé dans `~/.ssh/authorized_keys`
 
 * Le bonus du bonus : utiliser des alias. On peut renseigner dans le fichier `.ssh/config` des paramètres de connexion tel le login et l'adresse du serveur. Voici un exemple de `.ssh/config` :
 
