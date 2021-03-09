@@ -26,16 +26,17 @@ output:
 ssh -X login@core.cluster.france-bioinformatique.fr
 ```
 
-* Vérifier si l'on dispose déjà d'une paire de clés (elles sont dans le dossier `~/.ssh.`)
+* Vérifier si l'on dispose déjà d'une paire de clés (elles sont dans le dossier `~/.ssh`)
 ```{bash, eval=FALSE}
 ls -al ~/.ssh
 ```
 Elles vont par paires comme par exemple :
+
   * `id_rsa` et `id_rsa.pub`
   * `id_ecdsa` et `id_ecdsa.pub`
   * `id_ed25519` et `id_ed25519.pub`
 
-* Si vous n'avez pas de celf existante, générer la paire de clés avec `ssh-keygen` :
+* Si vous n'avez pas de clé existante, générer la paire de clés avec `ssh-keygen` :
 ```{bash, eval=FALSE}
 ssh-keygen -t rsa -b 4096 -C "your_email@example.com"
 ```
@@ -43,13 +44,9 @@ ssh-keygen -t rsa -b 4096 -C "your_email@example.com"
 
 # Configurer le lien entre votre clef et Github
 
-Pour pouvoir effectuer des opérations sur Github (clone, push, pull) à partir de git sous un terminal, il vous faut configurer votre compte github. 
+Pour pouvoir effectuer des opérations sur GitHub (clone, push, pull) à partir de git sous un terminal, il vous faut configurer votre compte GitHub.
 
-L'authentification des operations menées à partir de Git sur Github passe exclusivement par l'échange de clefs ssh. Il vous faut donc faire connaitre à Github votre clef **publique** en la copiant dans son interface.
-
-
-
-
+L'authentification des opérations menées à partir de Git sur Github passe exclusivement par l'échange de clefs ssh. Il vous faut donc faire connaitre à Github votre clef **publique** en la copiant dans son interface.
 
 * Renseigner la clé publique sur GitHub, via l'interface graphique : https://github.com/settings/keys 
 ```{bash, eval=FALSE}
@@ -60,7 +57,7 @@ cat ~/.ssh/id_rsa.pub
 * vérifier que tout fonctionne :
 ```{bash, eval=FALSE}
  ssh -T git@github.com
-# A la première commexion, vous pouvez voir un warni,g de ce type :
+# A la première connexion, vous pouvez voir un warning de ce type :
 #> The authenticity of host 'github.com (IP ADDRESS)' can't be established.
 #> RSA key fingerprint is SHA256:nThbg6kXUpJWGl7E1IGOCspRomTxdCARLviKw6E5SY8.
 #> Are you sure you want to continue connecting (yes/no)?
@@ -71,9 +68,7 @@ cat ~/.ssh/id_rsa.pub
 
 ```
 
-
 [Procédure détaillée Mac, Windows, Linux](https://docs.github.com/en/github/authenticating-to-github/connecting-to-github-with-ssh)
-
 
 # Versionner ses documents avec Git
 
@@ -92,7 +87,7 @@ knitr::include_graphics("images/github-create-repo.png")
 knitr::include_graphics("images/github-create-repo-2.png")
 ```
 
-Notez la première ligne avec l'adresse pour récupérer le dépôt avec l'option SSH.
+Notez la première ligne avec l'adresse pour récupérer le dépôt en sélectionnant le mode SSH.
 
 
 Remarque : Il est aussi possible de faire cela en localement avec `git init` mais dans ce cas il faudra ensuite lier ce dépôt à un remote distant si l'on le souhaite. Nous vous conseillons plutôt de créer un dépot vide coté GitHub, puis de le cloner en local (partie suivante)
@@ -100,8 +95,8 @@ Remarque : Il est aussi possible de faire cela en localement avec `git init` mai
 ```{bash, eval=FALSE}
 mkdir testRepo
 cd testRepo
-git init
 # Initialized empty Git repository in /Users/vloux/tmp/testRepo/.git/
+git init
 
 # Add a new local git repo to an existing and empty Github repo : 
 git remote add origin git@github.com:vloux/testRepo.git
@@ -111,7 +106,6 @@ git remote -v
 
 git branch -M main
 git push -u origin main
-
 ```
 
 ## Cloner le dépôt depuis GitHub vers l'IFB
@@ -269,7 +263,7 @@ cat README.md
 équivalent à :
  
 ```{bash, eval=FALSE}
-git pull # fetch¨+ merge
+git pull # fetch + merge
 ```
 
 ## Le journal des modifications
@@ -392,7 +386,8 @@ git branch
     - Git
     - Repository URL (clone with SSH : `git@github.com: ...`) et Subdirectory : `~/M5S3/RStudio`
 
-RStudio-IFB va utiliser la même clé SSH `~/.ssh/id_rsa`. On peut avoir plus d'informations en se rendant dans Tools > Global Options > Git
+RStudio-IFB va utiliser la même clé SSH `~/.ssh/id_rsa`.  
+On peut avoir plus d'informations en se rendant dans Tools > Global Options > Git
     
 3. Explorez le dépôt depuis ce 3e device remote 
 
@@ -413,13 +408,14 @@ Grâce à l'onglet git de Rstudio, vous pouvez suivre l'état des fichiers, comm
 Chaque chunk peut être exécuté individuellement grâce à la flèche verte.  
 Les options associées à chaque chunks sont disponible avec la roue crantée.
 
-5. Modifier le document (en plusieurs commit)
+5. Modifier le document (en plusieurs commits)
     - ajoutez un chunk `knitr::kable(head(iris))` pour visualiser un table
     - ajoutez un chunk `plot(cars)` pour un plot
-    - ajoutez des commentaires
-    - puis commitez les modifications.
+    - ajoutez un chunk bash `pwd` par exemple
+    - ajoutez des commentaires mis en forme avec markdown
+    - ajoutez une formule tel que `$\Delta = b^2 - 4ac$`
 
-6. Lorsque vous êtes satisfait de votre raport, générez la version HTML en cliquant sur Knit. Commitez, pushez, ...
+6. Lorsque vous êtes satisfait de votre rapport, générez la version HTML en cliquant sur `Knit`. Commitez, pushez, ...
 
 7. Visualisez les modifications côté GitHub
 
@@ -431,23 +427,15 @@ Les options associées à chaque chunks sont disponible avec la roue crantée.
 
 Suivant l'interlocuteur, partagez le `.Rmd` ou le `.html`
 
-
-
-
 ---
 
 # Bonus 1: configurer Git sur votre poste local (ou votre ordinateur perso) et versionner des fichiers
 
-
 Vous pouvez cloner *en local* votre dépôt Git et le modifier depuis le poste local.
 une fois la modification faite, la pousser avec un `git push`.
 
-- Observer sur le dépot centralisé Github que les modifications ont bien été prises en compte
-- Les raptrier sur votre dépôt IFB, depuis la ligne de commande ou le serveur Rstudio
-
-
-
-
+- Observer sur le dépôt centralisé GitHub que les modifications ont bien été prises en compte
+- Les rapatrier sur votre dépôt IFB, depuis la ligne de commande ou le serveur Rstudio
 
 ---
 
@@ -472,7 +460,7 @@ ssh <login>@core.cluster.france-bioinformatique.fr
 
 * La liste des clés autorisées est regroupé dans `~/.ssh/authorized_keys`
 
-* Le bonus du bonus : utiliser des alias. On peut renseigner dans le fichier `.ssh/config` des paramètres de connexion tel le login et l'adresse du serveur. Voici un exemple de `.ssh/config` :
+* *Le bonus du bonus* : utiliser des alias. On peut renseigner dans le fichier `.ssh/config` des paramètres de connexion tel le login et l'adresse du serveur. Voici un exemple de `.ssh/config` :
 
 ```
 Host *
@@ -499,3 +487,8 @@ ssh ifb
 Vous pouvez mutualiser votre paire de clé depuis plusieurs terminaux mais la clé privée est extrêmement confidentielle et il faut être très vigilent aux fuites et pertes.
 
 # References
+
+* [Mémo Git](https://github.github.com/training-kit/downloads/github-git-cheat-sheet.pdf) et [VF](https://github.github.com/training-kit/downloads/fr/github-git-cheat-sheet.pdf)
+* [Mémo Markdown](https://guides.github.com/pdfs/markdown-cheatsheet-online.pdf)
+* [Mémo RMarkdown](https://www.rstudio.org/links/r_markdown_cheat_sheet)
+* [Mémo Jupyter Notebook](https://datacamp-community-prod.s3.amazonaws.com/48093c40-5303-45f4-bbf9-0c96c0133c40)
