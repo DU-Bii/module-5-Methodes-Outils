@@ -95,7 +95,7 @@ knitr::include_graphics("images/github-create-repo-2.png")
 Notez la première ligne avec l'adresse pour récupérer le dépôt avec l'option SSH.
 
 
-Remarque : Il est aussi possible de faire cela en localement avec `git init` mais dans ce cas il faudra ensuite lier ce dépôt à un remote distant si l'on le souhaite. Nous vous coensiellons plutôt de créer un dépot vide coté GitHub, puis de le cloner en local (partie suivante)
+Remarque : Il est aussi possible de faire cela en localement avec `git init` mais dans ce cas il faudra ensuite lier ce dépôt à un remote distant si l'on le souhaite. Nous vous conseillons plutôt de créer un dépot vide coté GitHub, puis de le cloner en local (partie suivante)
 
 ```{bash, eval=FALSE}
 mkdir testRepo
