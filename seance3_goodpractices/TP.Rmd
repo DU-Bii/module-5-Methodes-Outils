@@ -35,17 +35,45 @@ Elles vont par paires comme par exemple :
   * `id_ecdsa` et `id_ecdsa.pub`
   * `id_ed25519` et `id_ed25519.pub`
 
-* Générer la paire de clés avec `ssh-keygen` :
+* Si vous n'avez pas de celf existante, générer la paire de clés avec `ssh-keygen` :
 ```{bash, eval=FALSE}
 ssh-keygen -t rsa -b 4096 -C "your_email@example.com"
 ```
+
+
+# Configurer le lien entre votre clef et Github
+
+Pour pouvoir effectuer des opérations sur Github (clone, push, pull) à partir de git sous un terminal, il vous faut configurer votre compte github. 
+
+L'authentification des operations menées à partir de Git sur Github passe exclusivement par l'échange de clefs ssh. Il vous faut donc faire connaitre à Github votre clef **publique** en la copiant dans son interface.
+
+
+
+
 
 * Renseigner la clé publique sur GitHub, via l'interface graphique : https://github.com/settings/keys 
 ```{bash, eval=FALSE}
 cat ~/.ssh/id_rsa.pub
 ```
 
-[Procédure détaillée](https://docs.github.com/en/github/authenticating-to-github/connecting-to-github-with-ssh)
+
+* vérifier que tout fonctionne :
+```{bash, eval=FALSE}
+ ssh -T git@github.com
+# A la première commexion, vous pouvez voir un warni,g de ce type :
+#> The authenticity of host 'github.com (IP ADDRESS)' can't be established.
+#> RSA key fingerprint is SHA256:nThbg6kXUpJWGl7E1IGOCspRomTxdCARLviKw6E5SY8.
+#> Are you sure you want to continue connecting (yes/no)?
+
+# Verify that the fingerprint in the message you see matches GitHub's RSA public key fingerprint ( https://docs.github.com/en/github/authenticating-to-github/githubs-ssh-key-fingerprints ). If it does, then type yes:
+#> Hi username! You've successfully authenticated, but GitHub does not
+#> provide shell access.
+
+```
+
+
+[Procédure détaillée Mac, Windows, Linux](https://docs.github.com/en/github/authenticating-to-github/connecting-to-github-with-ssh)
+
 
 # Versionner ses documents avec Git
 
@@ -66,13 +94,24 @@ knitr::include_graphics("images/github-create-repo-2.png")
 
 Notez la première ligne avec l'adresse pour récupérer le dépôt avec l'option SSH.
 
-Il est aussi possible de faire cela en localement avec `git init` mais dans ce cas il faudra ensuite lié ce dépôt à un remote distant si l'on le souhaite.
+
+Remarque : Il est aussi possible de faire cela en localement avec `git init` mais dans ce cas il faudra ensuite lier ce dépôt à un remote distant si l'on le souhaite. Nous vous coensiellons plutôt de créer un dépot vide coté GitHub, puis de le cloner en local (partie suivante)
 
 ```{bash, eval=FALSE}
 mkdir testRepo
 cd testRepo
 git init
 # Initialized empty Git repository in /Users/vloux/tmp/testRepo/.git/
+
+# Add a new local git repo to an existing and empty Github repo : 
+git remote add origin git@github.com:vloux/testRepo.git
+
+#Verify new remote
+git remote -v
+
+git branch -M main
+git push -u origin main
+
 ```
 
 ## Cloner le dépôt depuis GitHub vers l'IFB
