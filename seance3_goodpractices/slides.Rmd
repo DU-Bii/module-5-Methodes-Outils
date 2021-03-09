@@ -30,34 +30,36 @@ bib <- ReadBib(file.name, .Encoding = "UTF-8")
 # Programme de l'après-midi
 <!--  14-17h -->
 
-- Intro : Reproductibilité, science ouverte <!-- 25 mn) -->
+- Intro : Quelques généralités sur la reproductibilité et la démarche science ouverte <!-- 25 mn) -->
 
 - Partie 1 : Organiser son espace de travail  <!-- 5 mn -->
 
 - Partie 2 : Versionner ses documents <!-- 45 mn -->
+
   - TP
 
 <!-- 15h45 Pause -->
+
 - Partie 3 : Des langages à faible balisage pour faciliter la traçabilité et la prise de note <!-- 30 mn -->
 
 - Partie 4 : Utilisation de documents computationels -- Notebook <!-- 45 mn -->
   - TP
 
-- Conclusion et pour aller + loin <!-- 15 mn -->
+- Conclusion &  aller + loin <!-- 15 mn -->
 
 ---
 # Tout le monde a déjà eu cette expérience
 
 --
 .pull-left[
-```{r, out.width = "100%", echo=FALSE, fig.align="center", fig.cap= "Un Papier interessant"}
+```{r, out.width = "100%", echo=FALSE, fig.align="center", fig.cap= "Un article interessant"}
 knitr::include_graphics("images/monnet-loux-plosone-2010.png")
 ```
 ]
 
 --
 .pull-right[
-```{r, out.width = "100%", echo=FALSE, fig.align="center", fig.cap= "Un materiel et méthode décevant"}
+```{r, out.width = "100%", echo=FALSE, fig.align="center", fig.cap= "Un matériel et méthodes décevant"}
 knitr::include_graphics("images/monnet-loux-plosone-mat-met.png")
 ```
 ]
@@ -68,14 +70,14 @@ knitr::include_graphics("images/monnet-loux-plosone-mat-met.png")
 ---
 # Crise de la reproductibilité
 
-- Problème général ( "Reproducibility crisis")
-  - Remis en avant par les science sociales ( pyschologie )
-  - Étendu à l'ensemble des disciplines
+- Problème **général**,  "Reproducibility Crisis"
+  - Remis en avant par les science sociales, notamment la psychologie
+  - Étendu à l'ensemble des disciplines scientifiques
 
-Mais un problème qui n'est pas nouveau :
+Mais un problème qui n'est **pas nouveau** :
   - Expériences de la pompe à vide au XVIIe siècle (von Guericke et Boyle) 
 
-```{r, out.width = "50%", echo=FALSE, fig.align="center",fig.cap="Experiences des hemisphères de Magdebourg"}
+```{r, out.width = "40%", echo=FALSE, fig.align="center",fig.cap="Experiences des hemisphères de Magdebourg"}
 knitr::include_graphics("images/Magdeburger-Halbkugeln.jpg")
 ```
 
@@ -156,7 +158,7 @@ knitr::include_graphics("images/reproducible-data-analysis.png")
 
 # FAIR : un pré-requis à la reproductibilité
 .pull-left[
-```{r, out.width = "50%", echo=FALSE, fig.align="left", fig.cap= "Findale Accessible Inetroprable Reusable "}
+```{r, out.width = "50%", echo=FALSE, fig.align="left", fig.cap= "Findale Accessible Interoperable Reusable "}
 knitr::include_graphics("images/fair.png")
 ```
 ]
@@ -188,17 +190,17 @@ knitr::include_graphics("images/reproducibility-spectrum.png")
 Source : `r Citep(bib, "piazzi")` 
 
 ---
-# L'outillage
+# En pratique, que faire, quels outils utiliser ?
 
-Aller de façon pragmatique vers une documentation accrue de ce que l'on fait (comment, pourquoi) et des données que l'on utilise et produit. 
+Aller de façon **pragmatique** vers une documentation accrue de ce que l'on fait (comment, pourquoi) et des données que l'on utilise et produit. 
 
 - Rendre accessible ses données à soit, aux partenaires, à tous) :
-  - Data Management Plan (Opidor)
+  - Documenter collectivement ses pratiques de gestion de données (responsabilités, formats, cycle de vie, archivage…) dns un Data Management Plan qui doit être **vivant** et partagé.(Opidor) 
   - Dépôt internationaux (ENA, NCBI) pour les données specialisées
-  - DataVerse pour les autres données
+  - DataVerse, Figshare, Zenodo ou autre  pour les autres données
 - Définir et fixer les versions des outils utilisés :
-  - conda, bioconda
-  - singularity, docker
+  - Conda, Bioconda
+  - Singularity, Docker
   - Machine Virtuelle
 - Décrire son workflow d'analyse, le rendre portable : 
   - Galaxy
@@ -247,6 +249,7 @@ Séparer
 
 - Avoir un copie de sauvegarde de ses données
 - Mettre le repertoire et les fichiers de données en lecture seule
+- Avoir une convention de nommage de ses fichiers
 ]
 
 ---
@@ -334,15 +337,23 @@ class: center, middle
 
 * Méthode de chiffrement asymétrique qui fonctionne avec une paire de clé :
   * une clé *publique* qui sert à chiffrer (et que vous pouvez partager à l'extérieur)
-  * une clé *privée* qui sert à déchiffrer (et que vous gardez précieusement secrète)
+  * une clé *privée* qui sert à déchiffrer (et que vous gardez précieusement secrète : `chmod 400 ~/.ssh/id_rsa`)
 
 * Permet d'établir un tunnel sécurisé entre deux machines
 
-*** 
-* On utilise `ssh-keygen -t rsa` pour générer la paire de clé
-* Puis `ssh-copy-id -i id_rsa.pub <login>@<server>` pour envoyer la clé publique
+---
+# Comment générer une clef, en pratique :
+* Sous Linux, on utilise `ssh-keygen -t rsa` pour générer la paire de clé
+* Puis `ssh-copy-id -i id_rsa.pub <login>@<server>` si on veut envoyer la clé publique sur un serveur distant
 * Maintenant on peut se connecter de manière sécurisée via `ssh <login>@<server>` sans renseigner de clé
-* Pour GitHub, on renseigne les clés publiques via l'interface graphique
+
+* Pour **GitHub**, **Rstudio** on renseigne les clés publiques via l'interface graphique
+
+---
+class: center, middle
+
+# TP : générer sa clef ssh  
+---
 
 ---
 class: center, middle
