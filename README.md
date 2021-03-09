@@ -42,7 +42,15 @@
 - Date : 10 mars 2021
 - Horaires : 9h30 - 12h30
 - Intervenants : Thibaut Léger
-- Titre : 
+- Titre : Production of omics data: Proteomics
+
+
+| Supports | Formats |
+|--------------------------------------------------|--------|
+|  Production of omics data: Proteomics| [[pdf](seance2_proteomics/PDF/100321-DUBii-TLeger.pdf)]  |
+| TD module production de données omics – protéomique | [[pdf](seance2_proteomics/TP/DUBii-080321-TD.pdf)] |
+| DATA | [[MGF-test-Mascot.txt](seance2_proteomics/DATA/MGF-test-Mascot.txt)]   [[gene_association.cgd](seance2_proteomics/DATA/gene_association.cgd)] |
+
 
 ###  [Séance 3 - Bonnes pratiques](https://github.com/DU-Bii/module-5-Methodes-Outils/tree/master/seance3_goodpractices)
 

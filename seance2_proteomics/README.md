@@ -1,1 +1,1 @@
-# Séance 2
+# Séance 2 - protéomique
