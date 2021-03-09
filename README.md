@@ -37,14 +37,14 @@
 | TP | [[html](seance1_NGS/TP.html)] |
 
 
-[Séance 2 - Protéomique](https://github.com/DU-Bii/module-5-Methodes-Outils/tree/master/seance2_proteomics)
+###  [Séance 2 - Protéomique](https://github.com/DU-Bii/module-5-Methodes-Outils/tree/master/seance2_proteomics)
 
 - Date : 10 mars 2021
 - Horaires : 9h30 - 12h30
 - Intervenants : Thibaut Léger
 - Titre : 
 
- [Séance 3 - Bonnes pratiques](https://github.com/DU-Bii/module-5-Methodes-Outils/tree/master/seance3_goodpractices)
+###  [Séance 3 - Bonnes pratiques](https://github.com/DU-Bii/module-5-Methodes-Outils/tree/master/seance3_goodpractices)
 
 - Date : 10 mars 2021
 - Horaires : 14h30 - 17h30
