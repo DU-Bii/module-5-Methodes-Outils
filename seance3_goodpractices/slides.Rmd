@@ -34,12 +34,11 @@ bib <- ReadBib(file.name, .Encoding = "UTF-8")
 
 - Partie 1 : Organiser son espace de travail  <!-- 5 mn -->
 
-- Partie 2 : Des langages à faible balisage pour faciliter la traçabilité et la prise de note <!-- 30 mn -->
-
-- Partie 3 : Versionner ses documents <!-- 45 mn -->
+- Partie 2 : Versionner ses documents <!-- 45 mn -->
   - TP
 
 <!-- 15h45 Pause -->
+- Partie 3 : Des langages à faible balisage pour faciliter la traçabilité et la prise de note <!-- 30 mn -->
 
 - Partie 4 : Utilisation de documents computationels -- Notebook <!-- 45 mn -->
   - TP
@@ -257,87 +256,9 @@ Séparer
 
 Source : `r Citep(bib, "Wilson")` 
 
-
 ---
 class: inverse, center, middle
-# Partie 2 : Des langages à faible balisage pour faciliter la traçabilité et la prise de note
-
----
-# Partie 2 : Des langages à faible balisage pour faciliter la traçabilité et la prise de note
-
-*Comment mettre en forme et structurer simplement un document texte ?*  
-
---
-&rarr; avec un balisage faible tel que *Markdown* 
-
---
-
-.pull-left[
-- Permet :
-  - Organiser les titres de sections
-  - Italique / gras / souligné
-  - Générer des listes
-  - Ajouter des tableaux
-  - Insertion d'image et de blocs de code
-
-- Texte codé en UTF-8 (assure une pérennité, lisibilité et portabilité) facilement versionnable.
-- Les langages de balisage permettent de mettre en forme convenablement le fichier pour un meilleur confort de lecture.
-
-]
-
---
-
-.pull-right[
-_Exemple illustrant la simplification du balisage :_
-
-- HTML
-
-```{bash, eval=FALSE}
-  <ul>
-    <li>item1</li>
-    <li>item2</li>
-  </ul>
-```
-
-- Markdown
-
-```{bash, eval=FALSE}
-  - item1
-  - item2
-```
-  
-]
-
----
-# Partie 2 : Markdown - exemples de mise en forme 
-
-````
-# Titre H1
-## Sous-titre H2
-### Sous-titre H3
-
-*italique*, **gras** et `code`
-
-> Citations
-
-```
-bloc de code
-```
-
-* liste
-  * item
-  * item
-  
-[lien](https://fr.wikipedia.org)
-![](https://migale.inrae.fr/sites/default/files/migale.png) 
-      #lien vers une image en ligne ou dans l'espace de travail
-````
-
-Gardez ce [mémo](https://guides.github.com/pdfs/markdown-cheatsheet-online.pdf) à porté de main !
-
----
-class: inverse, center, middle
-# Partie 3 : Versionner ses documents 
+# Partie 2 : Versionner ses documents 
 
 ---
 ```{r, out.width="40%", echo=FALSE, fig.align="center", fig.cap= "Piled Higher and Deeper by Jorge Cham. phdcomics"}
@@ -345,7 +266,7 @@ knitr::include_graphics("images/phd101212s.gif")
 ```
 
 ---
-# Partie 3 : Versionner ses documents 
+# Partie 2 : Versionner ses documents 
 
 .pull-left[
 - Les documents évoluent, il est nécéssaire de suivre les versions 
@@ -476,6 +397,81 @@ knitr::include_graphics("images/github_desktop_4.png")
 class: center, middle
 
 ![coffee-break](https://www.nicepng.com/png/full/66-667402_coffee-break-logo-png.png)
+---
+class: inverse, center, middle
+# Partie 3 : Des langages à faible balisage pour faciliter la traçabilité et la prise de note
+
+---
+# Partie 3 : Des langages à faible balisage pour faciliter la traçabilité et la prise de note
+
+*Comment mettre en forme et structurer simplement un document texte ?*  
+
+--
+&rarr; avec un balisage faible tel que *Markdown* 
+
+--
+
+.pull-left[
+- Permet :
+  - Organiser les titres de sections
+  - Italique / gras / souligné
+  - Générer des listes
+  - Ajouter des tableaux
+  - Insertion d'image et de blocs de code
+
+- Texte codé en UTF-8 (assure une pérennité, lisibilité et portabilité) facilement versionnable.
+- Les langages de balisage permettent de mettre en forme convenablement le fichier pour un meilleur confort de lecture.
+
+]
+
+--
+
+.pull-right[
+_Exemple illustrant la simplification du balisage :_
+
+- HTML
+
+```{bash, eval=FALSE}
+  <ul>
+    <li>item1</li>
+    <li>item2</li>
+  </ul>
+```
+
+- Markdown
+
+```{bash, eval=FALSE}
+  - item1
+  - item2
+```
+]
+
+---
+# Partie 3 : Markdown - exemples de mise en forme 
+
+````
+# Titre H1
+## Sous-titre H2
+### Sous-titre H3
+
+*italique*, **gras** et `code`
+
+> Citations
+
+```
+bloc de code
+```
+
+* liste
+  * item
+  * item
+  
+[lien](https://fr.wikipedia.org)
+![](https://migale.inrae.fr/sites/default/files/migale.png) 
+      #lien vers une image en ligne ou dans l'espace de travail
+````
+
+Gardez ce [mémo](https://guides.github.com/pdfs/markdown-cheatsheet-online.pdf) à porté de main !
 
 ---
 class: inverse, center, middle

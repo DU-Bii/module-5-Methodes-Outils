@@ -5,6 +5,7 @@
     <meta charset="utf-8" />
     <meta name="author" content="Valentin Loux - Cédric Midoux - Olivier Rué" />
     <meta name="date" content="2021-03-08" />
+    <script src="slides_files/header-attrs/header-attrs.js"></script>
     <link href="slides_files/remark-css/default.css" rel="stylesheet" />
     <link href="slides_files/remark-css/default-fonts.css" rel="stylesheet" />
     <link rel="stylesheet" href="../css/styles.css" type="text/css" />
@@ -32,12 +33,11 @@ class: hide-logo
 
 - Partie 1 : Organiser son espace de travail  &lt;!-- 5 mn --&gt;
 
-- Partie 2 : Des langages à faible balisage pour faciliter la traçabilité et la prise de note &lt;!-- 30 mn --&gt;
-
-- Partie 3 : Versionner ses documents &lt;!-- 45 mn --&gt;
+- Partie 2 : Versionner ses documents &lt;!-- 45 mn --&gt;
   - TP
 
 &lt;!-- 15h45 Pause --&gt;
+- Partie 3 : Des langages à faible balisage pour faciliter la traçabilité et la prise de note &lt;!-- 30 mn --&gt;
 
 - Partie 4 : Utilisation de documents computationels -- Notebook &lt;!-- 45 mn --&gt;
   - TP
@@ -265,89 +265,9 @@ Séparer
 
 Source : &lt;a name=cite-Wilson&gt;&lt;/a&gt;([Wilson, Bryan, Cranston, Kitzes, Nederbragt, and Teal, 2017](https://doi.org/10.1371/journal.pcbi.1005510)) 
 
-
 ---
 class: inverse, center, middle
-# Partie 2 : Des langages à faible balisage pour faciliter la traçabilité et la prise de note
-
----
-# Partie 2 : Des langages à faible balisage pour faciliter la traçabilité et la prise de note
-
-*Comment mettre en forme et structurer simplement un document texte ?*  
-
---
-&amp;rarr; avec un balisage faible tel que *Markdown* 
-
---
-
-.pull-left[
-- Permet :
-  - Organiser les titres de sections
-  - Italique / gras / souligné
-  - Générer des listes
-  - Ajouter des tableaux
-  - Insertion d'image et de blocs de code
-
-- Texte codé en UTF-8 (assure une pérennité, lisibilité et portabilité) facilement versionnable.
-- Les langages de balisage permettent de mettre en forme convenablement le fichier pour un meilleur confort de lecture.
-
-]
-
---
-
-.pull-right[
-_Exemple illustrant la simplification du balisage :_
-
-- HTML
-
-
-```bash
-  &lt;ul&gt;
-    &lt;li&gt;item1&lt;/li&gt;
-    &lt;li&gt;item2&lt;/li&gt;
-  &lt;/ul&gt;
-```
-
-- Markdown
-
-
-```bash
-  - item1
-  - item2
-```
-  
-]
-
----
-# Partie 2 : Markdown - exemples de mise en forme 
-
-````
-# Titre H1
-## Sous-titre H2
-### Sous-titre H3
-
-*italique*, **gras** et `code`
-
-&gt; Citations
-
-```
-bloc de code
-```
-
-* liste
-  * item
-  * item
-  
-[lien](https://fr.wikipedia.org)
-![](https://migale.inrae.fr/sites/default/files/migale.png) 
-      #lien vers une image en ligne ou dans l'espace de travail
-````
-
-Gardez ce [mémo](https://guides.github.com/pdfs/markdown-cheatsheet-online.pdf) à porté de main !
-
----
-class: inverse, center, middle
-# Partie 3 : Versionner ses documents 
+# Partie 2 : Versionner ses documents 
 
 ---
 &lt;div class="figure" style="text-align: center"&gt;
@@ -356,7 +276,7 @@ class: inverse, center, middle
 &lt;/div&gt;
 
 ---
-# Partie 3 : Versionner ses documents 
+# Partie 2 : Versionner ses documents 
 
 .pull-left[
 - Les documents évoluent, il est nécéssaire de suivre les versions 
@@ -489,6 +409,83 @@ Utiliser une interface conviviale :
 class: center, middle
 
 ![coffee-break](https://www.nicepng.com/png/full/66-667402_coffee-break-logo-png.png)
+---
+class: inverse, center, middle
+# Partie 3 : Des langages à faible balisage pour faciliter la traçabilité et la prise de note
+
+---
+# Partie 3 : Des langages à faible balisage pour faciliter la traçabilité et la prise de note
+
+*Comment mettre en forme et structurer simplement un document texte ?*  
+
+--
+&amp;rarr; avec un balisage faible tel que *Markdown* 
+
+--
+
+.pull-left[
+- Permet :
+  - Organiser les titres de sections
+  - Italique / gras / souligné
+  - Générer des listes
+  - Ajouter des tableaux
+  - Insertion d'image et de blocs de code
+
+- Texte codé en UTF-8 (assure une pérennité, lisibilité et portabilité) facilement versionnable.
+- Les langages de balisage permettent de mettre en forme convenablement le fichier pour un meilleur confort de lecture.
+
+]
+
+--
+
+.pull-right[
+_Exemple illustrant la simplification du balisage :_
+
+- HTML
+
+
+```bash
+  &lt;ul&gt;
+    &lt;li&gt;item1&lt;/li&gt;
+    &lt;li&gt;item2&lt;/li&gt;
+  &lt;/ul&gt;
+```
+
+- Markdown
+
+
+```bash
+  - item1
+  - item2
+```
+]
+
+---
+# Partie 3 : Markdown - exemples de mise en forme 
+
+````
+# Titre H1
+## Sous-titre H2
+### Sous-titre H3
+
+*italique*, **gras** et `code`
+
+&gt; Citations
+
+```
+bloc de code
+```
+
+* liste
+  * item
+  * item
+  
+[lien](https://fr.wikipedia.org)
+![](https://migale.inrae.fr/sites/default/files/migale.png) 
+      #lien vers une image en ligne ou dans l'espace de travail
+````
+
+Gardez ce [mémo](https://guides.github.com/pdfs/markdown-cheatsheet-online.pdf) à porté de main !
 
 ---
 class: inverse, center, middle
@@ -698,7 +695,7 @@ Au final, toujours se poser la question du rapport coût / bénéfice.
 
 # References
 &lt;a name=bib-allard&gt;&lt;/a&gt;[Allard, A.](#cite-allard) (2018). _La crise de
-la réplicabilité_. URL:
+la rÃ©plicabilitÃ©_. URL:
 [https://laviedesidees.fr/La-crise-de-la-replicabilite.html](https://laviedesidees.fr/La-crise-de-la-replicabilite.html).
 
 &lt;a name=bib-Baker2016&gt;&lt;/a&gt;[Baker, M.](#cite-Baker2016) (2016). "1, 500

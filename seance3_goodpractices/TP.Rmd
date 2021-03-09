@@ -21,18 +21,33 @@ output:
 
 # Créer une clé ssh
 
+* Se connecter à au cluster :
 ```{bash, eval=FALSE}
-ssh-keygen -t rsa
-ssh-copy-id -i id_rsa.pub <login>@core.cluster.france-bioinformatique.fr
-ssh <login>@core.cluster.france-bioinformatique.fr
+ssh -X login@core.cluster.france-bioinformatique.fr
 ```
 
-* Pour GitHub, on renseigne les clés publiques via l'interface graphique : https://github.com/settings/keys 
+* Vérifier si l'on dispose déjà d'une paire de clés (elles sont dans le dossier `~/.ssh.`)
+```{bash, eval=FALSE}
+ls -al ~/.ssh
+```
+Elles vont par paires comme par exemple :
+  * `id_rsa` et `id_rsa.pub`
+  * `id_ecdsa` et `id_ecdsa.pub`
+  * `id_ed25519` et `id_ed25519.pub`
 
-Vous pouvez votre paire de clé depuis plusieurs terminaux mais la clé privée est extrêmement confidentielle et il faut être très vigilent aux fuites et pertes.
+* Générer la paire de clés avec `ssh-keygen` :
+```{bash, eval=FALSE}
+ssh-keygen -t rsa -b 4096 -C "your_email@example.com"
+```
+
+* Renseigner la clé publique sur GitHub, via l'interface graphique : https://github.com/settings/keys 
+```{bash, eval=FALSE}
+cat ~/.ssh/id_rsa.pub
+```
+
+[Procédure détaillée](https://docs.github.com/en/github/authenticating-to-github/connecting-to-github-with-ssh)
 
 # Versionner ses documents avec Git
-
 
 ## Créer un dépôt distant sur Github
 
@@ -49,7 +64,7 @@ knitr::include_graphics("images/github-create-repo.png")
 knitr::include_graphics("images/github-create-repo-2.png")
 ```
 
-Notez la premiere ligne avec l'adresse pour récupérer le dépôt avec l'option SSH.
+Notez la première ligne avec l'adresse pour récupérer le dépôt avec l'option SSH.
 
 Il est aussi possible de faire cela en localement avec `git init` mais dans ce cas il faudra ensuite lié ce dépôt à un remote distant si l'on le souhaite.
 
@@ -62,13 +77,16 @@ git init
 
 ## Cloner le dépôt depuis GitHub vers l'IFB
 
-```
-git clone git@github.com:... # git clone git@github.com:CedricMidoux/test.git
+```{bash, eval=FALSE}
+mkdir -p ~/M5S3/GitHub
+cd ~/M5S3/GitHub
+
+git clone git@github.com:... # git clone git@github.com:CedricMidoux/DuBii2021.git
 ```
 
 Le dépôt est vide et disponible localement.
 ```{bash, eval=FALSE}
-cd test/
+cd DuBii2021/
 ls -la
 # total 0
 # drwxrwxrwx 1 cmidoux cmidoux 4096 Mar  5 17:21 .
@@ -78,7 +96,7 @@ ls -la
 
 ## Ajouter un document (en local)
 
-On ajoute un premier fichier et on utilise `git status` pour connaitre l'état de notre dépôt.
+On ajoute un premier fichier et on utilise `git status` pour connaître l'état de notre dépôt.
 
 ```{bash, eval=FALSE}
 echo 'my first line' > firstFile
@@ -159,7 +177,7 @@ git push origin master #`git push` est suffisant par défaut
 # Compressing objects: 100% (2/2), done.
 # Writing objects: 100% (6/6), 487 bytes | 10.00 KiB/s, done.
 # Total 6 (delta 0), reused 0 (delta 0)
-# To github.com:CedricMidoux/test.git
+# To github.com:CedricMidoux/DuBii2021.git
 #  * [new branch]      master -> master
 ```
 
@@ -167,8 +185,8 @@ On peut lister les différents dépôts distants avec
 
 ```{bash, eval=FALSE}
 git remote -v
-# origin	git@github.com:CedricMidoux/test.git (fetch)
-# origin	git@github.com:CedricMidoux/test.git (push)
+# origin	git@github.com:CedricMidoux/DuBii2021.git (fetch)
+# origin	git@github.com:CedricMidoux/DuBii2021.git (push)
 ```
 
 ## Verification sur Github des infos
@@ -193,7 +211,7 @@ git fetch
 # remote: Compressing objects: 100% (8/8), done.
 # remote: Total 9 (delta 0), reused 0 (delta 0), pack-reused 0
 # Unpacking objects: 100% (9/9), 2.10 KiB | 7.00 KiB/s, done.
-# From github.com:CedricMidoux/test
+# From github.com:CedricMidoux/DuBii2021
 #    110b5a5..4606251  master     -> origin/master
 
 git merge
@@ -204,7 +222,7 @@ git merge
 #  create mode 100644 README.md
 
 cat README.md
-# # test
+# # DuBii2021
 # 
 # Ceci est le `README`. On peut facilement l'éditer en ligne avec du *Markdown* et commiter chaque changement ...
 ```
@@ -246,7 +264,7 @@ git diff 26bce3 # = git diff 26bce3 HEAD
 # --- a/README.md
 # +++ b/README.md
 # @@ -1,3 +1,3 @@
-#  # test
+#  # DuBii2021
 #  
 # -Ceci est le README. On peut facilement l'éditer en ligne
 # +Ceci est le `README`. On peut facilement l'éditer en ligne avec du *Markdown* et commiter chaque changement ...
@@ -273,7 +291,7 @@ git push --tags
 # Counting objects: 100% (1/1), done.
 # Writing objects: 100% (1/1), 168 bytes | 3.00 KiB/s, done.
 # Total 1 (delta 0), reused 0 (delta 0)
-# To github.com:CedricMidoux/test.git
+# To github.com:CedricMidoux/DuBii2021.git
 #  * [new tag]         version1 -> version1
 ```
 
@@ -320,6 +338,7 @@ git checkout master
 # Previous HEAD position was 110b5a5 ajout de la deuxième ligne
 # Switched to branch 'master'
 # Your branch is up to date with 'origin/master'.
+
 git branch
 # * master
 ```
@@ -327,12 +346,17 @@ git branch
 # Documents Computationel  : Rédaction d'un notebook avec RStudio
 
 1. Connectez vous au RStudio de l'IFB (https://rstudio.cluster.france-bioinformatique.fr/).
+
 2. Clonez votre projet :
     - New Project (en haut à droite)
     - Version Control
     - Git
-    - Repository URL (clone with SSH : `git@github.com: ...`)
+    - Repository URL (clone with SSH : `git@github.com: ...`) et Subdirectory : `~/M5S3/RStudio`
+
+RStudio-IFB va utiliser la même clé SSH `~/.ssh/id_rsa`. On peut avoir plus d'informations en se rendant dans Tools > Global Options > Git
+    
 3. Explorez le dépôt depuis ce 3e device remote 
+
 4. Créez un document R Markdown :
     - File 
     - New file
@@ -355,8 +379,11 @@ Les options associées à chaque chunks sont disponible avec la roue crantée.
     - ajoutez un chunk `plot(cars)` pour un plot
     - ajoutez des commentaires
     - puis commitez les modifications.
+
 6. Lorsque vous êtes satisfait de votre raport, générez la version HTML en cliquant sur Knit. Commitez, pushez, ...
+
 7. Visualisez les modifications côté GitHub
+
 8. Pour rentre une page HTML visualisable avec *GitHub Pages*
     - Dans les options du repo, dans le chapitre "GitHub Pages", activer la source correspondant à la branch `main` (ou master suivant votre configuration)
     - la page est disponible à l'adresse [https://[user].github.io/[repo]/[page].html](https://cedricmidoux.github.io/cookies/notebook.html)
@@ -366,5 +393,52 @@ Les options associées à chaque chunks sont disponible avec la roue crantée.
 Suivant l'interlocuteur, partagez le `.Rmd` ou le `.html`
 
 ---
+
+# Bonus : se connecter en ssh au cluster de l'IFB grace aux clés ssh
+
+Comme l'on a utiliser les clés SSH pour se connecter à GitHub depuis l'IFB, il est possible de se connecter à l'IFB depuis votre ordinateur.
+
+* On crée une nouvelle paire de clés
+```{bash, eval=FALSE}
+ssh-keygen -t rsa -b 4096 -C "your_email@example.com"
+```
+
+* On l'envoie de manière sécurisé en rentrant pour une dernière fois sa phrase de passe.
+```{bash, eval=FALSE}
+ssh-copy-id -i id_rsa.pub <login>@core.cluster.france-bioinformatique.fr
+```
+
+* Maintenant on peut se connecter plus facilement
+```{bash, eval=FALSE}
+ssh <login>@core.cluster.france-bioinformatique.fr
+```
+
+* La liste des clés autorisées est regrouppé dans `~/.ssh/authorized_keys`
+
+* Le bonus du bonus : utiliser des alias. On peut renseigner dans le fichier `.ssh/config` des paramètres de connexion tel le login et l'adresse du serveur. Voici un exemple de `.ssh/config` :
+
+```
+Host *
+	ForwardAgent yes
+	ForwardX11 yes
+	ForwardX11Trusted yes
+	ForwardX11Timeout 8h
+	ServerAliveInterval 120
+
+Host migale
+	HostName migale.jouy.inrae.fr
+	User <login>
+	
+Host ifb
+	HostName core.cluster.france-bioinformatique.fr
+	User <login>
+```
+
+* En combinant ceci et les clés SSH, on peut se connecter avec :
+```{bash, eval=FALSE}
+ssh ifb
+```
+
+Vous pouvez mutualiser votre paire de clé depuis plusieurs terminaux mais la clé privée est extrêmement confidentielle et il faut être très vigilent aux fuites et pertes.
 
 # References
