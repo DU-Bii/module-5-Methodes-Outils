@@ -51,7 +51,7 @@
 | TD module production de données omics – protéomique | [[pdf](seance2_proteomics/TP/DUBii-080321-TD.pdf)] |
 | DATA | [[MGF-test-Mascot.txt](seance2_proteomics/DATA/MGF-test-Mascot.txt)]   [[gene_association.cgd](seance2_proteomics/DATA/gene_association.cgd)] [[280520-Candida-albicans-protein-measurements-label-free.xlsx](seance2_proteomics/DATA/280520-Candida-albicans-protein-measurements-label-free.xlsx)]|
 
-280520-Candida-albicans-protein-measurements-label-free.xlsx
+
 ###  [Séance 3 - Bonnes pratiques](https://github.com/DU-Bii/module-5-Methodes-Outils/tree/master/seance3_goodpractices)
 
 - Date : 10 mars 2021
