@@ -64,11 +64,11 @@
 | Bonnes pratiques en bioinformatique : (essayer) d'aller vers plus de reproductibilité | [[html](seance3_goodpractices/slides.html)]  |
 | TP | [[html](seance3_goodpractices/TP.html)] |
 
-<!--
-### [Séance 4 - Métabolomics](https://github.com/DU-Bii/module-5-Methodes-Outils/tree/master/seance3)
+
+### Séance 4 - Métabolomics
 
 - Date : 22 mars 2021
-- Horaires : 09h30 - 12h30 ; 14h00 - 16h30
+- Horaires : 10h00 - 12h30 ; 14h00 - 16h30
 - Intervenants : Mélanie Pétéra, Binta Diémé
 - Titre : Metabolomics
 
@@ -84,9 +84,6 @@ Temps estimé : 40 minutes.
 
 ##### Partie pratique  :
 
-- Pour les apprenants sous Windows, avoir installé sur leur poste les logiciel [ms-convert](http://proteowizard.sourceforge.net/download.html) et [InSilicosViewer](https://ent.uca.fr/filez/tb3n2etb)  ainsi que ce [jeu de données](https://ent.uca.fr/filez/wfm5cl4tn).
-
-Temps estimé : 10 minutes.
 
 - L'ensemble des TPs de cours auront lieu sous l'instance Galaxy workflow4metabolomics de [usegalaxy.fr](https://workflow4metabolomics.usegalaxy.fr)
 
@@ -101,11 +98,11 @@ Temps estimé : 30mn à 1h.
 
 A l'issu de ces activités préparatoires, vous aurez :
 - des notions de bases en métabolomique
-- installé un outil de conversion de données au format propriétaire en format "open-source" qui sera utilisé lors du TP
 - Créé votre compte sur l'instance Galaxy usegalaxy.fr , fait vos premiers pas sous Galaxy. 
 
 En cas de blocage ou de question, n'hésitez pas à partager vos questions sur le channel #help de Slack.
 
+<!-->
 | Supports | Formats |
 |--------------------------------------------------|--------|
 | Cours | [[pdf](seance3/presentation-dubii_04-06-2020.pdf)]
