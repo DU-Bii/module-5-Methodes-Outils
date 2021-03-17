@@ -194,13 +194,13 @@ bedtools nuc
 *Étape 2*: Lancez la commande avec les arguments nécessaires
 
 ```{bash, eval=FALSE}
-bedtools nuc -fi data/Homo_sapiens.GRCh38.dna.toplevel.fa -bed ENSG00000091831_gene.gff3
+srun bedtools nuc -fi data/Homo_sapiens.GRCh38.dna.toplevel.fa -bed ENSG00000091831_gene.gff3
 ```
 
 *Étape 3*: Repérez le numéro de colonne contenant le %GC content et extrayez-la
 
 ```{bash, eval=FALSE}
-bedtools nuc -fi data/Homo_sapiens.GRCh38.dna.toplevel.fa -bed ENSG00000091831_gene.gff3 | cut -f 11
+srun bedtools nuc -fi data/Homo_sapiens.GRCh38.dna.toplevel.fa -bed ENSG00000091831_gene.gff3 | cut -f 11
 # avec awk pour les curieux
 # bedtools nuc -fi data/Homo_sapiens.GRCh38.dna.toplevel.fa -bed ENSG00000091831_gene.gff3 | awk -F "\t" '{print $11}'
 ```
