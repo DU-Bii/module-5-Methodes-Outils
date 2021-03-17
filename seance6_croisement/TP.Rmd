@@ -69,9 +69,9 @@ Vous allez croiser ces données hétérogènes en utilisant <strong class="tool"
 
 Les données dont vous aurez besoin sont dans le répertoire <code>/shared/projects/dubii2020/data/module5/seance4/data</code>. Un lien symbolique du répertoire permettra d'y avoir accès sans dupliquer les données.
 
-    mkdir ~/M5-S4/
-    cd ~/M5-S4
-    ln -s /shared/projects/dubii2020/data/module5/seance4/data .
+    mkdir ~/M5-S6/
+    cd ~/M5-S6
+    ln -s /shared/projects/dubii2021/trainers/module5/seance6/data .
 
 Pour information, voici les commandes utilisées pour récupérer les données.
 
