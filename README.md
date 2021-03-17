@@ -100,7 +100,7 @@ A l'issu de ces activités préparatoires, vous aurez :
 - des notions de bases en métabolomique
 - Créé votre compte sur l'instance Galaxy usegalaxy.fr , fait vos premiers pas sous Galaxy. 
 
-En cas de blocage ou de question, n'hésitez pas à partager vos questions sur le channel #help de Slack.
+En cas de blocage ou de question, n'hésitez pas à partager vos questions sur le channel _help_ de Slack.
 
 <!-->
 | Supports | Formats |
