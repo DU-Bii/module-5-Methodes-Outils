@@ -116,7 +116,7 @@ En cas de blocage ou de question, n'hésitez pas à partager vos questions sur l
 
 
 
-### [Séance 5 - RNAseq](https://github.com/DU-Bii/module-5-Methodes-Outils/tree/master/seance3)
+### [Séance 5 - Transcriptomics](https://github.com/DU-Bii/module-5-Methodes-Outils/tree/master/seance5_transcriptomics)
 
 - Date : 24 mars 2021
 - Horaires : 10h00 - 13h00 ; 14h30 - 17h30
@@ -125,13 +125,13 @@ En cas de blocage ou de question, n'hésitez pas à partager vos questions sur l
 
 | Supports | Formats |
 |--------------------------------------------------|--------|
-| State of the art | [[pdf](seance2/DUBii_State_of_the_art_of_what_can_be_done_with_RNA-seq_20200311.pdf)]
-| RNAseq processing | [[pdf](seance2/processing/RNAseq_processing.pdf)] [[html](seance2/processing/RNAseq_processing.html)]  |
-| what2do_with_count_table_diffan | [[pdf](seance2/R/what2do_with_count_table_diffan.pdf)] [[html](seance2/R/what2do_with_count_table_diffan.html)] |
+| State of the art | [[pdf](seance5_transcriptomics/DUBii_State_of_the_art_of_what_can_be_done_with_RNA-seq_20200311.pdf)]
+| RNAseq processing | [[pdf](seance5_transcriptomics/processing/RNAseq_processing.pdf)] [[html](seance5_transcriptomics/processing/RNAseq_processing.html)]  |
+| what2do_with_count_table_diffan | [[pdf](seance5_transcriptomics/R/what2do_with_count_table_diffan.pdf)] [[html](seance5_transcriptomics/R/what2do_with_count_table_diffan.html)] |
 
 
 
-### [Séance 6 - Croisement de données](https://github.com/DU-Bii/module-5-Methodes-Outils/tree/master/seance4)
+### [Séance 6 - Croisement de données](https://github.com/DU-Bii/module-5-Methodes-Outils/tree/master/seance6_croisement)
 
 - Date : 25 mars 2021
 - Horaires : 13h30 - 16h30
@@ -141,75 +141,6 @@ En cas de blocage ou de question, n'hésitez pas à partager vos questions sur l
 
 | Supports | Formats |
 |--------------------------------------------------|--------|
-| Slides | [[html](seance4/slides.html)]
-| TP | [[html](seance4/document.html)]  |
-| TP | [[pdf](seance4/document_pdf.pdf)] |
-
-
-### [Séance 5](https://github.com/DU-Bii/module-5-Methodes-Outils/tree/master/seance5)
-
-- Date : 11 juin 2020
-- Horaires : 14h00 - 17h00
-- Intervenants : Valentin Loux, Cédric Midoux, Olivier Rué , hélène Chiapello
-- Titre : Bonnes pratiques en bioinformatique : (essayer) d'aller vers plus de reproductibilité
-
-#### Pré-requis :
-Lors du TP nous allons utiliser le logiciel de gestion de version Git et l'interface web GitHub.
-Vous devez donc absolument les avoir configuré sur **votre ordinateur** et **sur votre compte sur le cluster de l'IFB**.
-
-Voici les étapes à suivre pour configuer cela. Nous nous reposons sur l'aide de Github pour ces étapes. Elle explique les étapes à suivre selon votre système d'exploitation (Linxu, MaxOS, Windows).
-
-
-
-##### Sur **GitHub** :
-- Créer un compte sur [GitHub](https://www.github.com) avec votre adresse professionnelle.
-
-##### Sur votre **machine locale** :
-
-- Download and install (Git)[https://git-scm.com/downloads] (si il n’est pas déjà installé).
-
-Configuer les informations qui seront asociés à vos "commits" sous Git : 
-- Configurer son nom d'utilisateur en local : [Setting your username in Git](https://help.github.com/en/github/using-git/setting-your-username-in-git). Indiquer votre Nom, Prénom.
-- Configurer son mail : [Setting your commit email address](https://help.github.com/en/github/setting-up-and-managing-your-github-user-account/setting-your-commit-email-address). Utiliser la même adresse que celle utilisée pour créer le compte github 
-
-Les deux étapes suivantes permettent de se connecter de façon sécurisée depuis la ligne de commande à GitHub :
-- Génerer une clef ssh:[Generating a new SSH key and adding it to the ssh-agent](https://help.github.com/en/github/authenticating-to-github/generating-a-new-ssh-key-and-adding-it-to-the-ssh-agent) Vous n'êtes pas obligé de mettre une "passphrase". Si vous en mettez une, bien la noter, elle vous sera demandée à chaque connexion de l'outil git à github.
-- Ajouter cette clef à votre compte github :[Adding a new SSH key to your GitHub account](https://help.github.com/en/github/authenticating-to-github/adding-a-new-ssh-key-to-your-github-account)
-
-- [Tester que tout est bien configuré](https://help.github.com/en/github/authenticating-to-github/testing-your-ssh-connection)
-
-##### Sur votre **compte ifb** :
-
-Configurer de la même façon l’utilisation de  Git et GitHub :
-- Se connecter par ssh sur le cluster de l'IFB
-- Configurer son nom d'utilisateur : [Setting your username in Git](https://help.github.com/en/github/using-git/setting-your-username-in-git)
--  Configurer son mail : [Setting your commit email address](https://help.github.com/en/github/setting-up-and-managing-your-github-user-account/setting-your-commit-email-address). Utiliser la même adresse que celle utilisée pour créer le compte github 
-Les deux étapes suivantes permettent de se connecter de façon sécurisée depuis la ligne de commande à GitHub :
-- Génerer une clef ssh:[Generating a new SSH key and adding it to the ssh-agent](https://help.github.com/en/github/authenticating-to-github/generating-a-new-ssh-key-and-adding-it-to-the-ssh-agent) Vous n'êtes pas obligé de mettre une "passphrase". Si vous en mettez une, bien la noter, elle vous sera demandée à chaque connexion de l'outil git à github.
-- Ajouter cette clef à votre compte github :[Adding a new SSH key to your GitHub account](https://help.github.com/en/github/authenticating-to-github/adding-a-new-ssh-key-to-your-github-account)
-
-
-- [Tester que tout est bien configuré](https://help.github.com/en/github/authenticating-to-github/testing-your-ssh-connection)
-
-
-
-
-
-##### Vérification finale :
-Vous devez, pour votre ordinateur et votre compte sur l'IFB, aller jusqu'au test de connexion à Github (commande ``ssh -T git@github.com``) qui doit être concluant :
-
-``ssh -T git@github.com  ``
-
-``Hi USER! You've successfully authenticated, but GitHub does not provide shell access``
-
-
-En ca de soucis, n'hésitez pas à nous solliciter sur Slack.
-
-
-
-| Supports | Formats |
-|--------------------------------------------------|--------|
-| Support |[[html](https://du-bii.github.io/module-5-Methodes-Outils/seance5/slides.html#1)] [[pdf](seance5/slides.pdf)]|
-
--->
+| Slides | [[html](seance6_croisement/slides.html)]
+| TP | [[html](seance6_croisement/TP.html)]  |
 
