@@ -102,19 +102,14 @@ A l'issu de ces activités préparatoires, vous aurez :
 
 En cas de blocage ou de question, n'hésitez pas à partager vos questions sur le channel _help_ de Slack.
 
-<!-->
+<!--
 | Supports | Formats |
 |--------------------------------------------------|--------|
-| Cours | [[pdf](seance3/presentation-dubii_04-06-2020.pdf)]
-| TP Msconvert | [[pdf](seance3/MSconvert-dubii.pdf)]  |
-| Présentation Workflow4metabolomics | [[pdf](seance3/DUBii2020_W4M.pdf)] |
-| Support Galaxy Training  | [[pdf](seance3/DUBii2020_GTNsuppmat.pdf)] |
-
-
-
-
-
-
+| Cours | [[pdf](seance4_metabolomics/presentation-dubii_04-06-2020.pdf)]
+| TP Msconvert | [[pdf](seance4_metabolomics/MSconvert-dubii.pdf)]  |
+| Présentation Workflow4metabolomics | [[pdf](seance4_metabolomics/DUBii2020_W4M.pdf)] |
+| Support Galaxy Training  | [[pdf](seance4_metabolomics/DUBii2020_GTNsuppmat.pdf)] |
+-->
 
 ### [Séance 5 - Transcriptomics](https://github.com/DU-Bii/module-5-Methodes-Outils/tree/master/seance5_transcriptomics)
 
