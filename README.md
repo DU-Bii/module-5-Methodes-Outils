@@ -64,8 +64,7 @@
 | Bonnes pratiques en bioinformatique : (essayer) d'aller vers plus de reproductibilité | [[html](seance3_goodpractices/slides.html)]  |
 | TP | [[html](seance3_goodpractices/TP.html)] |
 
-
-### Séance 4 - Métabolomics
+###  [Séance 4 - Metabolomics](https://github.com/DU-Bii/module-5-Methodes-Outils/tree/master/seance4_metabolomics)
 
 - Date : 22 mars 2021
 - Horaires : 10h00 - 12h30 ; 14h00 - 16h30
@@ -75,14 +74,15 @@
 
 #### Pré-requis :
 
-##### Notions générales de métabolomique :
+**Notions générales de métabolomique :**
+
 - Avoir suivi des vidéos introductives du [MOOC FUN Métabololique](https://www.fun-mooc.fr/courses/course-v1:cnrs+136001+session01/about  
 ). Ce MOCC est accessible librement (après inscription) le temps de la crise sanitaire. Suivre les vidéos S1C1 (semaine 1 cours 1) , S1C3, S1C4 et S3C6. 
 Si vous ne souhaitez pas vous inscire, vous pouvez télécharger directement les vidéos à [cette adresse](https://pfem.clermont.inra.fr/pydio/public/617c6e)
 
 Temps estimé : 40 minutes.
 
-##### Partie pratique  :
+**Partie pratique :**
 
 
 - L'ensemble des TPs de cours auront lieu sous l'instance Galaxy workflow4metabolomics de [usegalaxy.fr](https://workflow4metabolomics.usegalaxy.fr)
