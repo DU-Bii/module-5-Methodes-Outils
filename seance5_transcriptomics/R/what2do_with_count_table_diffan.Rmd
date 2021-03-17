@@ -1,0 +1,1015 @@
+---
+title: "RNA-seq data mining & differential analysis using R"
+author: "DU Bii - N. Servant / M. Deloger"
+date: "11th March 2020"
+output:
+  html_document:
+    code_folding: show
+    df_print: kable
+    toc: yes
+    toc_float: yes
+  pdf_document:
+    toc: yes
+lastupdate: ''
+---
+
+```{r setup, include=FALSE}
+knitr::opts_chunk$set(echo = TRUE, message = FALSE, warning = FALSE)
+```
+
+# How to generate a count table at the gene level ?
+
+A count table represents the number of reads mapped per gene/transcripts in an RNA-seq experiment. This is the entry point of many downstream supervised or unsupervised analysis.  
+
+There are many different ways to generate a count table, and many tools can be used.  
+Usually, generating such table requires two mains steps :
+
+1. Aligning the reads on a reference genome
+2. Counting how many reads can be assigned to a given gene  
+
+The mapping step aims at positioning the sequencing reads on your reference genome. Different tools such as [TopHat2](https://ccb.jhu.edu/software/tophat/index.shtml)[^1], [HiSat2](http://ccb.jhu.edu/software/hisat2/index.shtml)[^2], [STAR](https://github.com/alexdobin/STAR)[^3], etc. are still commonly used. In theory, if well configured, these tools should give close results, although their mapping strategy and computational requirements might be different. Of note, recent methods/tools based on pseudo-mapping approaches such as [Salmon](https://combine-lab.github.io/salmon/)[^4], [Kallisto](https://pachterlab.github.io/kallisto/about)[^5], [Rapmap](https://github.com/COMBINE-lab/RapMap)[^6], etc. can also be used to quantify the gene expression from raw RNA-seq data (see *Bray et al. 2016* [^7]).
+
+Once the data are mapped on the genome, several tools can be used to count and assign reads to a given gene (exons).  
+Among the most popular tools, [HTSeqCount](http://htseq.readthedocs.io/en/master/count.html)[^8] or [FeatureCounts](http://subread.sourceforge.net/)[^9] are frequently used. Note that for this step, it is crucial to have details on the protocol used to generate the samples, and especially if the protocol was **stranded** or not.  
+This step also requires some gene annotations. Databases such as [Ensembl](https://www.ensembl.org/info/data/ftp/index.html), [Refseq](http://hgdownload.soe.ucsc.edu/downloads.html), or [Gencode](https://www.gencodegenes.org/) can be used. They all contain the most common coding genes but they also all have their own specifities.
+
+To wrap up, here is an example of a typical RNA-seq workflow for gene expression profiling.
+
+![](RNAwkflow.png)
+
+# Before starting
+
+Please be sure to have a recent version of R (>3.3) with the following packages from the CRAN :
+
+* knitr
+* pheatmap
+* FactoMineR
+* factoextra
+* reshape2
+* ggplot2
+* RColorBrewer
+
+From BioConductor :
+
+* DESeq2
+* edgeR
+* limma
+* rtracklayer
+* GenomicFeatures
+* [org.Hs.eg.db]
+* [clusterProfiler]
+
+In order to install these packages, use the following command :
+
+```{r rd1, echo=TRUE, eval=FALSE}
+## For CRAN packages
+install.packages("knitr")
+
+## For BioC packages
+source("https://bioconductor.org/biocLite.R")
+biocLite("DESeq2")
+```
+
+# Reminder about R ...
+### Help in R
+
+Google is your best friend !
+But a lot is already available within R ...
+
+```{r rd2, echo=TRUE}
+## Example of help in R
+## Use "?" followed by a function name
+?read.csv
+```
+
+### 'Vector' in R
+R is working in vectorial mode.
+A `vector` is a one-dimensional object accessible through its indices.
+
+<details>
+<summary>Examples</summary>
+```{r rd3, echo=TRUE}
+
+## 'a' is a vector from 10 to 20
+## It could also be noted as
+## a <- c(10, 11, 12, 14, 15, 16, 17, 18, 19, 20)
+a <- 10:20
+a
+
+## Access to a value
+a[3]
+
+## Sum
+sum(a)
+
+## Operation of vector
+a+1
+
+## Which indices within my vector are higher that 5
+which(a>5)
+
+## Therefore, what are the values corresponding to these indexes
+a[which(a>5)]
+
+```
+</details>
+
+### 'Matrix' in R
+
+A table or `matrix` is a *n* x *n* array of similar data type (character or numeric). It therefore contains two coordinates [x, y] where x represents the raws and y the colums. A `matrix` is characterized by its values, but also its colnames and rownames.
+
+<details>
+<summary>Examples</summary>
+```{r rd4, echo=TRUE}
+## Let's create a simple matrix in R
+## You do not know what 'rnorm' is doing ?
+## ?rnorm
+d <- matrix(1:50, ncol=5, nrow=10)
+d
+
+## Access to the first column
+d[,1]
+
+## Access to the first row
+d[1,]
+
+## Access to the value at 3 rows and 4 columns
+d[3,4]
+
+## Making a sum for each raw
+rowSums(d)
+
+## Making a sum for each cols
+colSums(d)
+
+## How many values in the matrix are higher than 5
+length(which(d>1))
+
+## The matrix we just created does not have any col/rownames
+rownames(d)
+colnames(d)
+
+## Let's add some colnames
+colnames(d) <- c("A", "B", "C", "D", "E")
+d
+colnames(d)
+```
+</details>
+
+### 'dataframe' in R
+
+A `dataframe` is used to store data tables. It is a list of vectors of equal length. A `dataframe` is more general than a matrix, in the sense that different columns can have different modes (numeric, character, factor, etc.).
+
+<details>
+<summary>Examples</summary>
+```{r rd5, echo=TRUE}
+df <- data.frame(mycol=letters[1:nrow(d)], d)
+df
+class(df)
+
+## The as.matrix (resp. as.dataframe) allows to convert my object from a dataframe to a matrix
+## But note that in this case, all values will be convert into character
+as.matrix(df)
+## Removing the first column allows to get only one data type and to come back to numeric values
+as.matrix(df[,-1])
+```
+</details>
+
+### How to check the class of my object ?
+
+The `class` and `typeof` functions allow to get information about the nature of an object and its data type.
+
+<details>
+<summary>Examples</summary>
+```{r, echo=TRUE}
+class(d)
+is.matrix(d)
+is.data.frame(d)
+```
+</details>
+
+### Functions in R
+
+As in any programming langage, R allows the user to write functions.
+A function is defined by:
+
+- A name
+- One or several argument(s)
+- A `return` value if needed
+
+Using functions is strongly adviced to factorize a code as much as possible, and to limit coding errors.
+
+<details>
+<summary>Examples</summary>
+```{r rd6, echo=TRUE}
+myfunc <- function(a){
+  ## do something
+  b <- a^2
+  ## return the results
+  return(b)
+}
+
+output <- myfunc(10)
+print(output)
+```
+</details>
+
+### Loop in R
+
+#### The 'for' loop
+
+The `for` loop system is common to many langage. It allows a variable to be updated in an iterative way.  
+In the following example, the variable `i` will be replaced by `1, 2, 3, 4, ..., 10`
+
+<details>
+<summary>Examples</summary>
+```{r rd7}
+for (i in c(1:10)){
+    myfunc(i)
+}
+```
+</details>
+
+However, this looping system is usually not recommanded in R, as it is quite slow ...
+Instead, R offers the `apply()` family function.
+
+#### The Apply functions
+
+The `apply()` family function is a set of functions to manipulate and loop on data structure such as matrices, dataframes, lists, etc. In practice, the family is made up of `apply()`, `lapply()`, `sapply()`, `vapply()`, `mapply()` ,`rapply()`, `tapply()`.  
+So far, we will just focus on the `apply()` function that can be called on matrices and dataframes where :
+
+- X is a matrix
+- MARGIN is a variable that define rows (MARGIN=1) and/or columns (MARGIN=2)
+- FUN is a function
+- ..., any parameters that can be passed to the function
+
+<details>
+<summary>Examples</summary>
+```{r rd8}
+## Loop over all columns of 'd' and run the 'sum' function
+apply(d, 2, sum)
+## Loop over all rows of 'd' and run the 'sum' function
+apply(d, 1, sum)
+
+```
+</details>
+
+### Matching values in R
+
+One of the most common operation in R is to be able to match two vectors.  
+The `match` operation returns a vector of the positions of (first) matches of its first argument in its second.  
+`%in%` is built as a binary operator, and indicates if there is a match or not between the two arguments.
+
+<details>
+<summary>Examples</summary>
+```{r rd9}
+
+a <- c(-100, -50, -64, 20, 65, 126)
+
+## Get indices of values > 0
+which(a>0)
+
+## Get values > 0
+a[which(a>0)]
+
+a <- c("A","B","C","D","E","F")
+b <- c("B", "A", "E")
+## match 'b' values into the 'a' vector - return the position
+match(b, a)
+
+## %in% can be an alternative to which for vector comparison
+a %in% b
+```
+</details>
+
+## General comments
+
+It is usually recommanded to follow good programming practices when you are writting your own code.  
+Among them, pay attention to :
+
+- Use an editor (such as RStudio) to write and save your code
+- Use appropriate variable names
+- Use functions
+- Add comments into your code
+- Do not hesitate the write a command in multiple lines
+- Make simple tests
+
+----------
+
+# Loading a count table
+
+## Experimental data
+
+As a toy dataset, we will use the data published by *Horvath et al.* [^2] available on GEO ([GSE52194](https://www.ncbi.nlm.nih.gov/geo/query/acc.cgi?acc=GSE52194)).  
+This dataset is composed of `20 breast samples` :
+
+* 5 HER2+ samples (ER and PR negative)
+* 6 Triple negative (ER, PR, HER2 negative)
+* 6 non-TNBC (ER, PR and HER2-positive)
+* 3 normal-like breast samples
+
+All these samples were processed using the pipeline presented above to generate the count table.
+Data are available on the cluster in the folder `/shared/projects/dubii2020/data/rnaseq/countsdata`.
+
+## Importing data
+
+Usually, the easiest way would be to start the analysis from a raw count table.
+If you do not have access to such table and have the STAR gene counts output, the following functions can be used to build the raw contact matrix.
+
+```{r starload}
+starload <- function(input_path, col.nb){
+  message("loading STAR gene counts ...")
+  exprs.in <- list.files(path=input_path, 
+                         pattern="ReadsPerGene.out.tab", 
+                         full.names=TRUE,recursive=TRUE)
+  counts.exprs <- lapply(exprs.in, read.csv, sep="\t", header=FALSE, 
+                         row.names=1, check.names=FALSE)
+  counts.exprs <- data.frame(lapply(counts.exprs, "[", col.nb))
+  colnames(counts.exprs) <- basename(exprs.in)
+  ## remove first 4 lines
+  counts.exprs <- counts.exprs[5:nrow(counts.exprs), , drop=FALSE]
+  counts.exprs
+}
+```
+
+R can easily load .csv files. The CSV (Comma Separated Values) format is fully compatible with Excel.  It is a plain text format, where columns are separated by a `comma`.
+
+```{r data, echo=TRUE, eval=TRUE}
+## Load a raw count table from a csv file
+d <- read.csv("/shared/projects/dubii2020/data/rnaseq/countsdata/tablecounts_raw.csv", row.names = 1)
+d <- as.matrix(d)
+
+## Load TPM normalized count table from a csv file
+d.tpm  <- read.csv("/shared/projects/dubii2020/data/rnaseq/countsdata/tablecounts_tpm.csv", row.names = 1)
+d.tpm <- as.matrix(d.tpm)
+
+## Loading sample plan
+splan <- read.csv("/shared/projects/dubii2020/data/rnaseq/countsdata/SAMPLE_PLAN", row.names=1, header=FALSE)
+colnames(splan) <- c("sname","subtype")
+splan
+
+## Update colnames of my count tables
+colnames(d) <- as.character(splan[colnames(d),"sname"])
+colnames(d.tpm) <- as.character(splan[colnames(d.tpm),"sname"])
+d[1:5,1:5]
+```
+
+# Data mining: playing with a count table
+
+R is extremely powerfull and is a perfect tool to explore your data.
+Here are a few examples of questions you may want to address:
+
+- How many samples/genes do I have in my count table ?
+
+<details>
+<summary>Show</summary>
+```{r dm1, echo=TRUE, eval=TRUE}
+## How many samples/genes ?
+dim(d)
+```
+</details>
+
+- How many reads (ie. raw counts) per sample ?
+
+<details>
+<summary>Show</summary>
+```{r dm2, echo=TRUE, eval=TRUE}
+## How many reads do I have per sample
+colSums(d)
+```
+</details>
+
+
+- How many genes have zero count in all samples ?
+
+<details>
+<summary>Show</summary>
+```{r dm3, echo=TRUE, eval=TRUE}
+## How many genes have zero counts in all samples
+rs <- rowSums(d)
+nbgenes_at_zeros <- length(which(rs==0))
+nbgenes_at_zeros
+```
+</details>
+
+- For each sample, how many genes have more than one count ?
+
+<details>
+<summary>Show</summary>
+```{r dm4, echo=TRUE, eval=TRUE}
+## For each sample, how many genes have more than one count ?
+number_expressed <- function(x, mincounts=1){
+    nb <- length(which(x>mincounts))
+    return(nb)
+}
+nbgenes_per_sample <- apply(d, 2, number_expressed)
+nbgenes_per_sample
+```
+</details>
+
+- Draw the Log2 raw counts distribution per sample
+
+<details>
+<summary>Show</summary>
+```{r dm5, echo=TRUE, eval=TRUE}
+## Distribution of raw counts (log2)
+boxplot(log2(1+d), 
+        las=2, ylab="raw counts (log2)", col="gray50", pch=16) 
+```
+</details>
+
+- Look at gene "ENSG00000141736.9|ERBB2" in my TPM normalized counts table
+
+<details>
+<summary>Show</summary>
+```{r dm6, echo=TRUE, eval=TRUE}
+## if you no want to use grep
+## grep("ERBB2$", rownames(d.tpm))
+erbb2_pos = which(rownames(d.tpm)=="ENSG00000141736.9|ERBB2")
+
+## Looking at the expression level of my favorite gene
+barplot(d.tpm[erbb2_pos, ], ylab="TPM", las=2, col="gray50", border="white")
+```
+</details>
+
+- How many genes are expressed (TPM > 1) in my data ?
+
+<details>
+<summary>Show</summary>
+```{r dm7, echo=TRUE, eval=TRUE}
+nb_expressed_genes <- apply(d.tpm, 2, function(x){length(which(x>1))})
+nb_expressed_genes
+```
+</details>
+
+- Calculate the mean expression of all genes over TNBC and NonTNBC samples
+
+<details>
+<summary>Show</summary>
+```{r dm8, echo=TRUE, eval=TRUE}
+tnbc_mean <- rowMeans(d.tpm[,c("TNBC1","TNBC2", "TNBC3", "TNBC4", "TNBC5", "TNBC6")])
+nontnbc_mean <- rowMeans(d.tpm[,c("NonTNBC1","NonTNBC2", "NonTNBC3", "NonTNBC4", "NonTNBC5", "NonTNBC6")])
+```
+</details>
+
+- Calculate the log2 fold-change of my mean TNCB / NonTNBC samples
+
+<details>
+<summary>Show</summary>
+```{r dm10, echo=TRUE, eval=TRUE}
+## Calculate logFC
+fc <- log2(1 + tnbc_mean) - log2(1 + nontnbc_mean)
+
+## Order by Fold Changes
+fc.ord <- fc[order(fc, decreasing=TRUE)]
+
+## Top 10 genes with higher fold change
+head(fc.ord, 10)
+```
+</details>
+
+-  Display the two sample types using a scatter plot with the genes with a logFC>3 in red
+
+<details>
+<summary>Show</summary>
+```{r dm11, echo=TRUE, eval=TRUE}
+## Scatter plot
+plot(x=log2(nontnbc_mean + 1), y=log2(tnbc_mean + 1), col=ifelse(abs(fc)>3, "red", "gray"), 
+     pch=16, cex=.7,
+     xlab="mean of NonTNBC (log2)", ylab="mean of TNBC (log2)")
+```
+</details>
+
+- Extract the 10 first genes with the highest expression in TNBC samples
+
+<details>
+<summary>Show</summary>
+```{r dm9, echo=TRUE, eval=TRUE}
+od <- order(tnbc_mean, decreasing=TRUE)
+names(tnbc_mean[od[1:10]])
+```
+</details>
+
+
+## Exploratory analysis
+
+Exploratory analysis assesses overall similarity between samples without any prior knowledge: which samples are similar to each other? Does this fit to the experimental design? is there any outlier samples? 
+
+TPM and RPKM are `units` that can be used to look at transcript abundance. However, they do not perform robust cross-sample normalization.
+Methods as implemented in the [limma](https://bioconductor.org/packages/release/bioc/html/limma.html),  [DESeq2](https://bioconductor.org/packages/release/bioc/html/DESeq2.html) or [edgeR](https://bioconductor.org/packages/release/bioc/html/edgeR.html) packages propose to normalize by sequencing depth by calculing scaling factors using more sophisticated approaches.  
+DESeq2 defines a virtual reference sample by taking the median of each gene’s values across samples and then computes size factors as the median of ratios of each sample to the reference sample.
+For details about how DESeq2 calculates its size factors, see [here](http://genomicsclass.github.io/book/pages/rnaseq_gene_level.html).
+
+### Variance Stabilization
+
+To avoid that the distance measure between samples was dominated by a few highly variable genes, and have a roughly equal contribution from all genes, it is recommanded to use a normalization approach that `stabilize the variance` accross expression level, leading to near-homoskedastic data (i.e. the variance of the gene expression does not depend on the mean).
+
+In RNA–Seq data, the variance grows with the mean. For example, if we run the PCA directly on a matrix of counts, the result will mainly depends on the few most strongly expressed genes because they show the largest absolute differences between samples. A simple strategy to avoid this is to take the log of the counts. However, now the genes with low counts tend to dominate the results because they show the strongest relative differences between samples.  
+Therefore, transformations that stabilize the variance over the mean are advised.  
+Here, we will use the `rlog` method from the DESeq2 package.
+
+```{r rlog, eval=TRUE}
+library(DESeq2)
+## Load data
+dds <- DESeqDataSetFromMatrix(countData=d, DataFrame(condition=splan$subtype), ~ condition)
+
+## Estimate size factors
+dds <- estimateSizeFactors(dds)
+
+## Remove lines with only zeros
+dds <- dds[ rowSums(counts(dds)) > 0, ]
+
+## Run the rlog normalization
+rld <- rlog(dds, blind=TRUE)
+
+## r rlog
+par(mfrow=c(1,3))
+plot(counts(dds, normalized=TRUE)[,3:4],
+     pch=16, cex=0.3, xlim=c(0,20e3), ylim=c(0,20e3), main="normalized counts")
+plot(log2(counts(dds, normalized=TRUE)[,3:4] + 1),
+     pch=16, cex=0.3, main="log2 normalized counts")
+plot(assay(rld)[,3:4],
+     pch=16, cex=0.3, main="rlog normalized counts")
+
+```
+
+### Principal Component Analysis
+
+A first way to visualize distances between samples is to project the samples onto a 2-dimension plane such that they spread out optimally. This can be achieved using PCA analysis. Several PCA packages are available in R. Here, we simply use the function provided by DESeq2.
+
+```{r PCA, echo=TRUE, eval=TRUE}
+## short and easy version
+DESeq2::plotPCA(rld, intgroup = c("condition"), ntop=1000)
+```
+
+Other (nicer) visualization functions with `FactoMineR` ...
+
+```{r pca}
+library(FactoMineR) ## for PCA
+library(factoextra) ## for visualisation functions
+
+## extract rlog matrix
+d.rlog <- assay(rld)
+
+## Select most variable genes
+gvar <- apply(d.rlog, 1, var)
+mostvargenes <- order(gvar, decreasing=TRUE)[1:1000]
+
+## Run PCA
+res_pca <- PCA(t(d.rlog[mostvargenes,]), ncp=3, graph=FALSE)
+
+## Make beautiful plots
+fviz_eig(res_pca, addlabels = TRUE, ylim = c(0, 50))
+fviz_pca_ind(res_pca, label="none", habillage=splan$subtype)
+fviz_pca_ind(res_pca, axes=c(2,3), label="ind", habillage=splan$subtype, repel = TRUE)
+
+## Look at the variable that contribute the most to the PC2
+best.contrib <- names(sort(res_pca$var$contrib[,"Dim.2"], decreasing=TRUE))
+
+## Let's check the best contributors
+barplot(d.tpm[best.contrib[5],], col="gray50", 
+        border="white", las=2, main=best.contrib[5])
+barplot(d.tpm[best.contrib[7],], col="gray50", 
+        border="white", las=2, main=best.contrib[7])
+
+```
+
+### Hierarchical Clustering
+
+In addition to PCA analysis, hierarchical clustering is another way to represent the similarity between samples using different metrics. Hierarchical clustering requires a `distance` between sample and a `method` to agglomerate clusters.
+
+```{r clustering, eval=TRUE}
+require(pheatmap)
+require(RColorBrewer)
+
+## matrix of rlog normalized data
+d.rlog <- assay(rld)
+
+## Clustering of samples on all genes
+sampleDist <- dist(t(d.rlog))
+hc <- hclust(sampleDist, method="ward.D2")
+plot(hc)
+
+## Clustering of samples on the most variable 100 genes
+mostvargenes100 <- order(gvar, decreasing=TRUE)[1:100]
+annot <- data.frame(splan$subtype, row.names=splan$sname)
+pheatmap(d.rlog[mostvargenes,], 
+          clustering_distance_rows = "correlation", 
+          clustering_distance_cols = "euclidean", 
+          clustering_method = "ward.D2",
+          annotation_col = annot,
+          show_rownames = FALSE, 
+          scale = "row")
+```
+
+The first steps of the analysis presented above are dedicated to count data manipulation and exploration. The main goal is to validate the overlall quality of the dataset, and to see how similar are the different samples. If any outlier is detected, they will most likely increase the overall variability and thus decrease the statistical power later when testing for differential expression. It is therefore advised to discard these samples. Importantly, these analyses rely on appropriate normalization methods that stabilize the variance over the mean expression levels, and are therefore well designed for exploratory analysis.
+
+# Differential Analysis
+
+Then, the next step of the analysis is usually to perform differential expression analysis between groups of samples. In this context, different normalization methods can be used, mainly based on Negative Binomial model. In RNA-seq count data, the variance is usually greater than the mean, requiring the estimation of an overdispersion parameter for each gene. Packages as DESeq2 or edgeR  propose methods to normalize and detect differentially expressed genes based on these assumptions.  
+In addition, the limma package proposes an alternative approach based on a Gaussian model, through the `voom` transformation. This will compute additional precision weights to account for the change in the mean-variance relationship between small and large counts[^13].
+
+## Genes filtering
+
+Genes filtering is usually required before differential analysis. The idea is simply to restrict the analysis to expressed genes, and to remove any non-relevant information.  
+Here, we defined the set of expressed genes as those with a TPM (transcripts per million) normalized counts >= 1 in at least one sample.
+
+```{r filter}
+## Expressed genes
+nbexpr <- apply(d.tpm, 1, function(x){length(which(x>=1))})
+isexpr <- which(nbexpr>=1)
+d.f <- d[isexpr,]
+
+hist(log2(1+rowSums(d.tpm)), breaks=100, main="Gene Expression across all samples (TPM)", col="gray50", border="white")
+hist(log2(1+rowSums(d.tpm[isexpr,])), breaks=100, add=TRUE, col="red", border="white")
+```
+
+## Library size normalization
+
+In the following example, we will use the trimmed mean of M-values method (TMM) from the `edgeR` package [^12] that calculate a normalization factor that can be applied to the library size of each patient for normalization. Together with the `DESeq` method, TMM has been found to perform well in comparative studies.  
+It is important to keep in mind that such normalization is based on the assumption that most genes are invariant.  
+Of note, it is good to know that DESeq and edgeR methods do not relies on the same type of normalization factor. Each normalization method should therefore be used with its appropriate statistical modeling. Methods are therefore 'not' exchangeable.
+
+
+```{r edgeR}
+## Scaling factor normalization based on the TMM method
+require(edgeR)
+require(limma)
+y <- DGEList(counts=d.f)
+y <- calcNormFactors(y, method="TMM")
+d.norm <- cpm(y, log=TRUE)
+```
+
+## Differential analysis using limma
+
+Once our data are normalized, we can now test for differential expression between groups.  
+Here again, several approaches like `DESeq`, `edgeR` or `limma` can be used.  
+Broadly speaking, the three methods should give close results, although from our experience `limma` is a bit more conservative.
+
+When the library sizes are quite variable between samples, `limma` proposed an additional transformation (the `voom` approach) applied to the normalized and filtered `DGEList` object.
+
+```{r voom}
+y <- DGEList(counts=d.f)
+y <- calcNormFactors(y, method="TMM")
+
+## Voom transformation of normalized data to apply the limma statistical framework
+design <- model.matrix(~ 0 + subtype, data=splan)
+v <- voom(y, design, plot=FALSE)
+```
+
+After this, the usual `limma` pipeline can be applied to comparer groups of samples (here the TNBC vs non TNBC samples).  
+Each gene is tested and has its own p-value. It is therefore important to correct for multiple testing in order to control for False Discovery Rate (FDR).
+
+```{r limma}
+## Differential analysis based on 'limma'
+fit <- lmFit(v, design)
+
+## Compare TNBC vs NonTNBC
+contrast <-makeContrasts(subtypeTNBC - subtypeNonTNBC, levels=design)
+
+## Run test
+fit2 <- contrasts.fit(fit, contrast)
+fit2 <- eBayes(fit2)
+
+## Extract the results
+res <- topTable(fit2, number=1e6, adjust.method="BH")
+
+## Pvalue distribution
+hist(res$P.Value, main="Pvalue histogram", col="grey50", border="white")
+
+## Extract list of DEG
+idx.sign <- which(res$adj.P.Val < 0.05 & 
+                    abs(res$logFC) > 1)
+deg <- rownames(res[idx.sign,])
+```
+
+## Plotting results
+
+After differential analysis, it is highly recommanded to make simple plots to double check the results, such as:
+
+- Gene based plot, in order to check that differentially expressed genes match the expected pattern
+
+```{r deg}
+mygene <- rownames(res)[1]
+barplot(d.norm[mygene,], las=2, main=mygene, ylab="Normalized counts", 
+        col="grey50", border="white")
+```
+
+- Heatmap of 50 most differentially expressed genes
+
+```{r heatmap}
+idx.sub <- which(splan$subtype=="TNBC" | splan$subtype=="NonTNBC")
+data.sub <- d.norm[deg[1:50],idx.sub]
+pheatmap(data.sub, 
+        cutree_cols = 2,
+        show_rownames=FALSE)
+```
+
+- MA plot (mean / average) where 'M' stands for 'fold-change', and 'A' for 'mean expression'.
+
+```{r MA}
+ plot(res$AveExpr, res$logFC, xlab="A - Mean Expression", ylab="M - logFC", 
+      col=ifelse(res$adj.P.Val<0.05, "red", "black"), pch=16, cex=.5)
+```
+
+- A volcano plot to represent both the gene p-value and the fold-change information
+
+```{r volcano}
+volcanoplot(fit2, highlight=100)
+```
+
+## Functional analysis
+
+Here is a short example of Gene Ontology analysis with R, and the `clusterProfiler` package. Many other packages are available for functional analysis. You can also use online tools such as [PANTHER](http://www.pantherdb.org/) or [DAVID](https://david.ncifcrf.gov/).
+
+```{r go_clusterprofiler, eval=TRUE}
+library(org.Hs.eg.db)
+library(clusterProfiler)
+
+## convert to Entrez Id
+symbol.sign <- sapply(strsplit(deg, "\\|"), "[", 2)
+entrez.sign <- bitr(symbol.sign, fromType = "SYMBOL", 
+                    toType = c("ENTREZID"), OrgDb = org.Hs.eg.db)
+symbol.all <- sapply(strsplit(rownames(res), "\\|"), "[", 2)
+universe <- bitr(symbol.all, fromType = "SYMBOL", 
+                 toType = c("ENTREZID"), OrgDb = org.Hs.eg.db)
+
+## Enrich GO
+ego.BP <- enrichGO(gene=entrez.sign$ENTREZID, universe=universe$ENTREZID, OrgDb=org.Hs.eg.db, ont="BP", pAdjustMethod="BH", pvalueCutoff=1, qvalueCutoff=0.25, readable=TRUE)
+dotplot(dropGO(ego.BP, level=c(1:3)), showCategory=20)
+```
+
+---------------------------
+
+# Advanced exercices with R
+
+## Making beautiful plots with ggplot
+
+The previous VolcanoPlot is not very nice, and writting you own function can be useful to make beautiful plots !
+As an exercice, you can write your own function based on the ggplot2 package to make a much better VolcanoPlot.
+
+<details>
+<summary>Solution</summary>
+```{r volcano2}
+LimmaVolcano <- function(res, main="", fct=1.5, pt=0.05){
+    stopifnot(require(ggplot2))
+    res$sign <- 0
+    res$sign[which(res$adj.P.Val < pt & abs(res$logFC) > fct)] <- 1
+
+    p <- ggplot(data=res, aes(x=logFC, y=-log10(adj.P.Val), colour=as.factor(sign))) + 
+      theme_classic() + geom_point(alpha=0.4, size=2) + 
+      scale_color_manual(name="", values=c("1"="red", "0"="black")) + 
+      ggtitle(paste0("Volcano Plot - Limma ", main)) + theme(legend.position = "none") +
+      xlab("log2 fold change") + ylab("-log10 adj pvalue") + 
+      geom_vline(xintercept=c(-fct, fct), linetype=2) + 
+      geom_hline(yintercept=-log10(pt), linetype=2)
+    p
+}
+LimmaVolcano(res, fct=1, pt=0.05, main=" - Untreated vs EGF")
+```
+</details>
+
+
+## Dealing with gene annotation
+
+There are many ways to deal with annotations in R. Several packages include databases that can be requested to convert a gene ID to another (see [BioMart](http://bioconductor.org/packages/release/bioc/html/biomaRt.html)). You can look at this [online tutorial](https://www.bioconductor.org/help/workflows/annotation/Annotation_Resources/) for examples and details.
+
+Here, our dataset is based on ENSEMBL annotation. Our goal is thus to convert the `ENSEMBL` IDs into `SYMBOL` which are already available from the annotation file we used during the data processing (gtf).  
+
+1. Write a function able to load a gtf file with both ENSEMBL and SYMBOL annotations (available in ./data/gencode.v19.annotation.gtf.gz), and to convert the gene annotation.
+
+<details>
+<summary>Solution</summary>
+```{r, echo=TRUE, eval=TRUE}
+## ensemble2symbol
+## x: matrix with ENSEMBL Ids as rownames
+## gtf.in: path to gtf file
+## return: x with ENSEMBL|SYMBOL annotation
+ensembl2symbol <- function(x, gtf.in){
+  stopifnot(require(rtracklayer))
+  message("Loading gtf file ...")
+  dgtf <- rtracklayer::import(gtf.in)
+  
+  message("Subset only genes ...")
+  my_genes <- dgtf[dgtf$type=="gene"]
+  mcols(my_genes) <- mcols(my_genes)[c("gene_id","gene_type","gene_name")]
+
+  message("Convert ENSEMBL to SYMBOL")
+  m <- match(rownames(x), my_genes$gene_id)
+  m.symb <- m[which(!is.na(m))]
+
+  message("Loosing ", length(which(is.na(m))), " genes ...")
+  x <- x[m.symb,]
+  rownames(x) <- my_genes$gene_name[m.symb]  
+  return(x)
+}
+
+mygtf <- "/shared/projects/dubii2020/data/rnaseq/countsdata/gencode.v19.annotation.gtf.gz"
+d.ensembl <- read.csv("/shared/projects/dubii2020/data/rnaseq/countsdata/tablecounts_raw_ensembl.csv", 
+                      row.names = 1)
+d.ensembl <- as.matrix(d.ensembl)
+d.annot <- ensembl2symbol(d.ensembl, mygtf)
+```
+</details>
+
+## RNA-seq expression units
+
+### CPM, RPKM or TPM ?
+
+The raw counts values are not normalized and thus do not have any biological meaning.
+In the litterature, gene expression is commonly presented as counts per million (`CPM`), reads per kb per million (`RPKM`) or transcripts per million (`TPM`).
+These methods are a first way to normalize counts but none of them perform robust cross-sample normalization.  
+In this way, their usage is usually `restricted to gene abundance representation`.  
+These values are very nicely explained on the [RNA-seq blog](http://www.rna-seqblog.com/rpkm-fpkm-and-tpm-clearly-explained/) website.
+
+__*CPM - counts per million*__  
+
+Counts per million (CPM) normalizes counts by the number of fragments you sequenced (N) times one million.  
+CPM = numReads  * 10^6 / N
+
+__*RPKM - read per kilobase per million*__  
+
+Reads per kilobase of exon per million reads mapped (RPKM) is a measure of gene expression, which takes into account the gene length and the sequencing depth.  
+
+1. Count up the total number of reads in a sample and divide that number by 10^6 – this is our “per million” scaling factor.
+2. Divide the read counts by the “per million” scaling factor. This normalizes for sequencing depth, giving you reads per million (RPM)
+3. Divide the RPM values by the length of the gene, in kilobases. This gives you RPKM.
+
+In other words ;  
+RPKM = numReads * 10^9 / ( geneLength * totalNumReads )  
+Note that for paired-end data, the number of reads corresponds to a number of fragments mapped to a gene. We therefore talk about FPKM.
+
+__*TPM - transcripts per million*__  
+
+Transcripts per million (TPM) is a measure of the proportion of transcripts in the sequenced pool of RNA. It is very similar to RPKM, and is currently the best way to convert counts into gene expression level. Basically, only the order of the operation is different between RPKM and TPM.
+
+1. Divide the read counts by the length of each gene in kilobases. This gives you reads per kilobase (RPK).
+2. Count up all the RPK values in a sample and divide this number by 10^6. This is your “per million” scaling factor.
+3. Divide the RPK values by the “per million” scaling factor. This gives you TPM.
+
+RPK = numReads / (geneLength / 10^3 )
+TPM = RPK * (10^6 / colsum(RPK)) 
+
+1. Write a function `getExonicGeneSize` to calculate the gene length (i.e. length of exonic region per gene) from a gtf file.
+
+<details>
+<summary>Solution</summary>
+```{r, echo=TRUE, eval=TRUE}
+## getExonicGeneSize
+## gtf.in: path to GTF file
+## return: exon size per gene
+getExonicGeneSize <- function(gtf.in, txdb.db=NULL){
+    stopifnot(require(GenomicFeatures))
+    ## Create a new annotation db
+    if (is.null(txdb.db)){
+      txdb <- makeTxDbFromGFF(gtf.in, format="gtf")
+    }else{
+      txdb <- loadDb(txdb.db)
+    }
+    ## then collect the exons per gene id
+    exons.list.per.gene <- exonsBy(txdb, by="gene")
+    ## then for each gene, reduce all the exons to a set of non overlapping exons, calculate their lengths (widths) and sum then
+    exonic.gene.sizes <- sum(width(reduce(exons.list.per.gene)))
+    return(exonic.gene.sizes)
+}## getExonicGeneSize
+```
+</details>
+
+2. Write three different functions to :
+
+- Calculate RPKM values from a raw counts table
+
+<details>
+<summary>Solution</summary>
+```{r, echo=TRUE, eval=TRUE}
+## getRPKM
+## Calculate RPKM values from a gene expression matrix and a gtf file
+## x: matrix of counts
+## exonic.gene.size : vector of exonic sizes per gene. If not provided, gtf.in is used to build it
+## gtf.in: path to gtf file
+getRPKM <- function(x, exonic.gene.sizes){
+  rpkm <- x * 10^9 /
+    (matrix(colSums(x), nrow=nrow(x), ncol=ncol(x), byrow=TRUE)  *  matrix(exonic.gene.sizes, nrow=nrow(x), ncol=ncol(x), byrow=FALSE))
+  return(rpkm)
+}##getRPKM
+
+## calculate RPKM
+L <- getExonicGeneSize(mygtf, txdb.db="/shared/projects/dubii2020/data/rnaseq/countsdata/gencode.v19.db")
+d.my.rpkm <- getRPKM(d.annot, exonic.gene.sizes=L)
+colSums(d.my.rpkm)
+```
+</details>
+
+- Calculate TPM values from a raw counts table
+
+<details>
+<summary>Solution</summary>
+```{r, echo=TRUE, eval=TRUE}
+## getTPM
+## Calculate TPM values from a gene expression matrix and a gtf file
+## x: matrix of counts
+## exonic.gene.size : vector of exonic sizes per gene. If not provided, gtf.in is used to build it
+## gtf.in: path to gtf file
+getTPM <- function(x, exonic.gene.sizes){
+  ## Calculate read per kilobase
+  rpk <- x * 10^3/matrix(exonic.gene.sizes, nrow=nrow(x), ncol=ncol(x), byrow=FALSE)
+  ## Then normalize by lib size
+  tpm <- rpk *  matrix(10^6 / colSums(rpk), nrow=nrow(rpk), ncol=ncol(rpk), byrow=TRUE)
+  return(tpm)
+}##getTPM
+
+## calculate TPM
+d.my.tpm <- getTPM(d.annot, exonic.gene.sizes=L)
+colSums(d.my.tpm)
+```
+</details>
+
+- Calculate CPM values from a raw counts table
+
+<details>
+<summary>Solution</summary>
+```{r, echo=TRUE, eval=TRUE}
+##getCPM
+## Calculate CPM values from a gene expression matrix
+## x: matrix of counts
+## log: return the values as log2
+getCPM <- function(x, log=TRUE){
+  if (log){x <- x+1}
+  cpm <- apply(x, 2, function(x) (x/sum(x))*1000000)
+  if (log){cpm <- log2(cpm)}
+  cpm
+}##getCPM
+
+## calculate log2 CPM
+d.my.cpm <- getCPM(d.annot, log=TRUE)
+```
+</details>
+
+Be reassured, R provides its own function to automatically calculating CPM, RPKM and TPM values.
+Let's try to validate our results ...
+
+```{r echo=TRUE, eval=TRUE}
+require(edgeR)
+d.cpm <- cpm(d.annot, log = TRUE)
+
+L <- getExonicGeneSize(mygtf, txdb.db="/shared/projects/dubii2020/data/rnaseq/countsdata/gencode.v19.db")
+d.rpkm <- rpkm(d.annot, L)
+
+# Calculate TPM from RPKM
+rpkm2tpm <- function(x) {
+  rpkm.sum <- colSums(x)
+  return(t(t(x) / (1e-06 * rpkm.sum)))
+}
+d.tpm <- rpkm2tpm(d.rpkm)
+```
+
+You can see that the `cpm` function from the `edgeR` package does not give exactly the same results. This is due to the offset which is added to deal with zeros in log scale.
+
+### Finally, which unit to use ?
+
+CPM values are normalized on library sizes, but not on transcript sizes.  
+RPKM values are inconsistent across samples (*Wagner et al. 2012*[^11]). The reason for this is that RPKM normalizes by the total number of reads which is not a measure of total transcript number. Therefore, instead of dividing by the total number of reads, it is more robust to divide by the total number of length-normalized reads. This is what TPM is doing (see the [Lior Patcher talk](https://www.youtube.com/watch?feature=player_detailpage&v=5NiFibnbE8o#t=1831) for mathematical explanations).
+
+**So please, use TPM as a value of transcripts abundance !**
+
+Using the TPM values, we can now explore the expression of our favorite genes.
+
+### Session Info
+
+```{r, echo=TRUE, eval=TRUE}
+sessionInfo()
+```
+
+# Acknowledgments
+
+This support has been prepared with the support of the Cancéropole Ile de France.
+
+# References
+
+[^1]:
+Kim D., Pertea G., Trapnell C. (2013) TopHat2: accurate alignment of transcriptomes in the presence of insertions, deletions and gene fusions. Genome Biology, 14(4). 
+[^2]:
+Kim D, Langmead B and Salzberg SL. (2015) HISAT: a fast spliced aligner with low memory requirements. Nature Methods
+[^3]:
+Dobin A., Davis C.A., Schlesinger F. et al. (2013) STAR: ultrafast universal RNA-seq aligner, Bioinformatics, 29(1):15–21,
+[^4]:
+Patro, R., Duggal, G., Love, M. I. et al. (2017). Salmon provides fast and bias-aware quantification of transcript expression. Nature Methods.
+[^5]:
+Nicolas L Bray N.L., Pimentel H., Melsted P. et al. (2016) Near-optimal probabilistic RNA-seq quantification, Nature Biotechnology 34, 525–527
+[^6]:
+Srivastava A., Sarkar H., Gupta N. et al. (2016) RapMap: a rapid, sensitive and accurate tool for mapping RNA-seq reads to transcriptomes, Bioinformatics. 32(12)
+[^7]:
+Bray N.L. et al. (2016) Near-optimal probabilistic RNA-seq quantification. Nature Biotech., 34(5):525–527.
+[^8]:
+Anders S., Pyl T.P., Huber W. (2015) HTSeq - A Python framework to work with high-throughput sequencing data. Bioinformatics 31(2):166-9
+[^9]:
+Liao Y, Smyth GK and Shi W. (2014) featureCounts: an efficient general-purpose program for assigning sequence reads to genomic features. Bioinformatics, 30(7):923-30
+[^10]:
+Horvath A. et al. (2013) Novel Insights into Breast Cancer Genetic Variance through RNA Sequencing
+[^11]:
+Wagner GP1, Kin K, Lynch VJ. Measurement of mRNA abundance using RNA-seq data: RPKM measure is inconsistent among samples.  Theory Biosci. 2012 Dec;131(4):281-5.
+[^12]:
+Robinson MD and Oshlack A. A scaling normalization method for differential analysis of RNA-seq data. Genome Biol. 2010; 11(3): R25
+[^13]:
+Law C.W., Chen Y., Shi W., Smyth G.K. voom: precision weights unlowk linear model analysis tools for RNA-seq read counts. Genome Biol. 2014; 15(2): R29
+
