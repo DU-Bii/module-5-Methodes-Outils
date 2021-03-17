@@ -632,7 +632,6 @@ labelgenome(chrom,chromstart,chromend,side=1,scipen=20,n=3,line=.18,chromline=.5
 legend("topright",inset=0.025,legend=c("TNBC1"),fill=c(finalcolor2),border=c("#E5001B"),text.font=2,cex=0.75)
 axis(side=2,las=2,tcl=.2)
 mtext("Read Depth",side=2,line=3,cex=.75,font=2)
-
 ```
 
 Comparez avec l'annotation du gène: http://www.ensembl.org/Homo_sapiens/Gene/Summary?g=ENSG00000091831;r=6:151656691-152129619
@@ -641,6 +640,5 @@ Quels exons sont les plus exprimés?
 
 </details>
 
-
-
+# References
 
