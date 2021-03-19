@@ -67,7 +67,7 @@
 ###  [Séance 4 - Metabolomics](https://github.com/DU-Bii/module-5-Methodes-Outils/tree/master/seance4_metabolomics)
 
 - Date : 22 mars 2021
-- Horaires : 10h00 - 12h30 ; 14h00 - 16h30
+- Horaires : 10h00 - 13h00 ; 14h00 - 16h30
 - Intervenants : Mélanie Pétéra, Binta Diémé
 - Titre : Metabolomics
 
@@ -102,14 +102,14 @@ A l'issu de ces activités préparatoires, vous aurez :
 
 En cas de blocage ou de question, n'hésitez pas à partager vos questions sur le channel _help_ de Slack.
 
-<!--
+
 | Supports | Formats |
 |--------------------------------------------------|--------|
-| Cours | [[pdf](seance4_metabolomics/presentation-dubii_04-06-2020.pdf)]
-| TP Msconvert | [[pdf](seance4_metabolomics/MSconvert-dubii.pdf)]  |
-| Présentation Workflow4metabolomics | [[pdf](seance4_metabolomics/DUBii2020_W4M.pdf)] |
-| Support Galaxy Training  | [[pdf](seance4_metabolomics/DUBii2020_GTNsuppmat.pdf)] |
--->
+| Cours | [[pdf](seance4_metabolomics/dubii_22-03-2021.pdf)]
+| Lien exerice conversion de fichiers | [[zip](https://ent.uca.fr/filez/i8yycni)]  |
+| Présentation Workflow4metabolomics | [[pdf](seance4_metabolomics/DUBii2021_W4M.pdf)] |
+| Support Galaxy Training  | [[pdf](seance4_metabolomics/DUBii2021_GTNsuppmat.pdf)] |
+
 
 ### [Séance 5 - Transcriptomics](https://github.com/DU-Bii/module-5-Methodes-Outils/tree/master/seance5_transcriptomics)
 
