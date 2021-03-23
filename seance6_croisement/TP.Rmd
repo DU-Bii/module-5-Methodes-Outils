@@ -297,7 +297,7 @@ Sélectionnez également les SNV connus de `ENSG00000091831`.
 ```{bash, eval=FALSE}
 srun vcftools --vcf data/TNBC1.vcf --remove-indels --recode --recode-INFO-all --stdout > TNBC1_SNV.vcf
 srun vcftools --vcf data/NonTNBC1.vcf --remove-indels --recode --recode-INFO-all --stdout > NonTNBC1_SNV.vcf
-srum vcftools --vcf ENSG00000091831_known.vcf --remove-indels --recode --recode-INFO-all --stdout > ENSG00000091831_known_SNV.vcf
+srun vcftools --vcf ENSG00000091831_known.vcf --remove-indels --recode --recode-INFO-all --stdout > ENSG00000091831_known_SNV.vcf
 ```
 
 *Étape 3:*: Ne conservez que les SNVs vus dans les deux conditions qui sont sur `ENSG00000091831`.
@@ -418,11 +418,11 @@ awk '$3=="transcript"' data/TNBC1_denovo_transcripts.gtf | cut -f 1,4-5 | sed "s
 awk '$3=="transcript"' data/NonTNBC1_denovo_transcripts.gtf | cut -f 1,4-5 | sed "s/chr//" | sort -k1,1 -k2,2n | awk -v OFS='\t' '{print $1, $2-1, $3-1}' > NonTNBC1_denovo_transcripts.bed
 
 module load cufflinks
-gffread -E data/NonTNBC1_denovo_transcripts.gtf -o NonTNBC1_denovo_transcripts.gff3
+srun gffread -E data/NonTNBC1_denovo_transcripts.gtf -o NonTNBC1_denovo_transcripts.gff3
 awk '$3=="transcript"' NonTNBC1_denovo_transcripts.gff3 | awk -v OFS='\t' '{sub(/chr/, "", $1)}1'  | sort -k1,1 -k4,4n  > NonTNBC1_denovo_transcripts_only.gff3
 
 
-gffread -E data/TNBC1_denovo_transcripts.gtf -o TNBC1_denovo_transcripts.gff3
+srun gffread -E data/TNBC1_denovo_transcripts.gtf -o TNBC1_denovo_transcripts.gff3
 awk '$3=="transcript"' TNBC1_denovo_transcripts.gff3 | awk -v OFS='\t' '{sub(/chr/, "", $1)}1'  | sort -k1,1 -k4,4n  > TNBC1_denovo_transcripts_only.gff3
 
 ```
