@@ -120,7 +120,9 @@ En cas de blocage ou de question, n'hésitez pas à partager vos questions sur l
 
 | Supports | Formats |
 |--------------------------------------------------|--------|
-| State of the art | [[archive zip](seance5_transcriptomics/DUBii_State_of_the_art_of_what_can_be_done_with_RNA-seq_20210324_slides.zip)]
+| State of the art | [[pdf](seance5_transcriptomics/DUBii_State_of_the_art_of_what_can_be_done_with_RNA-seq_20210324.pdf)]
+| Oxford nanopore Technology How It Works | [[mp4](seance5_transcriptomics/ONT_How_it_Works.mp4)]
+| Pacific BiosScience  How It Works| [[mp4](seance5_transcriptomics/PacBio_How_it_Works.mp4)]
 | RNAseq processing | [[pdf](seance5_transcriptomics/processing/RNAseq_processing.pdf)] [[html](seance5_transcriptomics/processing/RNAseq_processing.html)]  |
 | what2do_with_count_table_diffan | [[pdf](seance5_transcriptomics/R/what2do_with_count_table_diffan.pdf)] [[html](seance5_transcriptomics/R/what2do_with_count_table_diffan.html)] |
 
