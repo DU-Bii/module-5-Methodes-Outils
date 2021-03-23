@@ -113,6 +113,10 @@ En cas de blocage ou de question, n'hésitez pas à partager vos questions sur l
 
 ### [Séance 5 - Transcriptomics](https://github.com/DU-Bii/module-5-Methodes-Outils/tree/master/seance5_transcriptomics)
 
+:memo: https://jupyterhub.poc-nncr-ifb.fr/
+
+:memo: `ssh -XY login@hpc.poc-nncr-ifb.fr`
+
 - Date : 24 mars 2021
 - Horaires : 10h00 - 13h00 ; 14h30 - 17h30
 - Intervenants : Nicolas Servant et Marc Deloger
