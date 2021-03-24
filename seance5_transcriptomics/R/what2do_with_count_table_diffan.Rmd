@@ -1,7 +1,7 @@
 ---
 title: "RNA-seq data mining & differential analysis using R"
 author: "DU Bii - N. Servant / M. Deloger"
-date: "11th March 2020"
+date: "24th March 2021"
 output:
   html_document:
     code_folding: show
@@ -27,7 +27,7 @@ Usually, generating such table requires two mains steps :
 1. Aligning the reads on a reference genome
 2. Counting how many reads can be assigned to a given gene  
 
-The mapping step aims at positioning the sequencing reads on your reference genome. Different tools such as [TopHat2](https://ccb.jhu.edu/software/tophat/index.shtml)[^1], [HiSat2](http://ccb.jhu.edu/software/hisat2/index.shtml)[^2], [STAR](https://github.com/alexdobin/STAR)[^3], etc. are still commonly used. In theory, if well configured, these tools should give close results, although their mapping strategy and computational requirements might be different. Of note, recent methods/tools based on pseudo-mapping approaches such as [Salmon](https://combine-lab.github.io/salmon/)[^4], [Kallisto](https://pachterlab.github.io/kallisto/about)[^5], [Rapmap](https://github.com/COMBINE-lab/RapMap)[^6], etc. can also be used to quantify the gene expression from raw RNA-seq data (see *Bray et al. 2016* [^7]).
+The mapping step aims at positioning the sequencing reads on your reference genome. Different tools such as  [HiSat2](http://ccb.jhu.edu/software/hisat2/index.shtml)[^2], [STAR](https://github.com/alexdobin/STAR)[^3], etc. are still commonly used. In theory, if well configured, these tools should give close results, although their mapping strategy and computational requirements might be different. Of note, recent methods/tools based on pseudo-mapping approaches such as [Salmon](https://combine-lab.github.io/salmon/)[^4], [Kallisto](https://pachterlab.github.io/kallisto/about)[^5], [Rapmap](https://github.com/COMBINE-lab/RapMap)[^6], etc. can also be used to quantify the gene expression from raw RNA-seq data (see *Bray et al. 2016* [^7]).
 
 Once the data are mapped on the genome, several tools can be used to count and assign reads to a given gene (exons).  
 Among the most popular tools, [HTSeqCount](http://htseq.readthedocs.io/en/master/count.html)[^8] or [FeatureCounts](http://subread.sourceforge.net/)[^9] are frequently used. Note that for this step, it is crucial to have details on the protocol used to generate the samples, and especially if the protocol was **stranded** or not.  
@@ -66,8 +66,10 @@ In order to install these packages, use the following command :
 install.packages("knitr")
 
 ## For BioC packages
-source("https://bioconductor.org/biocLite.R")
-biocLite("DESeq2")
+if (!requireNamespace("BiocManager", quietly = TRUE))
+    install.packages("BiocManager")
+
+BiocManager::install("DESeq2")
 ```
 
 # Reminder about R ...
@@ -202,15 +204,15 @@ Using functions is strongly adviced to factorize a code as much as possible, and
 <details>
 <summary>Examples</summary>
 ```{r rd6, echo=TRUE}
-myfunc <- function(a){
+myfunc <- function(a, b=1){
   ## do something
-  b <- a^2
+  res <- a^2 + b
   ## return the results
-  return(b)
+  return(res)
 }
 
-output <- myfunc(10)
-print(output)
+myfunc(10)
+myfunc(a=10, b=5)
 ```
 </details>
 
@@ -282,7 +284,7 @@ a %in% b
 ```
 </details>
 
-## General comments
+# FAIR Guiding Principles in R
 
 It is usually recommanded to follow good programming practices when you are writting your own code.  
 Among them, pay attention to :
@@ -293,6 +295,21 @@ Among them, pay attention to :
 - Add comments into your code
 - Do not hesitate the write a command in multiple lines
 - Make simple tests
+- Never use a command line that you do not understand
+- Add a `sessionInfo()` at the end of each script
+
+If you want to go further :
+
+- Use a versioning system (git)
+- Make your code reproducible with the `renv` package.
+
+```{r, eval=FALSE}
+library(renv)
+renv::init() ## Init a new project locally
+## Install your packages
+renv::snapshot() ## Save the state of the project library in a lockfile
+renv::restore() ## Restore your local environment defined in the lockfile
+```
 
 ----------
 
@@ -335,16 +352,17 @@ starload <- function(input_path, col.nb){
 R can easily load .csv files. The CSV (Comma Separated Values) format is fully compatible with Excel.  It is a plain text format, where columns are separated by a `comma`.
 
 ```{r data, echo=TRUE, eval=TRUE}
+proj <- "/shared/projects/dubii2021/trainers/module5/seance5/data/counts/"
+#proj <- "../data/counts"
 ## Load a raw count table from a csv file
-d <- read.csv("/shared/projects/dubii2020/data/rnaseq/countsdata/tablecounts_raw.csv", row.names = 1)
+d <- read.csv(file.path(proj, "tablecounts_raw.csv"), row.names = 1)
 d <- as.matrix(d)
-
 ## Load TPM normalized count table from a csv file
-d.tpm  <- read.csv("/shared/projects/dubii2020/data/rnaseq/countsdata/tablecounts_tpm.csv", row.names = 1)
+d.tpm  <- read.csv(file.path(proj, "tablecounts_tpm.csv"), row.names = 1)
 d.tpm <- as.matrix(d.tpm)
 
 ## Loading sample plan
-splan <- read.csv("/shared/projects/dubii2020/data/rnaseq/countsdata/SAMPLE_PLAN", row.names=1, header=FALSE)
+splan <- read.csv(file.path(proj, "SAMPLE_PLAN"), row.names=1, header=FALSE)
 colnames(splan) <- c("sname","subtype")
 splan
 
@@ -437,7 +455,11 @@ barplot(d.tpm[erbb2_pos, ], ylab="TPM", las=2, col="gray50", border="white")
 <details>
 <summary>Show</summary>
 ```{r dm7, echo=TRUE, eval=TRUE}
-nb_expressed_genes <- apply(d.tpm, 2, function(x){length(which(x>1))})
+getExpressedNumber <- function(x){
+  n <- length(which(x>1))
+  return(n)
+}
+nb_expressed_genes <- apply(d.tpm, 2, getExpressedNumber)
 nb_expressed_genes
 ```
 </details>
@@ -780,7 +802,7 @@ Here, our dataset is based on ENSEMBL annotation. Our goal is thus to convert th
 
 <details>
 <summary>Solution</summary>
-```{r, echo=TRUE, eval=TRUE}
+```{r, echo=TRUE, eval=FALSE}
 ## ensemble2symbol
 ## x: matrix with ENSEMBL Ids as rownames
 ## gtf.in: path to gtf file
@@ -804,175 +826,14 @@ ensembl2symbol <- function(x, gtf.in){
   return(x)
 }
 
-mygtf <- "/shared/projects/dubii2020/data/rnaseq/countsdata/gencode.v19.annotation.gtf.gz"
-d.ensembl <- read.csv("/shared/projects/dubii2020/data/rnaseq/countsdata/tablecounts_raw_ensembl.csv", 
+mygtf <- file.path(proj, "gencode.v19.annotation.gtf")
+d.ensembl <- read.csv(file.path(proj, "tablecounts_raw_ensembl.csv"), 
                       row.names = 1)
 d.ensembl <- as.matrix(d.ensembl)
 d.annot <- ensembl2symbol(d.ensembl, mygtf)
 ```
 </details>
 
-## RNA-seq expression units
-
-### CPM, RPKM or TPM ?
-
-The raw counts values are not normalized and thus do not have any biological meaning.
-In the litterature, gene expression is commonly presented as counts per million (`CPM`), reads per kb per million (`RPKM`) or transcripts per million (`TPM`).
-These methods are a first way to normalize counts but none of them perform robust cross-sample normalization.  
-In this way, their usage is usually `restricted to gene abundance representation`.  
-These values are very nicely explained on the [RNA-seq blog](http://www.rna-seqblog.com/rpkm-fpkm-and-tpm-clearly-explained/) website.
-
-__*CPM - counts per million*__  
-
-Counts per million (CPM) normalizes counts by the number of fragments you sequenced (N) times one million.  
-CPM = numReads  * 10^6 / N
-
-__*RPKM - read per kilobase per million*__  
-
-Reads per kilobase of exon per million reads mapped (RPKM) is a measure of gene expression, which takes into account the gene length and the sequencing depth.  
-
-1. Count up the total number of reads in a sample and divide that number by 10^6 – this is our “per million” scaling factor.
-2. Divide the read counts by the “per million” scaling factor. This normalizes for sequencing depth, giving you reads per million (RPM)
-3. Divide the RPM values by the length of the gene, in kilobases. This gives you RPKM.
-
-In other words ;  
-RPKM = numReads * 10^9 / ( geneLength * totalNumReads )  
-Note that for paired-end data, the number of reads corresponds to a number of fragments mapped to a gene. We therefore talk about FPKM.
-
-__*TPM - transcripts per million*__  
-
-Transcripts per million (TPM) is a measure of the proportion of transcripts in the sequenced pool of RNA. It is very similar to RPKM, and is currently the best way to convert counts into gene expression level. Basically, only the order of the operation is different between RPKM and TPM.
-
-1. Divide the read counts by the length of each gene in kilobases. This gives you reads per kilobase (RPK).
-2. Count up all the RPK values in a sample and divide this number by 10^6. This is your “per million” scaling factor.
-3. Divide the RPK values by the “per million” scaling factor. This gives you TPM.
-
-RPK = numReads / (geneLength / 10^3 )
-TPM = RPK * (10^6 / colsum(RPK)) 
-
-1. Write a function `getExonicGeneSize` to calculate the gene length (i.e. length of exonic region per gene) from a gtf file.
-
-<details>
-<summary>Solution</summary>
-```{r, echo=TRUE, eval=TRUE}
-## getExonicGeneSize
-## gtf.in: path to GTF file
-## return: exon size per gene
-getExonicGeneSize <- function(gtf.in, txdb.db=NULL){
-    stopifnot(require(GenomicFeatures))
-    ## Create a new annotation db
-    if (is.null(txdb.db)){
-      txdb <- makeTxDbFromGFF(gtf.in, format="gtf")
-    }else{
-      txdb <- loadDb(txdb.db)
-    }
-    ## then collect the exons per gene id
-    exons.list.per.gene <- exonsBy(txdb, by="gene")
-    ## then for each gene, reduce all the exons to a set of non overlapping exons, calculate their lengths (widths) and sum then
-    exonic.gene.sizes <- sum(width(reduce(exons.list.per.gene)))
-    return(exonic.gene.sizes)
-}## getExonicGeneSize
-```
-</details>
-
-2. Write three different functions to :
-
-- Calculate RPKM values from a raw counts table
-
-<details>
-<summary>Solution</summary>
-```{r, echo=TRUE, eval=TRUE}
-## getRPKM
-## Calculate RPKM values from a gene expression matrix and a gtf file
-## x: matrix of counts
-## exonic.gene.size : vector of exonic sizes per gene. If not provided, gtf.in is used to build it
-## gtf.in: path to gtf file
-getRPKM <- function(x, exonic.gene.sizes){
-  rpkm <- x * 10^9 /
-    (matrix(colSums(x), nrow=nrow(x), ncol=ncol(x), byrow=TRUE)  *  matrix(exonic.gene.sizes, nrow=nrow(x), ncol=ncol(x), byrow=FALSE))
-  return(rpkm)
-}##getRPKM
-
-## calculate RPKM
-L <- getExonicGeneSize(mygtf, txdb.db="/shared/projects/dubii2020/data/rnaseq/countsdata/gencode.v19.db")
-d.my.rpkm <- getRPKM(d.annot, exonic.gene.sizes=L)
-colSums(d.my.rpkm)
-```
-</details>
-
-- Calculate TPM values from a raw counts table
-
-<details>
-<summary>Solution</summary>
-```{r, echo=TRUE, eval=TRUE}
-## getTPM
-## Calculate TPM values from a gene expression matrix and a gtf file
-## x: matrix of counts
-## exonic.gene.size : vector of exonic sizes per gene. If not provided, gtf.in is used to build it
-## gtf.in: path to gtf file
-getTPM <- function(x, exonic.gene.sizes){
-  ## Calculate read per kilobase
-  rpk <- x * 10^3/matrix(exonic.gene.sizes, nrow=nrow(x), ncol=ncol(x), byrow=FALSE)
-  ## Then normalize by lib size
-  tpm <- rpk *  matrix(10^6 / colSums(rpk), nrow=nrow(rpk), ncol=ncol(rpk), byrow=TRUE)
-  return(tpm)
-}##getTPM
-
-## calculate TPM
-d.my.tpm <- getTPM(d.annot, exonic.gene.sizes=L)
-colSums(d.my.tpm)
-```
-</details>
-
-- Calculate CPM values from a raw counts table
-
-<details>
-<summary>Solution</summary>
-```{r, echo=TRUE, eval=TRUE}
-##getCPM
-## Calculate CPM values from a gene expression matrix
-## x: matrix of counts
-## log: return the values as log2
-getCPM <- function(x, log=TRUE){
-  if (log){x <- x+1}
-  cpm <- apply(x, 2, function(x) (x/sum(x))*1000000)
-  if (log){cpm <- log2(cpm)}
-  cpm
-}##getCPM
-
-## calculate log2 CPM
-d.my.cpm <- getCPM(d.annot, log=TRUE)
-```
-</details>
-
-Be reassured, R provides its own function to automatically calculating CPM, RPKM and TPM values.
-Let's try to validate our results ...
-
-```{r echo=TRUE, eval=TRUE}
-require(edgeR)
-d.cpm <- cpm(d.annot, log = TRUE)
-
-L <- getExonicGeneSize(mygtf, txdb.db="/shared/projects/dubii2020/data/rnaseq/countsdata/gencode.v19.db")
-d.rpkm <- rpkm(d.annot, L)
-
-# Calculate TPM from RPKM
-rpkm2tpm <- function(x) {
-  rpkm.sum <- colSums(x)
-  return(t(t(x) / (1e-06 * rpkm.sum)))
-}
-d.tpm <- rpkm2tpm(d.rpkm)
-```
-
-You can see that the `cpm` function from the `edgeR` package does not give exactly the same results. This is due to the offset which is added to deal with zeros in log scale.
-
-### Finally, which unit to use ?
-
-CPM values are normalized on library sizes, but not on transcript sizes.  
-RPKM values are inconsistent across samples (*Wagner et al. 2012*[^11]). The reason for this is that RPKM normalizes by the total number of reads which is not a measure of total transcript number. Therefore, instead of dividing by the total number of reads, it is more robust to divide by the total number of length-normalized reads. This is what TPM is doing (see the [Lior Patcher talk](https://www.youtube.com/watch?feature=player_detailpage&v=5NiFibnbE8o#t=1831) for mathematical explanations).
-
-**So please, use TPM as a value of transcripts abundance !**
-
-Using the TPM values, we can now explore the expression of our favorite genes.
 
 ### Session Info
 
@@ -982,7 +843,7 @@ sessionInfo()
 
 # Acknowledgments
 
-This support has been prepared with the support of the Cancéropole Ile de France.
+This document has been prepared with the support of the Cancéropole Ile de France.
 
 # References
 
