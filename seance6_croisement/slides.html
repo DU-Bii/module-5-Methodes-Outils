@@ -32,7 +32,7 @@ class: center, middle, inverse, title-slide
 
 - Rappel sur les formats de fichiers
 
-- &lt;strong class="tool"&gt;Bedtools&lt;/strong&gt; 
+- &lt;strong class="tool"&gt;Bedtools&lt;/strong&gt; &lt;a id='cite-quinlan2010bedtools'&gt;&lt;/a&gt;(&lt;a href='#bib-quinlan2010bedtools'&gt;Quinlan and Hall, 2010&lt;/a&gt;)
 
 - TP en mode distanciation sociale
 
@@ -103,9 +103,9 @@ GATTTGGGGTTCAAAGCAGTATCGATCAAATAGTAAATCCATTTGTTCAACTCACAGTTT
   - les alignements
 
 - Se manipule avec 
-  - &lt;strong class="tool"&gt;samtools&lt;/strong&gt; ,
-  - &lt;strong class="tool"&gt;bedtools&lt;/strong&gt; ,
-  - &lt;strong class="tool"&gt;Picard tools&lt;/strong&gt; ,
+  - &lt;strong class="tool"&gt;samtools&lt;/strong&gt; &lt;a id='cite-samtools'&gt;&lt;/a&gt;(&lt;a href='#bib-samtools'&gt;Li, Handsaker, Wysoker, Fennell, Ruan, Homer, Marth, Abecasis, and Durbin, 2009&lt;/a&gt;),
+  - &lt;strong class="tool"&gt;bedtools&lt;/strong&gt; (&lt;a href='#bib-quinlan2010bedtools'&gt;Quinlan and Hall, 2010&lt;/a&gt;),
+  - &lt;strong class="tool"&gt;Picard tools&lt;/strong&gt; &lt;a id='cite-picardtools'&gt;&lt;/a&gt;(&lt;a href='#bib-picardtools'&gt;Broad Institute, 2018&lt;/a&gt;),
   - ...
 
 - Toujours travailler avec le BAM, trié et indexé
@@ -190,7 +190,7 @@ ctg123 . exon            7000  9000  .  +  .  ID=exon00005;Parent=mrna0001
 
 1. seqid - Nom du chromosome ou scaffold
 2. source - Nom du programme utilisé pour générer ce fichier
-3. type - Type d'élément (feature). Doit correspondre à l'ontologie &lt;a href="http://www.sequenceontology.org/so_wiki/index.php/Category:SO:SOFA"&gt;SOFA&lt;/a&gt; 
+3. type - Type d'élément (feature). Doit correspondre à l'ontologie &lt;a href="http://www.sequenceontology.org/so_wiki/index.php/Category:SO:SOFA"&gt;SOFA&lt;/a&gt; &lt;a id='cite-eilbeck2005sequence'&gt;&lt;/a&gt;(&lt;a href='#bib-eilbeck2005sequence'&gt;Eilbeck, Lewis, Mungall, Yandell, Stein, Durbin, and Ashburner, 2005&lt;/a&gt;)
 4. start - Début (1-based)
 5. end - Fin
 6. score - Score décimal
@@ -350,7 +350,25 @@ Ce &lt;a href="https://du-bii.github.io/module-5-Methodes-Outils/seance4/documen
 
 # References
 
-NULL
+&lt;p&gt;&lt;cite&gt;&lt;a id='bib-picardtools'&gt;&lt;/a&gt;&lt;a href="#cite-picardtools"&gt;Broad Institute&lt;/a&gt;
+(2018).
+&lt;em&gt;Picard Tools&lt;/em&gt;.
+&lt;a href="http://broadinstitute.github.io/picard/"&gt;http://broadinstitute.github.io/picard/&lt;/a&gt;.&lt;/cite&gt;&lt;/p&gt;
+
+&lt;p&gt;&lt;cite&gt;&lt;a id='bib-eilbeck2005sequence'&gt;&lt;/a&gt;&lt;a href="#cite-eilbeck2005sequence"&gt;Eilbeck, K., S. E. Lewis, C. J. Mungall, et al.&lt;/a&gt;
+(2005).
+&amp;ldquo;The Sequence Ontology: a tool for the unification of genome annotations&amp;rdquo;.
+In: &lt;em&gt;Genome biology&lt;/em&gt; 6.5, p. R44.&lt;/cite&gt;&lt;/p&gt;
+
+&lt;p&gt;&lt;cite&gt;&lt;a id='bib-samtools'&gt;&lt;/a&gt;&lt;a href="#cite-samtools"&gt;Li, H., B. Handsaker, A. Wysoker, et al.&lt;/a&gt;
+(2009).
+&amp;ldquo;The sequence alignment/map format and SAMtools&amp;rdquo;.
+In: &lt;em&gt;Bioinformatics&lt;/em&gt; 25.16, pp. 2078&amp;ndash;2079.&lt;/cite&gt;&lt;/p&gt;
+
+&lt;p&gt;&lt;cite&gt;&lt;a id='bib-quinlan2010bedtools'&gt;&lt;/a&gt;&lt;a href="#cite-quinlan2010bedtools"&gt;Quinlan, A. R. and I. M. Hall&lt;/a&gt;
+(2010).
+&amp;ldquo;BEDTools: a flexible suite of utilities for comparing genomic features&amp;rdquo;.
+In: &lt;em&gt;Bioinformatics&lt;/em&gt; 26.6, pp. 841&amp;ndash;842.&lt;/cite&gt;&lt;/p&gt;
     </textarea>
 <style data-target="print-only">@media screen {.remark-slide-container{display:block;}.remark-slide-scaler{box-shadow:none;}}</style>
 <script src="https://remarkjs.com/downloads/remark-latest.min.js"></script>
