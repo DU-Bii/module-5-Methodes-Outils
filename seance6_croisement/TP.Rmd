@@ -67,7 +67,7 @@ Vous allez croiser ces données hétérogènes en utilisant <strong class="tool"
 
 # Préparation de l'espace de travail et récupération des données publiques
 
-Les données dont vous aurez besoin sont dans le répertoire <code>/shared/projects/dubii2020/data/module5/seance4/data</code>. Un lien symbolique du répertoire permettra d'y avoir accès sans dupliquer les données.
+Les données dont vous aurez besoin sont dans le répertoire <code>/shared/projects/dubii2021/trainers/module5/seance6/data</code>. Un lien symbolique du répertoire permettra d'y avoir accès sans dupliquer les données.
 
     mkdir ~/M5-S6/
     cd ~/M5-S6
