@@ -4,7 +4,7 @@ author: "Olivier Rué - Matthias Zytnicki"
 subtitle: "DUBii - Module 5"
 css: css/styles.css
 libs: libs
-date: "2020-06-05"
+date: "2021-03-25"
 output:
     #html_document:
     #  self_contained: true
