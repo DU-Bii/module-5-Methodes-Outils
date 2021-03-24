@@ -129,7 +129,9 @@ En cas de blocage ou de question, n'hésitez pas à partager vos questions sur l
 | Pacific BiosScience  How It Works| [[mp4](seance5_transcriptomics/PacBio_How_it_Works.mp4)]
 | RNAseq processing | [[pdf](seance5_transcriptomics/processing/RNAseq_processing.pdf)] [[html](seance5_transcriptomics/processing/RNAseq_processing.html)]  |
 | what2do_with_count_table_diffan | [[pdf](seance5_transcriptomics/R/what2do_with_count_table_diffan.pdf)] [[html](seance5_transcriptomics/R/what2do_with_count_table_diffan.html)] |
-
+| tablecounts_raw.csv | [[csv](seance5_transcriptomics/tablecounts_raw.csv)] |
+| tablecounts_raw_ensembl.csv | [[csv](seance5_transcriptomics/tablecounts_raw_ensembl.csv)] |
+| tablecounts_tpm.csv | [[csv](seance5_transcriptomics/tablecounts_tpm.csv)] |
 
 
 ### [Séance 6 - Croisement de données](https://github.com/DU-Bii/module-5-Methodes-Outils/tree/master/seance6_croisement)
