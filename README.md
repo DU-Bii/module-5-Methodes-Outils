@@ -132,6 +132,8 @@ En cas de blocage ou de question, n'hésitez pas à partager vos questions sur l
 | tablecounts_raw.csv | [[csv](seance5_transcriptomics/tablecounts_raw.csv)] |
 | tablecounts_raw_ensembl.csv | [[csv](seance5_transcriptomics/tablecounts_raw_ensembl.csv)] |
 | tablecounts_tpm.csv | [[csv](seance5_transcriptomics/tablecounts_tpm.csv)] |
+| SAMPLE_PLAN | [[txt](seance5_transcriptomics/SAMPLE_PLAN)] |
+
 
 
 ### [Séance 6 - Croisement de données](https://github.com/DU-Bii/module-5-Methodes-Outils/tree/master/seance6_croisement)
