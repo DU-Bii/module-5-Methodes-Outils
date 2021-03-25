@@ -428,7 +428,7 @@ srun bedtools intersect -a NonTNBC1_denovo_transcripts.bed -b ENSG00000091831_ge
 *Étape 3*: Trouvez les transcrits qui sont à la fois dans l'annotation de référence, dans Non-TNBC1, mais pas dans TNBC1.
 
 ```{bash, eval=FALSE}
-srun bedtools subtract -a NonTNBC1_denovo_transcripts_ENSG00000091831.bed -b TNBC1_denovo_transcripts_ENSG00000091831.bed > specificNonTNBC1_denovo_transcripts_ENSG00000091831.bed
+srun bedtools subtract -a NonTNBC1_denovo_transcripts_ENSG00000091831.bed -b TNBC1_denovo_transcripts_ENSG00000091831.bed -A > specificNonTNBC1_denovo_transcripts_ENSG00000091831.bed
 
 # Autre possibilité, avec bedtools intersect -v
 
