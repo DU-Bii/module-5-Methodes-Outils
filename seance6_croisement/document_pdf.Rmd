@@ -3,7 +3,7 @@ title: "Croisement de données"
 author: "Olivier Rué - Matthias Zytnicki"
 subtitle: "DUBii - Module 5 - Séance 4"
 css: css/styles.css
-date: "2020/06/05"
+date: "2021/06/05"
 output:
     pdf_document
     
@@ -446,49 +446,36 @@ awk '$3=="transcript"' data/TNBC1_denovo_transcripts.gtf \
 awk '$3=="transcript"' data/NonTNBC1_denovo_transcripts.gtf \
   | cut -f 1,4-5 | sed "s/chr//" | sort -k1,1 -k2,2n | \
   awk -v OFS='\t' '{print $1, $2-1, $3-1}' > NonTNBC1_denovo_transcripts.bed
-
-module load cufflinks
-gffread -E data/NonTNBC1_denovo_transcripts.gtf -o NonTNBC1_denovo_transcripts.gff3
-awk '$3=="transcript"' NonTNBC1_denovo_transcripts.gff3 | \
-  awk -v OFS='\t' '{sub(/chr/, "", $1)}1'  | sort -k1,1 -k4,4n \
-  > NonTNBC1_denovo_transcripts_only.gff3
-
-
-gffread -E data/TNBC1_denovo_transcripts.gtf -o TNBC1_denovo_transcripts.gff3
-awk '$3=="transcript"' TNBC1_denovo_transcripts.gff3 | \
-  awk -v OFS='\t' '{sub(/chr/, "", $1)}1'  | sort -k1,1 -k4,4n \
-   > TNBC1_denovo_transcripts_only.gff3
-
 ```
 
 *Étape 2*: Trouvez les transcrits produits par l'analyse qui chevauchent l'annotation de référence.
 
 ```{bash, eval=FALSE}
 srun bedtools intersect \
-  -a TNBC1_denovo_transcripts_only.gff3 \
+  -a TNBC1_denovo_transcripts.bed \
   -b ENSG00000091831_gene.gff3 \
-  > TNBC1_denovo_transcripts_ENSG00000091831.gff3
+  > TNBC1_denovo_transcripts_ENSG00000091831.bed
   
 srun bedtools intersect \
-  -a NonTNBC1_denovo_transcripts_only.gff3 \
+  -a NonTNBC1_denovo_transcripts.bed \
   -b ENSG00000091831_gene.gff3 \
-  > NonTNBC1_denovo_transcripts_ENSG00000091831.gff3
+  > NonTNBC1_denovo_transcripts_ENSG00000091831.bed
 ```
 
 *Étape 3*: Trouvez les transcrits qui sont à la fois dans l'annotation de référence, dans Non-TNBC1, mais pas dans TNBC1.
 
 ```{bash, eval=FALSE}
 srun bedtools subtract \
-  -a NonTNBC1_denovo_transcripts_ENSG00000091831.gff3 \
-  -b TNBC1_denovo_transcripts_ENSG00000091831.gff3 \
-  > specificNonTNBC1_denovo_transcripts_ENSG00000091831.gff3
+  -a NonTNBC1_denovo_transcripts_ENSG00000091831.bed \
+  -b TNBC1_denovo_transcripts_ENSG00000091831.bed -A \
+  > specificNonTNBC1_denovo_transcripts_ENSG00000091831.bed
 
 # Autre possibilité, avec bedtools intersect -v
 
 srun bedtools intersect \
-  -a NonTNBC1_denovo_transcripts_ENSG00000091831.gff3 \
-  -b TNBC1_denovo_transcripts_ENSG00000091831.gff3 -v \
-  > specificNonTNBC1_denovo_transcripts_ENSG00000091831.gff3
+  -a NonTNBC1_denovo_transcripts_ENSG00000091831.bed \
+  -b TNBC1_denovo_transcripts_ENSG00000091831.bed -v \
+  > specificNonTNBC1_denovo_transcripts_ENSG00000091831.bed
 ```
 
 </details>
