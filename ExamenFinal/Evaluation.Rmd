@@ -29,9 +29,12 @@ Complétez ce document en remplissant les chunks vides pour écrire le code qui 
 
     La bioinfo c'est : <code>MERVEILLEUX</code>.
     
-N'hésitez pas à commenter votre code pour expliquer votre démarche. N'oubliez pas les **bonnes pratiques** pour une recherche **reproductible** !
+N'hésitez pas à commenter votre code, enrichier le rapport en y insérant des résultats ou des graphiques   pour expliquer votre démarche. N'oubliez pas les **bonnes pratiques** pour une recherche **reproductible** !
+Nous souhaitons à minima que l'analyse soit reproductible sur le cluster de l'IFB.
 
-Ce rapport devra être mis à disposition et partagé avec nous sous sa forme compilée (html ou PDF) dans votre dépôt github.
+Ce rapport devra être mis à disposition et partagé avec nous sous sa forme compilée (html sous forme de Github Pages ou à défautPDF) dans votre dépôt github.
+
+Les parties 1 à 4  seront notées pour l'évaluation du module 4, les parties 5 et 6 pour le module 5.
 
 # Introduction {-}
 
@@ -50,7 +53,7 @@ cd ~/EVALUATION
 
 ## Téléchargement des données brutes
 
-* Récupérez les fichiers FASTQ issus du run `SRR10390685` grâce à l'outil <strong class="tool">sra-tools</strong> @sratoolkit et compressez-les
+* Récupérez les fichiers FASTQ issus du run `SRR10390685` grâce à l'outil <strong class="tool">sra-tools</strong> @sratoolkit
 
 ```{bash}
 module load sra-tools
@@ -76,7 +79,7 @@ seqkit stat SRR10390685_*.fastq.gz
 
 Les fichiers FASTQ contiennent <code>7 066 055</code> reads.
 
-* Téléchargez le génome de référence de la souche ASM904v1 de _Bacillus subtilis_ disponible à [cette adresse](https://ftp.ncbi.nlm.nih.gov/genomes/all/GCF/000/009/045/GCF_000009045.1_ASM904v1/GCF_000009045.1_ASM904v1_genomic.fna.gz) et décompressez le fichier
+* Téléchargez le génome de référence de la souche ASM904v1 de _Bacillus subtilis_ disponible à [cette adresse](https://ftp.ncbi.nlm.nih.gov/genomes/all/GCF/000/009/045/GCF_000009045.1_ASM904v1/GCF_000009045.1_ASM904v1_genomic.fna.gz)
 
 ```{bash}
 wget https://ftp.ncbi.nlm.nih.gov/genomes/all/GCF/000/009/045/GCF_000009045.1_ASM904v1/GCF_000009045.1_ASM904v1_genomic.fna.gz
@@ -90,24 +93,24 @@ module load seqkit
 seqkit version
 # seqkit v0.14.0
 
-seqkit stat GCF_000009045.1_ASM904v1_genomic.fna 
+zcat  GCF_000009045.1_ASM904v1_genomic.fna |seqkit stat 
 # file                                  format  type  num_seqs    sum_len    min_len    avg_len    max_len
 # GCF_000009045.1_ASM904v1_genomic.fna  FASTA   DNA          1  4,215,606  4,215,606  4,215,606  4,215,606
 ```
 
 La taille de ce génome est de <code>4 215 606</code> paires de bases.
 
-* Téléchargez l'annotation de la souche ASM904v1 de _Bacillus subtilis_ disponible à [cette adresse](https://ftp.ncbi.nlm.nih.gov/genomes/all/GCF/000/009/045/GCF_000009045.1_ASM904v1/GCF_000009045.1_ASM904v1_genomic.gff.gz) et décompressez le fichier
+* Téléchargez l'annotation de la souche ASM904v1 de _Bacillus subtilis_ disponible à [cette adresse](https://ftp.ncbi.nlm.nih.gov/genomes/all/GCF/000/009/045/GCF_000009045.1_ASM904v1/GCF_000009045.1_ASM904v1_genomic.gff.gz)
 
 ```{bash}
 wget https://ftp.ncbi.nlm.nih.gov/genomes/all/GCF/000/009/045/GCF_000009045.1_ASM904v1/GCF_000009045.1_ASM904v1_genomic.gff.gz
-gzip -d GCF_000009045.1_ASM904v1_genomic.gff.gz
+
 ```
 
 * Combien de gènes sont connus pour ce génome ?
 
 ```{bash}
-grep -v "^#" GCF_000009045.1_ASM904v1_genomic.gff | awk '($3 == "gene")' |wc -l
+zgrep -v "^#" GCF_000009045.1_ASM904v1_genomic.gff.gz | awk '($3 == "gene")' |wc -l
 # 4448
 ```
 
@@ -194,7 +197,7 @@ module load bwa
 bwa
 # Version: 0.7.17-r1188
 
-srun bwa index GCF_000009045.1_ASM904v1_genomic.fna
+srun bwa index GCF_000009045.1_ASM904v1_genomic.fna.gz
 mkdir MAPPING
 srun --cpus-per-task=4 bwa mem GCF_000009045.1_ASM904v1_genomic.fna FASTP/SRR10390685_1.fastq.gz FASTP/SRR10390685_2.fastq.gz -t 3 | samtools view -hbS - > MAPPING/SRR10390685.bam
 srun samtools flagstat MAPPING/SRR10390685.bam > MAPPING/SRR10390685.bam.flagstat
@@ -222,7 +225,7 @@ bedtools --version
 # bedtools v2.29.2
 
 grep trmNF GCF_000009045.1_ASM904v1_genomic.gff | awk '$3=="gene"' > trmNF.gff3
-bedtools intersect -a MAPPING/SRR10390685_sorted.bam -b trmNF.gff3 -f 0.5 > SRR10390685_on_trmNF.bam
+bedtools intersect -a MAPPING/SRR10390685_sorted.bam -b trmNF.gff3.gz -f 0.5 > SRR10390685_on_trmNF.bam
 samtools view -c SRR10390685_on_trmNF.bam
 ```
 
