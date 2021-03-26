@@ -460,3 +460,8 @@ a {
 .solution{
   color:#83a2a1;
 }
+
+.list-group-item.active, .list-group-item.active:focus, .list-group-item.active:hover {
+  background-color: #4e8f93 !important;
+  border-color: #4e8f93 !important;
+}
